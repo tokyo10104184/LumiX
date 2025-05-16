@@ -93,9 +93,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import com.amplitude.android.Amplitude
-import com.amplitude.android.Configuration
-import com.amplitude.android.DefaultTrackingOptions
 import com.project.lumina.client.constructors.GameManager
 import com.project.lumina.client.game.module.config.ConfigManagerElement
 import com.project.lumina.client.navigation.Navigation
@@ -198,19 +195,9 @@ class MainActivity : ComponentActivity() {
         
         currentInstance = this
         //Muffin.Start(this)
-        val amplitude = Amplitude(
-            Configuration(
-                apiKey = TrackUtil.TrackApi,
-                context = applicationContext,
-                defaultTracking = DefaultTrackingOptions.ALL,
-            )
-        )
 
         val updateCheck = UpdateCheck()
         updateCheck.initiateHandshake(this)
-
-        amplitude.track("Lumina Mobile")
-
         
         InternalLoggerFactory.setDefaultFactory(JdkLoggerFactory.INSTANCE)
         Log.i("MainApplication", "Forced Netty to use JUL logger instead of Log4j2.")

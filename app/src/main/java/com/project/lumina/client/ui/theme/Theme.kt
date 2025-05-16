@@ -423,7 +423,7 @@ private val LuminaColorScheme = darkColorScheme(
 
 @Composable
 fun LuminaClientTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    darkTheme: Boolean = true,
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {

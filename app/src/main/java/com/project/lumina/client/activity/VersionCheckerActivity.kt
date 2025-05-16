@@ -27,9 +27,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.amplitude.android.Amplitude
-import com.amplitude.android.Configuration
-import com.amplitude.android.DefaultTrackingOptions
 import com.project.lumina.client.model.VersionConfig
 import com.project.lumina.client.ui.theme.LuminaClientTheme
 import com.project.lumina.client.essentials.API
@@ -136,15 +133,6 @@ class VersionCheckerActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        val amplitude = Amplitude(
-            Configuration(
-                apiKey = TrackUtil.TrackApi,
-                context = applicationContext,
-                defaultTracking = DefaultTrackingOptions.ALL,
-            )
-        )
-
-        amplitude.track("Version Checker Initialized")
         val viewModel: VersionCheckerViewModel by viewModels()
         viewModel.loadVersionConfig(this, configUrl)
         val updateCheck = UpdateCheck()

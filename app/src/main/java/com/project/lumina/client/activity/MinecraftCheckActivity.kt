@@ -58,12 +58,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.amplitude.android.Amplitude
-import com.amplitude.android.Configuration
-import com.amplitude.android.DefaultTrackingOptions
 
 import com.project.lumina.client.ui.theme.LuminaClientTheme
-import com.project.lumina.client.essentials.TrackUtil
 import com.project.lumina.client.util.HashCat
 import com.project.lumina.client.util.UpdateCheck
 
@@ -73,16 +69,8 @@ class MinecraftCheckActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        val amplitude = Amplitude(
-            Configuration(
-                apiKey = TrackUtil.TrackApi,
-                context = applicationContext,
-                defaultTracking = DefaultTrackingOptions.ALL,
-            )
-        )
         val updateCheck = UpdateCheck()
         updateCheck.initiateHandshake(this)
-        amplitude.track("Initialized Lumina")
         if (isMinecraftInstalled()) {
             val verifier = HashCat.getInstance()
             val isValid = verifier.LintHashInit(this)
