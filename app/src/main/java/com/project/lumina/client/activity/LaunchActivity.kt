@@ -1,5 +1,6 @@
 package com.project.lumina.client.activity
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -7,43 +8,31 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalOverscrollConfiguration
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import com.amplitude.android.Amplitude
-import com.amplitude.android.Configuration
-import com.amplitude.android.DefaultTrackingOptions
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.project.lumina.client.router.launch.AnimatedLauncherScreen
 import com.project.lumina.client.ui.theme.LuminaClientTheme
 import com.project.lumina.client.util.HashCat
-import com.project.lumina.client.essentials.TrackUtil
 import com.project.lumina.client.util.UpdateCheck
 import kotlinx.coroutines.delay
+import android.util.Log
 
+@SuppressLint("CustomSplashScreen")
 class LaunchActivity : ComponentActivity() {
 
-    @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+    @OptIn(ExperimentalFoundationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        val amplitude = Amplitude(
-            Configuration(
-                apiKey = TrackUtil.TrackApi,
-                context = applicationContext,
-                defaultTracking = DefaultTrackingOptions.ALL,
-            )
-        )
         val updateCheck = UpdateCheck()
         updateCheck.initiateHandshake(this)
-        amplitude.track("Launch Activity Init")
         val verifier = HashCat.getInstance()
         val isValid = verifier.LintHashInit(this)
         if (isValid) {
-            FirebaseCrashlytics.getInstance().log("App started")
+            Log.e("LaunchActivity", "App started")
         }
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -59,8 +48,6 @@ class LaunchActivity : ComponentActivity() {
                 }
             }
         }
-
-
 
     }
 }

@@ -3,13 +3,10 @@ apply plugin: 'com.android.library'
 android {
     namespace("com.aizuzi.verificationdemo")
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
 
     defaultConfig {
         minSdkVersion 28
         targetSdkVersion 35
-        versionCode 1
-        versionName "1.0"
 
         externalNativeBuild {
             cmake {

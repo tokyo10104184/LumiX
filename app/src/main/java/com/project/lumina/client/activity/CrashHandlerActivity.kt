@@ -34,12 +34,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.amplitude.android.Amplitude
-import com.amplitude.android.Configuration
-import com.amplitude.android.DefaultTrackingOptions
 import com.project.lumina.client.R
 import com.project.lumina.client.ui.theme.LuminaClientTheme
-import com.project.lumina.client.essentials.TrackUtil
 import com.project.lumina.client.util.UpdateCheck
 
 class CrashHandlerActivity : ComponentActivity() {
@@ -49,15 +45,6 @@ class CrashHandlerActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        val amplitude = Amplitude(
-            Configuration(
-                apiKey = TrackUtil.TrackApi,
-                context = applicationContext,
-                defaultTracking = DefaultTrackingOptions.ALL,
-            )
-        )
-
-        amplitude.track("Lumina Crashed")
         val updateCheck = UpdateCheck()
         updateCheck.initiateHandshake(this)
         val crashMessage = intent?.getStringExtra("message") ?: return finish()

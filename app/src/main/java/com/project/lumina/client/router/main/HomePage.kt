@@ -66,6 +66,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.core.net.toUri
@@ -88,8 +89,8 @@ fun HomePageContent() {
         val coroutineScope = rememberCoroutineScope()
         val snackbarHostState = LocalSnackbarHostState.current
         val mainScreenViewModel: MainScreenViewModel = viewModel()
-        val pages = listOf("Home", "About", "Settings")
-        var currentPage by rememberSaveable { mutableStateOf("Home") }
+        val pages = listOf(R.string.home, R.string.about, R.string.settings)
+        var currentPage by rememberSaveable { mutableStateOf(R.string.home) }
 
         
         var uiAnimationState by remember { mutableStateOf(0) }
@@ -305,7 +306,7 @@ fun HomePageContent() {
                                         ) {
                                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                                 Text(
-                                                    text = page,
+                                                    text = stringResource(page),
                                                     modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
                                                     color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground.copy(alpha = 0.8f),
                                                     style = MaterialTheme.typography.bodyMedium
@@ -380,18 +381,18 @@ fun HomePageContent() {
                     AnimatedContent(
                         targetState = currentPage,
                         transitionSpec = {
-                            
+
                             val initialIndex = when(initialState) {
-                                "Home" -> 0
-                                "About" -> 1
-                                "Settings" -> 2
+                                R.string.home -> 0
+                                R.string.about -> 1
+                                R.string.settings -> 2
                                 else -> 0
                             }
 
                             val targetIndex = when(targetState) {
-                                "Home" -> 0
-                                "About" -> 1
-                                "Settings" -> 2
+                                R.string.home -> 0
+                                R.string.about -> 1
+                                R.string.settings -> 2
                                 else -> 0
                             }
 
@@ -433,7 +434,7 @@ fun HomePageContent() {
                     ) { page ->
                         
                         when (page) {
-                            "Home" -> HomeScreen(onStartToggle = {
+                            R.string.home -> HomeScreen(onStartToggle = {
                                 if (!Settings.canDrawOverlays(context)) {
                                     Toast.makeText(context, context.getString(R.string.request_overlay_permission), Toast.LENGTH_SHORT).show()
                                     overlayPermissionLauncher.launch(
@@ -458,8 +459,8 @@ fun HomePageContent() {
 
                                 onPostPermissionResult(true)
                             })
-                            "About" -> AboutScreen()
-                            "Settings" -> SettingsScreen()
+                            R.string.about -> AboutScreen()
+                            R.string.settings -> SettingsScreen()
                             else -> {}
                         }
                     }

@@ -25,7 +25,5 @@ dependencies {
     api(libs.expiringmap)
     implementation("io.netty:netty-transport-native-epoll:4.1.107.Final:linux-x86_64")
     implementation("io.netty:netty-transport-native-epoll:4.1.107.Final:linux-aarch_64")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.0")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.10.0") // Add this line
+    testImplementation(libs.bundles.junit.jupiter)
 }

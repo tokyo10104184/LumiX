@@ -231,7 +231,7 @@ private fun AccountCard(showNotification: (String, NotificationType) -> Unit) {
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Text(
-                            text = "Add Account",
+                            text = stringResource(R.string.add_account),
                             style = MaterialTheme.typography.labelLarge,
                             fontWeight = FontWeight.Medium,
                             color = MaterialTheme.colorScheme.primary
@@ -303,7 +303,7 @@ private fun AccountCard(showNotification: (String, NotificationType) -> Unit) {
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "No accounts added yet",
+                            text = stringResource(R.string.no_account_added_yet),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )

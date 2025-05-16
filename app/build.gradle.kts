@@ -115,16 +115,8 @@ android {
     }
 }
 
-configurations.all {
-
-}
-
-
-
 dependencies {
-
     implementation(libs.leveldb)
-    //implementation("com.github.CloudburstMC:NBT:master-SNAPSHOT")
     implementation(libs.ui.graphics)
     implementation(libs.androidx.compose.material)
     implementation(libs.androidx.foundation.android)
@@ -150,17 +142,12 @@ dependencies {
     implementation(libs.http.client)
     implementation(libs.bcprov)
     implementation(libs.okhttp)
-
-    implementation("com.amplitude:analytics-android:1.+")
-    implementation("com.github.SmartToolFactory:Compose-Colorful-Sliders:1.2.2")
-    implementation("io.coil-kt:coil-compose:2.4.0")
+    implementation(libs.compose.colorful.sliders)
+    implementation(libs.coil.compose)
     implementation(project(":animatedux"))
-    //implementation(project(":imgui"))
     implementation(project(":Pixie"))
     implementation(project(":Lunaris"))
     implementation(project(":SSC"))
-
-
     implementation(libs.kotlinx.serialization.json.jvm)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -172,11 +159,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.material.icons.extended)
-    implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.16.1")
-    implementation("com.google.firebase:firebase-analytics")
-    implementation("com.google.firebase:firebase-crashlytics")
-    implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
+    implementation(libs.jackson.databind)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -184,6 +167,4 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
-    implementation("androidx.activity:activity-compose:1.8.0")
 }

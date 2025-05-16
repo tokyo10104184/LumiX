@@ -281,7 +281,7 @@ private fun AccountContent(modifier: Modifier = Modifier, showNotification: (Str
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    text = "No Accounts Added",
+                    text = stringResource(R.string.no_account_added),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -289,7 +289,7 @@ private fun AccountContent(modifier: Modifier = Modifier, showNotification: (Str
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    text = "Add a gaming account to get started",
+                    text = stringResource(R.string.add_a_gaming_account_to_get_started),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center

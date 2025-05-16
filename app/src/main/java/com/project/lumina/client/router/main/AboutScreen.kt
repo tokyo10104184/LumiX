@@ -63,6 +63,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.project.lumina.client.R
@@ -97,7 +98,7 @@ fun AboutScreen() {
             ) {
                 
                 Text(
-                    "About Lumina",
+                    stringResource(R.string.about_lumina),
                     style = MaterialTheme.typography.headlineMedium,
                     color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.Bold
@@ -109,19 +110,19 @@ fun AboutScreen() {
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     Text(
-                        "Lumina is a Minecraft Bedrock Edition (MCBE) PvP cheat client that works across multiple operating systems. We've built it with a focus on combat performance and sneaky bypasses for minigame servers.",
+                        stringResource(R.string.lumina_introduction),
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurface
                     )
                     
                     Text(
-                        "Our goal is to provide a lightweight, stable, and feature-rich solution that enhances gameplay without compromising system performance or security.",
+                        stringResource(R.string.lumina_expectation),
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurface
                     )
                     
                     Text(
-                        "Compatible with Android 9+ devices and both 64-bit and 32-bit versions of Minecraft Pocket Edition, with the latest Minecraft version recommended for optimal experience.",
+                        stringResource(R.string.lumina_compatibility),
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurface
                     )
@@ -131,13 +132,13 @@ fun AboutScreen() {
                 
                 
                 Text(
-                    "© 2025 Project Lumina — Licensed under GNU GPLv3",
+                    stringResource(R.string.lumina_copyright),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 
                 Text(
-                    "Made with ♥️ by the Project Lumina team",
+                    stringResource(R.string.lumina_team),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -150,7 +151,7 @@ fun AboutScreen() {
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        "Connect with us",
+                        stringResource(R.string.connect_with_us),
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.Medium

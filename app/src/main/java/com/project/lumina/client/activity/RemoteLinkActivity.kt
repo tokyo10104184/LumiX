@@ -13,9 +13,6 @@ import com.project.lumina.client.ui.theme.LuminaClientTheme
 import android.content.Intent
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
-import com.amplitude.android.Amplitude
-import com.amplitude.android.Configuration
-import com.amplitude.android.DefaultTrackingOptions
 import com.project.lumina.client.constructors.GameManager
 import com.project.lumina.client.game.module.config.ConfigManagerElement
 import com.project.lumina.client.essentials.TrackUtil
@@ -67,15 +64,6 @@ class RemoteLinkActivity : ComponentActivity() {
         if (isValid) { }
         currentInstance = this
 
-        val amplitude = Amplitude(
-            Configuration(
-                apiKey = TrackUtil.TrackApi,
-                context = applicationContext,
-                defaultTracking = DefaultTrackingOptions.ALL,
-            )
-        )
-
-        amplitude.track("Remote Link Opened")
         enableEdgeToEdge()
         val updateCheck = UpdateCheck()
         updateCheck.initiateHandshake(this)
