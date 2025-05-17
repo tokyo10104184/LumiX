@@ -81,18 +81,28 @@ For developers looking to contribute or customize Lumina, here’s how to set up
 
    - Launch Android Studio and select **Open an existing project**.
    - Choose the `LuminaClient` directory and open it.
-3. **Replace google-services.json**:
+
+3. **Replace `google-services.json`**:
 
    - The repository includes a dummy `google-services.json` file, which must be replaced with your own for the app to build successfully.
    - Create a Firebase project at [Firebase Console](https://console.firebase.google.com/).
    - Add an Android app to your Firebase project, following the prompts to download your `google-services.json` file.
    - Place the downloaded `google-services.json` file in the `app` directory of the LuminaClient project, overwriting the dummy file.
    - Ensure the package name in Firebase matches the one in `build.gradle` (e.g., `com.projectlumina.luminaclient`).
-4. **Sync Gradle**:
+
+4. **Replace Amplitude API Key**:
+
+   - Open `TrackUtil.kt` located in `com.project.lumina.client.essentials`.
+   - Replace the placeholder or dummy Amplitude API key with your actual key.
+   - You can obtain an API key by creating a project at [Amplitude](https://amplitude.com/).
+   - This is required for analytics and event tracking to function properly.
+
+5. **Sync Gradle**:
 
    - Click **Sync Project with Gradle Files** to fetch dependencies.
    - Ensure you have the Android SDK (API level 28 or higher) and Gradle installed.
-5. **Build and Test**:
+
+6. **Build and Test**:
 
    - Connect an Android device or configure an emulator.
    - Select **Run > Run 'app'** to build and deploy Lumina.
@@ -214,6 +224,13 @@ Additional dependencies include:
 - **[AndroidX UI Test Manifest](https://developer.android.com/jetpack/androidx/releases/test)**: Manifest utilities for UI testing (debug builds).
 
 We also acknowledge [HavensGrace Studios](https://github.com/HavensGrace) by @aiko and @aoi for development and Technical Support Without them this project may not have been possible ❤️
+
+---
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=TheProjectLumina/LuminaClient&type=Timeline)](https://www.star-history.com/#TheProjectLumina/LuminaClient&Timeline)
+
 
 ---
 
