@@ -229,8 +229,6 @@ We also acknowledge [HavensGrace Studios](https://github.com/HavensGrace) by @ai
 
 ## Star History
 
-## Star History
-
 <a href="https://www.star-history.com/#TheProjectLumina/LuminaClient&Timeline">
  <picture>
    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=TheProjectLumina/LuminaClient&type=Timeline&theme=dark" />
