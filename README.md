@@ -229,7 +229,15 @@ We also acknowledge [HavensGrace Studios](https://github.com/HavensGrace) by @ai
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=TheProjectLumina/LuminaClient&type=Timeline)](https://www.star-history.com/#TheProjectLumina/LuminaClient&Timeline)
+## Star History
+
+<a href="https://www.star-history.com/#TheProjectLumina/LuminaClient&Timeline">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=TheProjectLumina/LuminaClient&type=Timeline&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=TheProjectLumina/LuminaClient&type=Timeline" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=TheProjectLumina/LuminaClient&type=Timeline" />
+ </picture>
+</a>
 
 
 ---
