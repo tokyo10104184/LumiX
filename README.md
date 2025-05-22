@@ -17,7 +17,7 @@ Lumina is all about giving Minecraft players the tools they need to shine in PvP
 
 ## Core Features
 
-Lumina Client offers a set of tools to help you perform better in Minecraft Bedrock Edition PvP. We’ve built it to be fast, reliable, and easy to customize, so you can tweak it to fit your playstyle. The client works well on many servers, with features designed to keep your gameplay smooth and effective. Every part of Lumina has been tested to ensure it runs stably, making it a solid choice for players who want to take their skills to the next level.
+Lumina Client offers a set of tools to help you perform better in Minecraft Bedrock Edition PvP. We’ve built it to be fast, reliable, and easy to customize, so you can tweak it to fit your playstyle. The client works well on many servers, with features designed to keep your gameplay smooth and effective. Every part of Lumina has been tested to ensure it runs smoothly, making it a solid choice for players who want to take their skills to the next level.
 
 ---
 
