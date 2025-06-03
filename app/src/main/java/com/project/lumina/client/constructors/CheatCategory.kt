@@ -9,6 +9,10 @@ enum class CheatCategory(
     @StringRes val labelResId: Int
 ) {
 
+    Combat(
+        iconResId = R.drawable.ic_sword_cross_black_24dp,
+        labelResId = R.string.combat
+    ),
     Motion(
         iconResId = R.drawable.ic_run_black_24dp,
         labelResId = R.string.motion
@@ -24,10 +28,6 @@ enum class CheatCategory(
     Misc(
         iconResId = R.drawable.ic_key_variant_black_24dp,
         labelResId = R.string.misc
-    ),
-    Combat(
-        iconResId = R.drawable.ic_sword_cross_black_24dp,
-        labelResId = R.string.combat
     ),
    /* Effect(
         iconResId = R.drawable.select_24,

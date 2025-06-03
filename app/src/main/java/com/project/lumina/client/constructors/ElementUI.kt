@@ -12,17 +12,21 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.Shortcut
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -33,6 +37,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
@@ -40,7 +45,10 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -58,9 +66,12 @@ import java.util.Locale
 import kotlin.math.roundToInt
 
 @Composable
-fun ModuleContent(cheatCategory: CheatCategory) {
+fun ModuleContent(
+    cheatCategory: CheatCategory,
+    onOpenSettings: ((Element) -> Unit)? = null
+) {
     val modules = GameManager.elements
-        .fastFilter { it.category === cheatCategory && it.name != "ChatListener" } 
+        .fastFilter { it.category === cheatCategory && it.name != "ChatListener" }
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -69,75 +80,205 @@ fun ModuleContent(cheatCategory: CheatCategory) {
     ) {
         items(modules.size) {
             val module = modules[it]
-            ModuleCard(module)
+            ModuleCard(module, onOpenSettings)
         }
     }
 }
 
 @Composable
-private fun ModuleCard(element: Element) {
-    val values = element.values
+private fun ModuleCard(
+    element: Element,
+    onOpenSettings: ((Element) -> Unit)? = null
+) {
+    var isExpanded by remember { mutableStateOf(false) }
+    val deepBlue = Color(0xFF1E90FF) 
 
     Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = MaterialTheme.shapes.medium,
+        modifier = Modifier
+            .fillMaxWidth()
+            .toggleable(
+                value = element.isEnabled,
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+                onValueChange = { element.isEnabled = it }
+            ),
+        shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color.Transparent
+            containerColor = Color(0xFF2A2A2A) 
         )
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .animateContentSize(animationSpec = tween(durationMillis = 100)),
-            verticalArrangement = Arrangement.spacedBy(5.dp)
+        Box(
+            modifier = Modifier.fillMaxWidth()
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
+            Column(
                 modifier = Modifier
-                    .padding(10.dp)
-            ) {
-                Text(
-                    text = if (element.displayNameResId != null) stringResource(id = element.displayNameResId!!) else element.name,
-                    style = MaterialTheme.typography.titleMedium,
-                    color = TextColorForModules,
-                    modifier = Modifier.weight(1f)
-                )
-                Switch(
-                    checked = element.isEnabled,
-                    onCheckedChange = { element.isEnabled = it },
-                    colors = SwitchDefaults.colors(
-                        checkedThumbColor = Color(0x66FFFFFF),
-                        uncheckedThumbColor = Color(0x66FFFFFF),
-                        checkedTrackColor = Color(0x66AACCD8),
-                        uncheckedTrackColor = Color(0x66AACCD8),
-                        checkedBorderColor = Color(0x00AACCD8),
-                        uncheckedBorderColor = Color(0x00AACCD8)
+                    .fillMaxWidth()
+                    .animateContentSize(
+                        animationSpec = tween(
+                            durationMillis = 300,
+                            easing = androidx.compose.animation.core.EaseInOutCubic
+                        )
                     ),
+                verticalArrangement = Arrangement.spacedBy(5.dp)
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier
-                        .size(40.dp, 20.dp)
-                        .padding(0.dp),
-                    thumbContent = {
-                        Box(
-                            modifier = Modifier
-                                .size(16.dp)
-                                .background(Color(0x66FFFFFF), shape = CircleShape)
+                        .padding(16.dp)
+                        .fillMaxWidth()
+                ) {
+                    Column(
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Text(
+                            text = if (element.displayNameResId != null) stringResource(id = element.displayNameResId!!) else element.name,
+                            style = MaterialTheme.typography.titleMedium.copy(
+                                fontWeight = FontWeight.SemiBold
+                            ),
+                            color = Color.White
+                        )
+
+                        Text(
+                            text = "Enables This Module",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = Color.Gray,
+                            modifier = Modifier.padding(top = 2.dp)
                         )
                     }
-                )
-            }
-            if (element.isEnabled) {
-                values.fastForEach {
-                    when (it) {
-                        is BoolValue -> BoolValueContent(it)
-                        is FloatValue -> FloatValueContent(it)
-                        is IntValue -> IntValueContent(it)
-                        is ListValue -> ChoiceValueContent(it)
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        if (onOpenSettings != null) {
+                            IconButton(
+                                onClick = {
+                                    isExpanded = !isExpanded
+
+                                },
+                                modifier = Modifier.size(32.dp)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Settings,
+                                    contentDescription = "Settings",
+                                    tint = Color.Gray,
+                                    modifier = Modifier.size(20.dp)
+                                )
+                            }
+                        }
                     }
                 }
-                ShortcutContent(element)
+
+                
+                if (isExpanded) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 8.dp),
+                        verticalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        
+                        if (element.overlayShortcutButton != null) {
+                            ShortcutContent(element)
+                        }
+
+                        
+                        element.values.forEach { value ->
+                            when (value) {
+                                is BoolValue -> BoolValueContent(value)
+                                is IntValue -> IntValueContent(value)
+                                is FloatValue -> FloatValueContent(value)
+                                is ListValue -> ChoiceValueContent(value)
+                            }
+                        }
+                    }
+                }
             }
+
+            
+            val accentBarHeight by animateFloatAsState(
+                targetValue = if (isExpanded) 150f else 70f, 
+                animationSpec = tween(
+                    durationMillis = 300,
+                    easing = androidx.compose.animation.core.EaseInOutCubic
+                ),
+                label = "AccentBarHeight"
+            )
+
+            Box(
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .width(8.dp)
+                    .height(accentBarHeight.dp)
+                    .background(
+                        color = if (element.isEnabled && !isExpanded) deepBlue else Color.Transparent,
+                        shape = RoundedCornerShape(
+                            topStart = 0.dp,
+                            topEnd = 12.dp,
+                            bottomStart = 0.dp,
+                            bottomEnd = 12.dp
+                        )
+                    )
+            )
         }
+    }
+}
+
+
+@Composable
+private fun ModuleShortcutContent(element: Element) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 16.dp)
+            .toggleable(
+                value = element.isShortcutDisplayed,
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+                onValueChange = {
+                    element.isShortcutDisplayed = it
+                    if (it) {
+                        OverlayManager.showOverlayWindow(element.overlayShortcutButton)
+                    } else {
+                        OverlayManager.dismissOverlayWindow(element.overlayShortcutButton)
+                    }
+                }
+            ),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.Shortcut,
+                contentDescription = null,
+                tint = Color.Gray,
+                modifier = Modifier.size(16.dp)
+            )
+
+            Text(
+                text = "Shortcut",
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.Gray
+            )
+        }
+
+        Switch(
+            checked = element.isShortcutDisplayed,
+            onCheckedChange = null,
+            colors = SwitchDefaults.colors(
+                checkedThumbColor = Color.White,
+                uncheckedThumbColor = Color.Gray,
+                checkedTrackColor = Color(0xFF8B5CF6),
+                uncheckedTrackColor = Color(0xFF4A4A4A),
+                checkedBorderColor = Color.Transparent,
+                uncheckedBorderColor = Color.Transparent
+            ),
+            modifier = Modifier.size(40.dp, 20.dp)
+        )
     }
 }
 
@@ -153,7 +294,7 @@ private fun ChoiceValueContent(value: ListValue) {
             style = MaterialTheme.typography.bodyMedium.copy(
                 fontWeight = FontWeight.Medium
             ),
-            color = MaterialTheme.colorScheme.onSurface
+            color = Color.White
         )
 
         Row(
@@ -183,19 +324,19 @@ private fun ChoiceValueContent(value: ListValue) {
                     border = FilterChipDefaults.filterChipBorder(
                         enabled = true,
                         selected = isSelected,
-                        borderColor = if (isSelected) Color.Transparent else MaterialTheme.colorScheme.outline.copy(alpha = 0.5f)
+                        borderColor = if (isSelected) Color.Transparent else Color.Gray.copy(alpha = 0.5f)
                     ),
                     colors = FilterChipDefaults.filterChipColors(
                         containerColor = if (isSelected)
-                            MaterialTheme.colorScheme.primaryContainer
+                            Color(0xFFFFF8F8)
                         else
-                            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.7f),
+                            Color(0xFF3A3A3A),
                         labelColor = if (isSelected)
-                            MaterialTheme.colorScheme.onPrimaryContainer
+                            Color.Black
                         else
-                            MaterialTheme.colorScheme.onSurfaceVariant,
-                        selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                        selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer
+                            Color.White,
+                        selectedContainerColor = Color(0xFF232323),
+                        selectedLabelColor = Color.White
                     )
                 )
             }
@@ -223,7 +364,7 @@ private fun FloatValueContent(value: FloatValue) {
                 style = MaterialTheme.typography.bodyMedium.copy(
                     fontWeight = FontWeight.Medium
                 ),
-                color = MaterialTheme.colorScheme.onSurface
+                color = Color.White
             )
 
             Text(
@@ -231,14 +372,14 @@ private fun FloatValueContent(value: FloatValue) {
                 style = MaterialTheme.typography.bodyMedium.copy(
                     fontWeight = FontWeight.SemiBold
                 ),
-                color = MaterialTheme.colorScheme.primary
+                color = Color(0xFFFFFFFF)
             )
         }
 
         val colors = SliderDefaults.colors(
-            thumbColor = MaterialTheme.colorScheme.primary,
-            activeTrackColor = MaterialTheme.colorScheme.primary,
-            inactiveTrackColor = MaterialTheme.colorScheme.surfaceVariant,
+            thumbColor = Color(0xFFFFFFFF),
+            activeTrackColor = Color(0xFFFFFFFF),
+            inactiveTrackColor = Color(0xFF4A4A4A),
         )
 
         val interactionSource = remember { MutableInteractionSource() }
@@ -282,12 +423,12 @@ private fun FloatValueContent(value: FloatValue) {
             Text(
                 text = String.format(Locale.US, "%.1f", value.range.start),
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = Color.Gray
             )
             Text(
                 text = String.format(Locale.US, "%.1f", value.range.endInclusive),
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = Color.Gray
             )
         }
     }
@@ -313,7 +454,7 @@ private fun IntValueContent(value: IntValue) {
                 style = MaterialTheme.typography.bodyMedium.copy(
                     fontWeight = FontWeight.Medium
                 ),
-                color = MaterialTheme.colorScheme.onSurface
+                color = Color.White
             )
 
             Text(
@@ -321,14 +462,14 @@ private fun IntValueContent(value: IntValue) {
                 style = MaterialTheme.typography.bodyMedium.copy(
                     fontWeight = FontWeight.SemiBold
                 ),
-                color = MaterialTheme.colorScheme.primary
+                color = Color(0xFFFFFFFF)
             )
         }
 
         val colors = SliderDefaults.colors(
-            thumbColor = MaterialTheme.colorScheme.primary,
-            activeTrackColor = MaterialTheme.colorScheme.primary,
-            inactiveTrackColor = MaterialTheme.colorScheme.surfaceVariant,
+            thumbColor = Color(0xFFFFFFFF),
+            activeTrackColor = Color(0xFFFFFFFF),
+            inactiveTrackColor = Color(0xFF4A4A4A),
         )
 
         val interactionSource = remember { MutableInteractionSource() }
@@ -373,12 +514,12 @@ private fun IntValueContent(value: IntValue) {
             Text(
                 text = value.range.first.toString(),
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = Color.Gray
             )
             Text(
                 text = value.range.last.toString(),
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = Color.Gray
             )
         }
     }
@@ -404,17 +545,19 @@ private fun BoolValueContent(value: BoolValue) {
             style = MaterialTheme.typography.bodyMedium.copy(
                 fontWeight = FontWeight.Medium
             ),
-            color = MaterialTheme.colorScheme.onSurface
+            color = Color.White
         )
 
         Switch(
             checked = value.value,
             onCheckedChange = null,
             colors = SwitchDefaults.colors(
-                checkedThumbColor = MaterialTheme.colorScheme.primary,
-                uncheckedThumbColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                checkedTrackColor = MaterialTheme.colorScheme.primaryContainer,
-                uncheckedTrackColor = MaterialTheme.colorScheme.surfaceVariant,
+                checkedThumbColor = Color.White,
+                uncheckedThumbColor = Color.Gray,
+                checkedTrackColor = Color(0xFF9C9C9C),
+                uncheckedTrackColor = Color(0xFF4A4A4A),
+                checkedBorderColor = Color.Transparent,
+                uncheckedBorderColor = Color.Transparent
             )
         )
     }
@@ -449,15 +592,16 @@ private fun ShortcutContent(element: Element) {
             Icon(
                 imageVector = Icons.Outlined.Shortcut,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                tint = Color.Gray,
+                modifier = Modifier.size(16.dp)
             )
 
             Text(
-                text = "Shortcut", 
+                text = "Shortcut",
                 style = MaterialTheme.typography.bodyMedium.copy(
                     fontWeight = FontWeight.Medium
                 ),
-                color = MaterialTheme.colorScheme.onSurface
+                color = Color.White
             )
         }
 
@@ -465,10 +609,12 @@ private fun ShortcutContent(element: Element) {
             checked = element.isShortcutDisplayed,
             onCheckedChange = null,
             colors = SwitchDefaults.colors(
-                checkedThumbColor = MaterialTheme.colorScheme.primary,
-                uncheckedThumbColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                checkedTrackColor = MaterialTheme.colorScheme.primaryContainer,
-                uncheckedTrackColor = MaterialTheme.colorScheme.surfaceVariant,
+                checkedThumbColor = Color.White,
+                uncheckedThumbColor = Color.Gray,
+                checkedTrackColor = Color(0xFFFFFFFF),
+                uncheckedTrackColor = Color(0xFF4A4A4A),
+                checkedBorderColor = Color.Transparent,
+                uncheckedBorderColor = Color.Transparent
             )
         )
     }

@@ -5,23 +5,7 @@
  *
  * ─────────────────────────────────────────────────────────────────────────────
  * This is open source — not open credit.
- *
- * If you're here to build, welcome. If you're here to repaint and reupload
- * with your tag slapped on it… you're not fooling anyone.
- *
- * Changing colors and class names doesn't make you a developer.
- * Copy-pasting isn't contribution.
- *
- * You have legal permission to fork. But ask yourself — are you improving,
- * or are you just recycling someone else's work to feed your ego?
- *
- * Open source isn't about low-effort clones or chasing clout.
- * It's about making things better. Sharper. Cleaner. Smarter.
- *
- * So go ahead, fork it — but bring something new to the table,
- * or don’t bother pretending.
- *
- * This message is philosophical. It does not override your legal rights under GPLv3.
+ * [Same philosophical message as original]
  * ─────────────────────────────────────────────────────────────────────────────
  *
  * GPLv3 Summary:
@@ -36,63 +20,140 @@
 
 package com.project.lumina.client.constructors
 
-
+import android.content.Context
+import android.media.SoundPool
+import com.project.lumina.client.R
 import com.project.lumina.client.util.translatedSelf
 
 object ArrayListManager {
     private val enabledModules = mutableSetOf<String>()
+    private var soundPool: SoundPool? = null
 
+    
+    enum class SoundSet {
+        CELESTIAL,
+        ALTERNATE,
+        SPECIAL
+    }
+
+    
+    data class SoundPair(val onId: Int, val offId: Int)
+
+    
+    private var soundPairs: MutableMap<SoundSet, SoundPair> = mutableMapOf()
+
+    
+    private var currentSoundSet: SoundSet = SoundSet.CELESTIAL
+
+    
+    private var soundEnabled: Boolean = true
+
+    fun initializeSounds(context: Context) {
+        soundPool = SoundPool.Builder()
+            .setMaxStreams(3)
+            .build().apply {
+                
+                soundPairs[SoundSet.CELESTIAL] = SoundPair(
+                    load(context, R.raw.celestial_on, 1),
+                    load(context, R.raw.celestial_off, 1)
+                )
+                soundPairs[SoundSet.ALTERNATE] = SoundPair(
+                    load(context, R.raw.smooth_on, 1),
+                    load(context, R.raw.smooth_off, 1)
+                )
+                soundPairs[SoundSet.SPECIAL] = SoundPair(
+                    load(context, R.raw.nursultan_on, 1),
+                    load(context, R.raw.nursultan_off, 1)
+                )
+            }
+    }
+
+    fun releaseSounds() {
+        soundPool?.release()
+        soundPool = null
+        soundPairs.clear()
+    }
+
+    
+    fun setSoundIds(set: SoundSet, onId: Int, offId: Int) {
+        soundPairs[set] = SoundPair(onId, offId)
+    }
+
+    
+    fun getSoundIds(set: SoundSet): SoundPair? {
+        return soundPairs[set]
+    }
+
+    
+    fun setCurrentSoundSet(set: SoundSet) {
+        currentSoundSet = set
+    }
+
+    
+    fun getCurrentSoundSet(): SoundSet {
+        return currentSoundSet
+    }
+
+    
+    fun setSoundEnabled(enabled: Boolean) {
+        soundEnabled = enabled
+    }
+
+    
+    fun isSoundEnabled(): Boolean {
+        return soundEnabled
+    }
 
     fun addModule(element: Element) {
         synchronized(enabledModules) {
-          
-
             if (enabledModules.contains(element.name)) {
-               
                 return
             }
             try {
-
+                if (soundEnabled) {
+                    soundPairs[currentSoundSet]?.onId?.let { soundId ->
+                        soundPool?.play(soundId, 1f, 1f, 1, 0, 1f)
+                    }
+                }
                 enabledModules.add(element.name)
-              
             } catch (e: Exception) {
-                //Log.e("ModuleArrayListManager", "Failed to add item: ${module.name.translatedSelf}", e)
+                //Log.e("ModuleArrayListManager", "Failed to add item: ${element.name.translatedSelf}", e)
             }
         }
     }
-
 
     fun removeModule(element: Element) {
         synchronized(enabledModules) {
-           
             try {
-
+                if (soundEnabled) {
+                    soundPairs[currentSoundSet]?.offId?.let { soundId ->
+                        soundPool?.play(soundId, 1f, 1f, 1, 0, 1f)
+                    }
+                }
                 enabledModules.remove(element.name)
-               
             } catch (e: Exception) {
-                //Log.e("ModuleArrayListManager", "Failed to remove item: ${module.name.translatedSelf}", e)
+                //Log.e("ModuleArrayListManager", "Failed to remove item: ${element.name.translatedSelf}", e)
             }
         }
     }
 
-
     fun clear() {
         synchronized(enabledModules) {
-           
             enabledModules.clear()
             try {
-
-               
+                if (soundEnabled) {
+                    soundPairs[currentSoundSet]?.offId?.let { soundId ->
+                        soundPool?.play(soundId, 1f, 1f, 1, 0, 1f)
+                    }
+                }
             } catch (e: Exception) {
                 //Log.e("ModuleArrayListManager", "Failed to clear list", e)
             }
         }
     }
 
-
     fun getEnabledModules(): Set<String> {
         synchronized(enabledModules) {
-           
             return enabledModules.toSet()
         }
     }

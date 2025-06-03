@@ -41,10 +41,11 @@ import com.project.lumina.client.game.InterceptablePacket
 import com.project.lumina.client.constructors.Element
 import com.project.lumina.client.constructors.CheatCategory
 
-class ArrayListElement : Element(
+class ArrayListElement(iconResId: Int = ir.alirezaivaz.tablericons.R.drawable.ic_alien) : Element(
     name = "ArrayList",
     category = CheatCategory.Misc,
-    displayNameResId = R.string.arraylist
+    displayNameResId = R.string.arraylist,
+    iconResId = iconResId
 ) {
 
     private var praxStyle by boolValue("Lumina Style", true)

@@ -12,7 +12,7 @@ import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket
 import org.cloudburstmc.protocol.bedrock.packet.SetEntityDataPacket
 import org.cloudburstmc.protocol.bedrock.packet.EntityEventPacket
 
-class HitboxElement(iconResId: Int = R.drawable.ic_ghost_black_24dp) : Element(
+class HitboxElement(iconResId: Int = ir.alirezaivaz.tablericons.R.drawable.ic_box) : Element(
     name = "Hitbox",
     category = CheatCategory.Combat,
     iconResId,

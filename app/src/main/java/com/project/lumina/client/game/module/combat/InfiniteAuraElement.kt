@@ -50,7 +50,7 @@ import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
 
-class InfiniteAuraElement(iconResId: Int = R.drawable.ic_key_variant_black_24dp) : Element(
+class InfiniteAuraElement(iconResId: Int = ir.alirezaivaz.tablericons.R.drawable.ic_analyze) : Element(
     name = "Infiniteaura",
     category = CheatCategory.Combat,
     iconResId,

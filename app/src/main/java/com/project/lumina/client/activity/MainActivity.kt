@@ -98,11 +98,13 @@ import androidx.core.view.WindowInsetsControllerCompat
 import com.amplitude.android.Amplitude
 import com.amplitude.android.Configuration
 import com.amplitude.android.DefaultTrackingOptions
+import com.project.lumina.client.constructors.ArrayListManager
 import com.project.lumina.client.constructors.GameManager
 import com.project.lumina.client.game.module.config.ConfigManagerElement
 import com.project.lumina.client.navigation.Navigation
 import com.project.lumina.client.ui.theme.LuminaClientTheme
 import com.project.lumina.client.essentials.TrackUtil
+import com.project.lumina.client.overlay.KeystrokesOverlay
 import com.project.lumina.client.util.HashCat
 import com.project.lumina.client.util.UpdateCheck
 import io.netty.util.internal.logging.InternalLoggerFactory
@@ -197,9 +199,11 @@ class MainActivity : ComponentActivity() {
     @SuppressLint("BatteryLife")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
+        ArrayListManager.initializeSounds(this)
+
         currentInstance = this
         //Muffin.Start(this)
+
         val amplitude = Amplitude(
             Configuration(
                 apiKey = TrackUtil.TrackApi,
@@ -207,11 +211,12 @@ class MainActivity : ComponentActivity() {
                 defaultTracking = DefaultTrackingOptions.ALL,
             )
         )
+        amplitude.track("Lumina Mobile")
 
         val updateCheck = UpdateCheck()
         updateCheck.initiateHandshake(this)
 
-        amplitude.track("Lumina Mobile")
+
 
         
         InternalLoggerFactory.setDefaultFactory(JdkLoggerFactory.INSTANCE)
@@ -256,9 +261,11 @@ class MainActivity : ComponentActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        
+        ArrayListManager.releaseSounds()
         if (currentInstance == this) {
             currentInstance = null
         }
     }
+
+
 }

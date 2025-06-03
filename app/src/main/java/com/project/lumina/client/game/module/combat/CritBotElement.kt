@@ -50,7 +50,7 @@ import org.cloudburstmc.protocol.bedrock.packet.SetEntityMotionPacket
 import kotlin.math.atan2
 import kotlin.random.Random
 
-class CritBotElement(iconResId: Int = R.drawable.ic_guy_fawkes_mask_black_24dp) : Element(
+class CritBotElement(iconResId: Int = ir.alirezaivaz.tablericons.R.drawable.ic_angle) : Element(
     name = "Criticals",
     category = CheatCategory.Combat,
     iconResId,

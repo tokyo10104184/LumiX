@@ -22,6 +22,8 @@ import com.project.lumina.client.game.registry.ItemMapping
 import com.project.lumina.client.game.registry.ItemMappingProvider
 import com.project.lumina.client.game.registry.LegacyBlockMapping
 import com.project.lumina.client.game.registry.LegacyBlockMappingProvider
+import com.project.lumina.client.overlay.KeystrokesOverlay
+import com.project.lumina.client.overlay.TargetHudOverlay
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -358,5 +360,25 @@ class NetBound(val luminaRelaySession: LuminaRelaySession) : ComposedPacketHandl
     fun isProxyPlayer(playerName: String): Boolean {
         return proxyPlayerNames.contains(playerName)
     }
+
+    fun toggleSounds(bool: Boolean){
+        ArrayListManager.setSoundEnabled(bool)
+    }
+    fun soundList(set: ArrayListManager.SoundSet){
+        ArrayListManager.setCurrentSoundSet(set)
+    }
+
+    fun keyPress(key: String, pressed: Boolean){
+        KeystrokesOverlay.setKeyState(key, pressed)
+    }
+
+    fun targetHud(user: String, distance: Float, maxdistance: Float, hurtTime: Float){
+
+        mainScope.launch {
+            TargetHudOverlay.showTargetHud(user, null, distance, maxdistance, hurtTime )
+        }
+    }
+
+
 }
 

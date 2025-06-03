@@ -2,6 +2,7 @@ package com.project.lumina.client.service
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -9,6 +10,7 @@ import android.os.Build
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
+import android.os.Process
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.getValue
@@ -21,6 +23,7 @@ import com.project.lumina.client.constructors.NetBound
 import com.project.lumina.client.constructors.GameManager
 import com.project.lumina.client.model.CaptureModeModel
 import com.project.lumina.client.overlay.OverlayManager
+import com.project.lumina.client.overlay.ConnectionInfoOverlay
 import com.project.lumina.relay.LuminaRelay
 import com.project.lumina.relay.LuminaRelaySession
 import com.project.lumina.relay.address.LuminaAddress
@@ -55,6 +58,7 @@ class Services : Service() {
         var isActive by mutableStateOf(false)
         var RemisOnline by mutableStateOf(false)
         var RemInGame by mutableStateOf(false)
+        var isLaunchingMinecraft by mutableStateOf(false)
         fun toggle(context: Context, captureModeModel: CaptureModeModel) {
             if (!isActive) {
                 val intent = Intent(ACTION_CAPTURE_START)
@@ -152,12 +156,12 @@ class Services : Service() {
                 thread?.interrupt()
                 thread = null
 
+                isLaunchingMinecraft = false
 
                 if (!RemisOnline) {
-
-
                     handler.post {
                         OverlayManager.dismiss()
+                        ConnectionInfoOverlay.dismiss()
                     }
                 }
                 else return@thread
@@ -173,14 +177,23 @@ class Services : Service() {
         }
 
         private fun initModules(luminaRelaySession: LuminaRelaySession) {
-            val session = NetBound(luminaRelaySession)
-            luminaRelaySession.listeners.add(session)
+            try {
+                val session = NetBound(luminaRelaySession)
+                luminaRelaySession.listeners.add(session)
 
-            for (module in GameManager.elements) {
-                module.session = session
+                for (module in GameManager.elements) {
+                    try {
+                        module.session = session
+                    } catch (e: Exception) {
+                        Log.e("Services", "Failed to initialize session for module ${module.name}: ${e.message}")
+                    }
+                }
+
+                TerminalViewModel.addTerminalLog("Connection","Initializing Modules...")
+            } catch (e: Exception) {
+                Log.e("Services", "Failed to initialize modules: ${e.message}")
+                TerminalViewModel.addTerminalLog("Error","Failed to initialize modules: ${e.message}")
             }
-
-            TerminalViewModel.addTerminalLog("Connection","Initializing Modules...")
         }
     }
 
@@ -233,5 +246,28 @@ class Services : Service() {
         .setContentText(text)
         .setSmallIcon(R.drawable.img)
         .setPriority(NotificationCompat.PRIORITY_LOW)
+        .addAction(
+            android.R.drawable.ic_menu_close_clear_cancel,
+            "Stop",
+            createPendingIntent(ACTION_CAPTURE_STOP)
+        )
         .build()
+        
+    private fun createPendingIntent(action: String): PendingIntent {
+        val intent = Intent(action)
+        intent.setPackage(packageName)
+        
+        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        } else {
+            PendingIntent.FLAG_UPDATE_CURRENT
+        }
+        
+        return PendingIntent.getService(
+            this,
+            0,
+            intent,
+            flags
+        )
+    }
 }

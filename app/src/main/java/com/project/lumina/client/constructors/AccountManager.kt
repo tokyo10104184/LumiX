@@ -49,6 +49,11 @@ object AccountManager {
     var currentAccount: Account? by mutableStateOf(null)
         private set
 
+    /**
+     * owo notices your account selection *pounces on it*
+     * autoselects the account when you create or login uwu
+     * because who the fuck wants to do things manually in 2024+1? thats kinda sus ngl
+     */
     fun selectAccount(account: Account?) {
         currentAccount = account
         if (account == null) {

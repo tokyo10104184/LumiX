@@ -41,7 +41,7 @@ class RemSession(val moduleManager: GameManager) : ComposedPacketHandler {
 
         val packets = packet as TextPacket
 
-        if (!session.isProxyPlayer(packet.sourceName)) {
+        if (!isSessionCreated || !session.isProxyPlayer(packet.sourceName)) {
             return false
         }
 
@@ -60,37 +60,47 @@ class RemSession(val moduleManager: GameManager) : ComposedPacketHandler {
         val command = args[0].lowercase()
 
         if (isSessionCreated && feedback) {
-            when (command) {
-                "toggle" -> {
-                    if (args.size > 1) {
-                        handleToggleCommand(args[1])
-                    } else {
-                        sendClientMessage("${errorColor}⚠ Usage: ${accentColor}!toggle <module>")
+            try {
+                when (command) {
+                    "toggle" -> {
+                        if (args.size > 1) {
+                            handleToggleCommand(args[1])
+                        } else {
+                            sendClientMessage("${errorColor}⚠ Usage: ${accentColor}!toggle <module>")
+                        }
+                    }
+                    "ping" -> {
+                        sendClientMessage("${successColor}✦ Pong! ${infoColor}Response from CmdListener")
+                    }
+                    "help" -> {
+                        handleHelpCommand()
+                    }
+                    "set" -> {
+                        if (args.size >= 4) {
+                            handleSetCommand(args[1], args[2], args[3])
+                        } else {
+                            sendClientMessage("${errorColor}⚠ Usage: ${accentColor}!set <module> <setting> <value>")
+                        }
+                    }
+                    else -> {
+                        sendClientMessage("${errorColor}✗ Unknown command: ${accentColor}$command${infoColor} - Try ${accentColor}!help")
                     }
                 }
-                "ping" -> {
-                    sendClientMessage("${successColor}✦ Pong! ${infoColor}Response from CmdListener")
-                }
-                "help" -> {
-                    handleHelpCommand()
-                }
-                "set" -> {
-                    if (args.size >= 4) {
-                        handleSetCommand(args[1], args[2], args[3])
-                    } else {
-                        sendClientMessage("${errorColor}⚠ Usage: ${accentColor}!set <module> <setting> <value>")
-                    }
-                }
-                else -> {
-                    sendClientMessage("${errorColor}✗ Unknown command: ${accentColor}$command${infoColor} - Try ${accentColor}!help")
-                }
+            } catch (e: Exception) {
+                Log.e("RemSession", "Error processing command: ${e.message}")
             }
         }
 return false
     }
 
     private fun sendClientMessage(message: String) {
-        session.displayClientMessage(message, TextPacket.Type.RAW)
+        if (isSessionCreated) {
+            try {
+                session.displayClientMessage(message, TextPacket.Type.RAW)
+            } catch (e: Exception) {
+                Log.e("RemSession", "Failed to send client message: ${e.message}")
+            }
+        }
     }
 
     private fun handleToggleCommand(moduleName: String) {

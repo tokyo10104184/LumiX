@@ -1,31 +1,9 @@
 @file:Suppress("UnstableApiUsage")
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 include(":Lunaris")
 include(":Pixie")
 include("SSC")
+include(":TablerIcons")
 
 pluginManagement {
     repositories {

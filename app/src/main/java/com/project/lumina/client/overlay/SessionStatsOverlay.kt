@@ -44,6 +44,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -52,22 +53,30 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Paint
+import androidx.compose.ui.graphics.PaintingStyle
 import androidx.compose.ui.graphics.Shadow
-import androidx.compose.ui.layout.layout
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.nativeCanvas
+import androidx.compose.ui.layout.layout
 import com.project.lumina.client.R
 import com.project.lumina.client.ui.theme.SAccentColor
 import com.project.lumina.client.ui.theme.SBAckgroundGradient1
@@ -91,8 +100,8 @@ class SessionStatsOverlay : OverlayWindow() {
             width = WindowManager.LayoutParams.WRAP_CONTENT
             height = WindowManager.LayoutParams.WRAP_CONTENT
             gravity = Gravity.TOP or Gravity.START
-            x = 20 
-            y = 50 
+            x = 20
+            y = 50
         }
     }
 
@@ -122,14 +131,12 @@ class SessionStatsOverlay : OverlayWindow() {
 
     fun dismiss() {
         _isVisible.value = false
-        
     }
 
     companion object {
         private var currentOverlay: SessionStatsOverlay? = null
 
         fun showSessionStats(initialStats: List<String> = emptyList()): SessionStatsOverlay {
-            
             currentOverlay?.let {
                 OverlayManager.dismissOverlayWindow(it)
             }
@@ -152,19 +159,17 @@ fun SessionStatsCard(
     overlay: OverlayWindow
 ) {
     var visible by remember { isVisible }
-    val baseColor = SBaseColor
-    val accentColor = SAccentColor
 
     
-    val shimmerTransition = rememberInfiniteTransition(label = "shimmerTransition")
-    val shimmerOffset by shimmerTransition.animateFloat(
-        initialValue = -1000f,
-        targetValue = 1000f,
+    val infiniteTransition = rememberInfiniteTransition(label = "hueAnimation")
+    val animatedHue by infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = 360f,
         animationSpec = infiniteRepeatable(
-            animation = tween(2000, easing = LinearEasing),
+            animation = tween(3000, easing = LinearEasing),
             repeatMode = RepeatMode.Restart
         ),
-        label = "shimmerOffset"
+        label = "hue"
     )
 
     
@@ -183,127 +188,86 @@ fun SessionStatsCard(
         label = "alpha"
     )
 
+    
+    fun getThemedColor(index: Int): Color {
+        val hue = (animatedHue + (index * 18f)) % 360f
+        return Color.hsv(hue, 0.7f, 0.9f)
+    }
+
     Box(
         modifier = Modifier
             .scale(scale)
             .alpha(alpha)
-            .width(180.dp)
-            .padding(top = 15.dp)
-            .shadow(
-                elevation = 8.dp,
-                shape = RoundedCornerShape(12.dp)
-            )
+            .width(160.dp)
+            .height(120.dp)
             .clip(RoundedCornerShape(12.dp))
             .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        SBAckgroundGradient1,
-                        SBAckgroundGradient2
-                    )
-                )
+                Color.Black.copy(alpha = 0.6f) 
             )
     ) {
-        
-        Box(
-            modifier = Modifier
-                .layout { measurable, constraints ->
-                    val placeable = measurable.measure(constraints)
-                    layout(placeable.width, placeable.height) {
-                        placeable.place(0, 0)
-                    }
-                }
-                .background(
-                    brush = Brush.linearGradient(
-                        colors = listOf(
-                            Color.White.copy(alpha = 0f),
-                            Color.White.copy(alpha = 0.05f),
-                            Color.White.copy(alpha = 0f)
-                        ),
-                        start = Offset(shimmerOffset - 300f, 0f),
-                        end = Offset(shimmerOffset, 0f)
-                    )
-                )
-        )
-
         Column(
-            modifier = Modifier.padding(12.dp)
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(8.dp)
         ) {
             
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 8.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "Session Stats",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color.White,
-                    style = TextStyle(
-                        shadow = Shadow(
-                            color = baseColor.copy(alpha = 0.7f),
-                            offset = Offset(0f, 2f),
-                            blurRadius = 4f
-                        )
-                    )
-                )
+            Text(
+                text = "Statistics",
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Medium,
+                color = Color.White,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
 
-                
-                Box(
-                    modifier = Modifier
-                        .size(6.dp)
-                        .background(
-                            color = accentColor,
-                            shape = RoundedCornerShape(3.dp)
-                        )
-                )
-            }
+            Spacer(modifier = Modifier.height(4.dp))
 
             
-            Box(
+            Canvas(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(2.dp)
-                    .background(
-                        brush = Brush.horizontalGradient(
-                            colors = listOf(
-                                baseColor,
-                                accentColor,
-                                baseColor
-                            )
-                        ),
-                        shape = RoundedCornerShape(1.dp)
+                    .clip(RoundedCornerShape(1.dp))
+            ) {
+                val lineLength = 20
+                val lengthPerLine = size.width / lineLength
+
+                for (i in 0 until lineLength) {
+                    val color = getThemedColor(i)
+                    drawRect(
+                        color = color,
+                        topLeft = Offset(i * lengthPerLine, 0f),
+                        size = Size(lengthPerLine, size.height)
                     )
-            )
+                }
+            }
 
             Spacer(modifier = Modifier.height(8.dp))
 
             
             Column(modifier = Modifier.fillMaxWidth()) {
-                statLines.value.forEachIndexed { index, statLine ->
+                statLines.value.forEach { statLine ->
                     val parts = statLine.split(":", limit = 2)
-                    
+
                     if (parts.size == 2) {
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(vertical = 4.dp),
+                                .padding(vertical = 1.dp),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             Text(
                                 text = parts[0].trim(),
                                 fontSize = 12.sp,
-                                color = Color.White.copy(alpha = 0.7f),
-                                fontWeight = FontWeight.Medium,
+                                color = Color.White,
+                                fontWeight = FontWeight.Normal,
                                 textAlign = TextAlign.Start
                             )
                             Text(
                                 text = parts[1].trim(),
                                 fontSize = 12.sp,
-                                color = accentColor,
-                                fontWeight = FontWeight.SemiBold,
+                                color = Color.White,
+                                fontWeight = FontWeight.Normal,
                                 textAlign = TextAlign.End
                             )
                         }
@@ -311,21 +275,10 @@ fun SessionStatsCard(
                         Text(
                             text = statLine,
                             fontSize = 12.sp,
-                            color = Color.White.copy(alpha = 0.8f),
-                            modifier = Modifier.padding(vertical = 4.dp),
-                            fontWeight = FontWeight.Medium,
+                            color = Color.White,
+                            modifier = Modifier.padding(vertical = 1.dp),
+                            fontWeight = FontWeight.Normal,
                             textAlign = TextAlign.Start
-                        )
-                    }
-
-                    if (index < statLines.value.size - 1) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(1.dp)
-                                .background(
-                                    color = baseColor.copy(alpha = 0.1f)
-                                )
                         )
                     }
                 }
@@ -340,27 +293,3 @@ fun SessionStatsCard(
         }
     }
 }
-
-
-private fun hsvToRgb(h: Float, s: Float, v: Float): Color {
-    val hDegrees = h * 360f
-    val c = v * s
-    val x = c * (1 - abs((hDegrees / 60f) % 2 - 1))
-    val m = v - c
-
-    val (r, g, b) = when {
-        hDegrees < 60 -> Triple(c, x, 0f)
-        hDegrees < 120 -> Triple(x, c, 0f)
-        hDegrees < 180 -> Triple(0f, c, x)
-        hDegrees < 240 -> Triple(0f, x, c)
-        hDegrees < 300 -> Triple(x, 0f, c)
-        else -> Triple(c, 0f, x)
-    }
-
-    return Color(
-        red = (r + m).coerceIn(0f, 1f),
-        green = (g + m).coerceIn(0f, 1f),
-        blue = (b + m).coerceIn(0f, 1f)
-    )
-}
-

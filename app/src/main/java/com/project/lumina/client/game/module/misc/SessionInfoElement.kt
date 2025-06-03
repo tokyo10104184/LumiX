@@ -44,10 +44,11 @@ import com.project.lumina.client.overlay.SessionStatsOverlay
 import org.cloudburstmc.protocol.bedrock.packet.AnimatePacket
 import kotlin.math.floor
 
-class SessionInfoElement : Element(
+class SessionInfoElement(iconResId: Int = ir.alirezaivaz.tablericons.R.drawable.ic_info_hexagon)  : Element(
     name = "SessionInfo",
     category = CheatCategory.Misc,
-    displayNameResId = R.string.module_sessioni_display_name
+    displayNameResId = R.string.module_sessioni_display_name,
+    iconResId = iconResId
 ) {
 
     

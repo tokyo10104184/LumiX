@@ -128,6 +128,8 @@
     <string name="module_build_denial">Blinder</string>
     <string name="module_hitbox_display_name">Hitbox</string>
     <string name="module_Anti_Ac_fly_display_name">AAC Fly</string>
+    <string name="module_name_tag_display_name">Nametags</string>
+    <string name="module_anti_blind_display_name">Anti Blind</string>
 
 
     <string name="arraylist">ArrayList</string>
@@ -149,6 +151,11 @@
     <string name="module_player_tracer_display_name">PlayerTracer</string>
     <string name="module_position_logger_display_name">PositionLogger</string>
     <string name="module_time_shift_display_name">Time Shift</string>
+    <string name="module_togglesound">ToggleSound</string>
+    <string name="module_keystrokes">KeyStrokes</string>
+    <string name="module_nofire">NoFire</string>
+    <string name="module_targethud">TargetHud</string>
+    <string name="module_skin_downloader_display_name">SkinDownloader</string>
     <string name="module_air_jump_display_name">AirJump</string>
     <string name="module_anti_afk_display_name">AntiAFK</string>
     <string name="module_auto_walk_display_name">AutoWalk</string>

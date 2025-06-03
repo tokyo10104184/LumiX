@@ -8,13 +8,28 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -23,6 +38,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
@@ -49,6 +68,7 @@ import org.json.JSONObject
 import java.io.File
 import java.io.IOException
 import java.util.concurrent.TimeUnit
+import com.project.lumina.client.R
 
 class VersionCheckerViewModel : ViewModel() {
     private val _versionConfig = MutableStateFlow<VersionConfig?>(null)
@@ -136,7 +156,8 @@ class VersionCheckerActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        val amplitude = Amplitude(
+
+      val amplitude = Amplitude(
             Configuration(
                 apiKey = TrackUtil.TrackApi,
                 context = applicationContext,
@@ -161,11 +182,7 @@ class VersionCheckerActivity : ComponentActivity() {
                             val kson = HashCat.getInstance()
                             val matchJson = kson.LintHashInit(this)
                             if (matchJson) { }
-                            Text(
-                                text = "Loading configuration...",
-                                modifier = Modifier.fillMaxSize(),
-                                textAlign = TextAlign.Center
-                            )
+                            LoadingConfigurationScreen()
                         }
                         else -> {
                             val kson = HashCat.getInstance()
@@ -269,6 +286,73 @@ fun IncompatibleVersionScreen(
 
         Button(onClick = onUpdateClick) {
             Text(text = "Update Minecraft")
+        }
+    }
+}
+
+@Composable
+fun LoadingConfigurationScreen() {
+    val gradientColors = listOf(
+        MaterialTheme.colorScheme.background,
+        MaterialTheme.colorScheme.background.copy(alpha = 0.8f),
+        MaterialTheme.colorScheme.background
+    )
+    
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = gradientColors
+                )
+            ),
+        contentAlignment = Alignment.Center
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 32.dp)
+        ) {
+            
+            val infiniteTransition = rememberInfiniteTransition(label = "loading_transition")
+            val rotation by infiniteTransition.animateFloat(
+                initialValue = 0f,
+                targetValue = 360f,
+                animationSpec = infiniteRepeatable(
+                    animation = tween(1500, easing = LinearEasing),
+                    repeatMode = RepeatMode.Restart
+                ), label = "loading_rotation"
+            )
+            
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .size(40.dp)
+                    .graphicsLayer { 
+                        rotationZ = rotation 
+                    },
+                color = MaterialTheme.colorScheme.primary,
+                strokeWidth = 3.dp
+            )
+            
+            Spacer(modifier = Modifier.width(16.dp))
+            
+            val alpha by infiniteTransition.animateFloat(
+                initialValue = 0.6f,
+                targetValue = 1.0f,
+                animationSpec = infiniteRepeatable(
+                    animation = tween(800, easing = LinearEasing),
+                    repeatMode = RepeatMode.Reverse
+                ), label = "text_fade"
+            )
+            
+            Text(
+                text = "Loading configuration...",
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = alpha),
+                textAlign = TextAlign.Center
+            )
         }
     }
 }

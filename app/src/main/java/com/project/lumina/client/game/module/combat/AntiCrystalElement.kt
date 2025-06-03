@@ -7,7 +7,7 @@ import com.project.lumina.client.constructors.Element
 import com.project.lumina.client.constructors.CheatCategory
 import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket
 
-class AntiCrystalElement(iconResId: Int = R.drawable.ic_bullseye_arrow_black_24dp) : Element(
+class AntiCrystalElement(iconResId: Int = R.drawable.dice_d20_36) : Element(
     name = "AntiCrystal",
     category = CheatCategory.Combat,
     iconResId,

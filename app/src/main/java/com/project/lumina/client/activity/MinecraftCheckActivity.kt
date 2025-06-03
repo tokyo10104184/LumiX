@@ -73,6 +73,7 @@ class MinecraftCheckActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
         val amplitude = Amplitude(
             Configuration(
                 apiKey = TrackUtil.TrackApi,
@@ -80,9 +81,10 @@ class MinecraftCheckActivity : ComponentActivity() {
                 defaultTracking = DefaultTrackingOptions.ALL,
             )
         )
+        amplitude.track("Initialized Lumina")
         val updateCheck = UpdateCheck()
         updateCheck.initiateHandshake(this)
-        amplitude.track("Initialized Lumina")
+
         if (isMinecraftInstalled()) {
             val verifier = HashCat.getInstance()
             val isValid = verifier.LintHashInit(this)

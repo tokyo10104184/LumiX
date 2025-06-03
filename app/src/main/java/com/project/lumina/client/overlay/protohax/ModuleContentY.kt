@@ -117,6 +117,7 @@ fun ModuleContentY(moduleCategory: CheatCategory) {
 @Composable
 private fun ModuleCard(element: Element) {
     val values = element.values
+    val hasSettings = values.isNotEmpty()
     val background by animateColorAsState(
         targetValue = if (element.isExpanded) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.background
     )
@@ -128,7 +129,11 @@ private fun ModuleCard(element: Element) {
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null,
                 onClick = {
-                    element.isExpanded = !element.isExpanded
+                    if (hasSettings) {
+                        element.isExpanded = !element.isExpanded
+                    } else {
+                        element.isEnabled = !element.isEnabled
+                    }
                 }
             ),
         shape = MaterialTheme.shapes.medium,
@@ -172,7 +177,7 @@ private fun ModuleCard(element: Element) {
                         .height(32.dp)
                 )
             }
-            if (element.isExpanded) {
+            if (element.isExpanded && hasSettings) {
                 values.fastForEach {
                     when (it) {
                         is BoolValue -> BoolValueContent(it)

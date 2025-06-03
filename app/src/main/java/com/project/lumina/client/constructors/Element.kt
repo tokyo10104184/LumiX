@@ -124,14 +124,15 @@ abstract class Element(
 
         val moduleDisplayName = name
 
-
-
-        if (enabled) {
-            showModuleNotification()
-            OverlayModuleList.showText(moduleName)
-
-        } else {
-            OverlayModuleList.removeText(moduleName)
+        try {
+            if (enabled) {
+                showModuleNotification()
+                OverlayModuleList.showText(moduleName)
+            } else {
+                OverlayModuleList.removeText(moduleName)
+            }
+        } catch (e: Exception) {
+            Log.w("AppCrashChan :3", "Failed to show module notification: ${e.message}")
         }
     }
 

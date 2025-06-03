@@ -46,10 +46,11 @@ import org.cloudburstmc.protocol.bedrock.packet.SubChunkRequestPacket
 
 
 
-class CrasherElement : Element(
+class CrasherElement(iconResId: Int = ir.alirezaivaz.tablericons.R.drawable.ic_at_off) : Element(
     name = "Crash",
     category = CheatCategory.Misc,
-    displayNameResId = R.string.module_crasher_display_name
+    displayNameResId = R.string.module_crasher_display_name,
+    iconResId = iconResId
 ) {
     override fun beforePacketBound(interceptablePacket: InterceptablePacket) {
         if (!isEnabled) {

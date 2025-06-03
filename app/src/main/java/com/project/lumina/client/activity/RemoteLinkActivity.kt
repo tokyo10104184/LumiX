@@ -67,6 +67,7 @@ class RemoteLinkActivity : ComponentActivity() {
         if (isValid) { }
         currentInstance = this
 
+
         val amplitude = Amplitude(
             Configuration(
                 apiKey = TrackUtil.TrackApi,

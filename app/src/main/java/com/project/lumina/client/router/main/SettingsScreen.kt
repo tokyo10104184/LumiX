@@ -33,6 +33,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
@@ -49,6 +50,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.net.Socket
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun SettingsScreen() {
@@ -75,8 +77,11 @@ fun SettingsScreen() {
     var injectNekoPackEnabled by remember {
         mutableStateOf(sharedPreferences.getBoolean("injectNekoPackEnabled", false))
     }
+    var disableConnectionInfoOverlay by remember {
+        mutableStateOf(sharedPreferences.getBoolean("disableConnectionInfoOverlay", false))
+    }
     var selectedGUI by remember {
-        mutableStateOf(sharedPreferences.getString("selectedGUI", "OverlayClickGUI") ?: "OverlayClickGUI")
+        mutableStateOf(sharedPreferences.getString("selectedGUI", "KitsuGUI") ?: "KitsuGUI")
     }
 
     var showPermissionDialog by remember { mutableStateOf(false) }
@@ -131,7 +136,7 @@ fun SettingsScreen() {
                         
                         DropdownMenu(
                             modifier = Modifier.fillMaxWidth(),
-                            options = listOf("GraceGUI", "OverlayClickGUI", "ProtohaxUi"),
+                            options = listOf("GraceGUI", "KitsuGUI", "ProtohaxUi", "ClickGUI"),
                             selectedOption = selectedGUI,
                             onOptionSelected = { newSelection ->
                                 selectedGUI = newSelection
@@ -207,7 +212,7 @@ fun SettingsScreen() {
 
                         Divider()
 
-                        
+
                         SettingToggle(
                             title = "Inject Neko Pack",
                             description = "Enable injection of Neko pack for enhanced features",
@@ -215,6 +220,19 @@ fun SettingsScreen() {
                             onCheckedChange = { isEnabled ->
                                 injectNekoPackEnabled = isEnabled
                                 saveToggleState("injectNekoPackEnabled", isEnabled)
+                            }
+                        )
+
+                        Divider()
+
+
+                        SettingToggle(
+                            title = "Disable ConnectionInfo Overlay",
+                            description = "Disable the connection info overlay that appears when starting the service",
+                            checked = disableConnectionInfoOverlay,
+                            onCheckedChange = { isEnabled ->
+                                disableConnectionInfoOverlay = isEnabled
+                                saveToggleState("disableConnectionInfoOverlay", isEnabled)
                             }
                         )
                     }
@@ -274,6 +292,70 @@ fun SettingsScreen() {
                                 modifier = Modifier.padding(start = 8.dp)
                             ) {
                                 Text("Config")
+                            }
+                        }
+                    }
+                }
+
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth(0.9f)
+                        .align(Alignment.CenterHorizontally),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.4f)
+                    )
+                ) {
+                    Column(
+                        modifier = Modifier.padding(12.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Text(
+                            text = "Debug Options",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.SemiBold,
+                            color = MaterialTheme.colorScheme.error
+                        )
+
+                        Text(
+                            text = "Developer tools for testing and debugging",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+
+                        Spacer(modifier = Modifier.height(4.dp))
+
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 4.dp),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            Button(
+                                onClick = {
+                                    throw RuntimeException("Debug crash triggered by user")
+                                },
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = MaterialTheme.colorScheme.error
+                                ),
+                                modifier = Modifier.weight(1f)
+                            ) {
+                                Text("Crash App")
+                            }
+
+                            Button(
+                                onClick = {
+                                    with(sharedPreferences.edit()) {
+                                        clear()
+                                        apply()
+                                    }
+                                    Toast.makeText(context, "App data cleared", Toast.LENGTH_SHORT).show()
+                                },
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = MaterialTheme.colorScheme.error
+                                ),
+                                modifier = Modifier.weight(1f)
+                            ) {
+                                Text("Clear Data")
                             }
                         }
                     }
@@ -370,7 +452,7 @@ fun ServerConfigDialog(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Black.copy(alpha = 0.4f * alpha.coerceIn(0f, 1f)))
+            .background(Color.Black.copy(alpha = (0.4f * alpha.coerceIn(0f, 1f))))
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null
@@ -573,48 +655,81 @@ fun DropdownMenu(
     var expanded by remember { mutableStateOf(false) }
     val rotationState by animateFloatAsState(
         targetValue = if (expanded) 180f else 0f,
+        animationSpec = tween(300, easing = FastOutSlowInEasing),
         label = "rotation"
+    )
+    
+    
+    val elevationState by animateFloatAsState(
+        targetValue = if (expanded) 8f else 2f,
+        label = "elevation"
     )
 
     Column(modifier = modifier) {
         Text(
             text = "Overlay GUI",
             style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = MaterialTheme.colorScheme.primary,
+            fontWeight = FontWeight.Medium,
             modifier = Modifier.padding(start = 4.dp, bottom = 4.dp)
         )
         
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
+            modifier = Modifier.fillMaxWidth()
         ) {
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(48.dp)
+                    .height(46.dp)
                     .clickable { expanded = !expanded },
                 colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
+                    containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                 ),
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+                elevation = CardDefaults.cardElevation(defaultElevation = elevationState.dp),
+                shape = RoundedCornerShape(8.dp)
             ) {
                 Row(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(horizontal = 16.dp),
+                        .padding(horizontal = 12.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        text = selectedOption,
-                        style = MaterialTheme.typography.bodyLarge
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        
+                        Box(
+                            modifier = Modifier
+                                .size(10.dp)
+                                .clip(RoundedCornerShape(2.dp))
+                                .background(
+                                    when (selectedOption) {
+                                        "GraceGUI" -> MaterialTheme.colorScheme.primary
+                                        "KitsuGUI" -> MaterialTheme.colorScheme.tertiary
+                                        "ProtohaxUi" -> MaterialTheme.colorScheme.error
+                                        "ClickGUI" -> MaterialTheme.colorScheme.secondary
+                                        else -> MaterialTheme.colorScheme.primary
+                                    }
+                                )
+                        )
+                        
+                        Text(
+                            text = selectedOption,
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
                     
                     Icon(
                         imageVector = Icons.Default.KeyboardArrowDown,
                         contentDescription = if (expanded) "Collapse" else "Expand",
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.rotate(rotationState)
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier
+                            .rotate(rotationState)
+                            .size(20.dp)
                     )
                 }
             }
@@ -623,7 +738,7 @@ fun DropdownMenu(
                 expanded = expanded,
                 onDismissRequest = { expanded = false },
                 modifier = Modifier
-                    .width(240.dp) 
+                    .width(220.dp)
                     .background(
                         MaterialTheme.colorScheme.surfaceContainerHigh,
                         RoundedCornerShape(8.dp)
@@ -634,10 +749,36 @@ fun DropdownMenu(
                     
                     androidx.compose.material3.DropdownMenuItem(
                         text = { 
-                            Text(
-                                text = option,
-                                color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
-                            ) 
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                
+                                Box(
+                                    modifier = Modifier
+                                        .size(8.dp)
+                                        .clip(RoundedCornerShape(1.dp))
+                                        .background(
+                                            when (option) {
+                                                "GraceGUI" -> MaterialTheme.colorScheme.primary
+                                                "KitsuGUI" -> MaterialTheme.colorScheme.tertiary
+                                                "ProtohaxUi" -> MaterialTheme.colorScheme.error
+                                                "ClickGUI" -> MaterialTheme.colorScheme.secondary
+                                                else -> MaterialTheme.colorScheme.primary
+                                            }
+                                        )
+                                )
+                                
+                                Text(
+                                    text = option,
+                                    color = if (isSelected) 
+                                        MaterialTheme.colorScheme.primary 
+                                    else 
+                                        MaterialTheme.colorScheme.onSurface,
+                                    fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
+                                    style = MaterialTheme.typography.bodyMedium
+                                ) 
+                            }
                         },
                         onClick = {
                             onOptionSelected(option)
@@ -648,14 +789,19 @@ fun DropdownMenu(
                                 Icon(
                                     imageVector = Icons.Default.Check,
                                     contentDescription = "Selected",
-                                    tint = MaterialTheme.colorScheme.primary
+                                    tint = MaterialTheme.colorScheme.primary,
+                                    modifier = Modifier.size(16.dp)
                                 )
                             }
                         },
-                        modifier = Modifier.background(
-                            if (isSelected) MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.2f) 
-                            else Color.Transparent
-                        )
+                        modifier = Modifier
+                            .height(36.dp)
+                            .background(
+                                if (isSelected) 
+                                    MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.2f) 
+                                else 
+                                    Color.Transparent
+                            )
                     )
                 }
             }

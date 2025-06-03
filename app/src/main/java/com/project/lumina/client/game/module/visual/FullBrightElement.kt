@@ -49,8 +49,10 @@ class FullBrightElement(iconResId: Int = R.drawable.video_camera_alt_18) : Eleme
 
     override fun onDisabled() {
         super.onDisabled()
-        if (session.localPlayer != null) {
-            sendRemovePacket()
+        if(isSessionCreated) {
+            if (session.localPlayer != null) {
+                sendRemovePacket()
+            }
         }
     }
 

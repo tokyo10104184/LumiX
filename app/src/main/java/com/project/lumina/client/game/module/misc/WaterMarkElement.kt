@@ -42,10 +42,11 @@ import com.project.lumina.client.constructors.Element
 import com.project.lumina.client.constructors.CheatCategory
 import com.project.lumina.client.overlay.ClientOverlay
 
-class WaterMarkElement : Element(
+class WaterMarkElement(iconResId: Int = ir.alirezaivaz.tablericons.R.drawable.ic_waterpolo) : Element(
     name = "WaterMark",
     category = CheatCategory.Misc,
-    displayNameResId = R.string.module_watermark_display_name
+    displayNameResId = R.string.module_watermark_display_name,
+    iconResId = iconResId
 ) {
 
     override fun onEnabled() {

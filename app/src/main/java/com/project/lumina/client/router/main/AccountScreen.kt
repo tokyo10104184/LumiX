@@ -315,7 +315,11 @@ private fun AccountCard(showNotification: (String, NotificationType) -> Unit) {
                                 .fillMaxWidth()
                                 .clip(RoundedCornerShape(12.dp))
                                 .clickable {
-                                    AccountManager.selectAccount(account)
+                                    if (account == AccountManager.currentAccount) {
+                                        AccountManager.selectAccount(null)
+                                    } else {
+                                        AccountManager.selectAccount(account)
+                                    }
                                 }
                                 .animateContentSize(
                                     animationSpec = spring(

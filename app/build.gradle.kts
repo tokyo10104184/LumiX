@@ -8,6 +8,7 @@ plugins {
     kotlin("plugin.serialization") version libs.versions.kotlin
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
+
 }
 
 android {
@@ -17,10 +18,10 @@ android {
     defaultConfig {
         applicationId = "com.project.lumina.client"
         minSdk = 28
-        //noinspection EditedTargetSdkVersion
+       
         targetSdk = 35
         versionCode = 2
-        versionName = "4.0.2"
+        versionName = "4.0.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -117,7 +118,7 @@ android {
 
 dependencies {
     implementation(libs.leveldb)
-    //implementation("com.github.CloudburstMC:NBT:master-SNAPSHOT") // this is left for future use and is currently being used in Dev Repo
+    //implementation("com.github.CloudburstMC:NBT:master-SNAPSHOT") 
     implementation(libs.ui.graphics)
     implementation(libs.androidx.compose.material)
     implementation(libs.androidx.foundation.android)
@@ -143,14 +144,19 @@ dependencies {
     implementation(libs.http.client)
     implementation(libs.bcprov)
     implementation(libs.okhttp)
+   
     implementation("com.amplitude:analytics-android:1.+")
     implementation("com.github.SmartToolFactory:Compose-Colorful-Sliders:1.2.2")
     implementation("io.coil-kt:coil-compose:2.4.0")
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.30.1")
     implementation(project(":animatedux"))
-    //implementation(project(":imgui")) // this is left for future use and is currently being used in Dev Repo
     implementation(project(":Pixie"))
     implementation(project(":Lunaris"))
     implementation(project(":SSC"))
+    implementation(project(":TablerIcons"))
+     implementation("com.google.firebase:firebase-analytics")
+     implementation("com.google.firebase:firebase-crashlytics")
+     implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
     implementation(libs.kotlinx.serialization.json.jvm)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -162,11 +168,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.material.icons.extended)
-    implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
     implementation("com.fasterxml.jackson.core:jackson-databind:2.16.1")
-    implementation("com.google.firebase:firebase-analytics")
-    implementation("com.google.firebase:firebase-crashlytics")
-    implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

@@ -9,7 +9,6 @@ import com.project.lumina.client.game.module.combat.InfiniteAuraElement
 import com.project.lumina.client.game.module.combat.KillauraElement
 import com.project.lumina.client.game.module.combat.MaceAuraElement
 import com.project.lumina.client.game.module.combat.QuickAttackElement
-import com.project.lumina.client.game.module.combat.ReachElement
 import com.project.lumina.client.game.module.world.StrafeElement
 import com.project.lumina.client.game.module.combat.TPAuraElement
 import com.project.lumina.client.game.module.combat.TriggerBotElement
@@ -97,7 +96,6 @@ object RemModuleManager {
             add(TriggerBotElement())
             add(CritBotElement())
             add(InfiniteAuraElement())
-            add(ReachElement())
             add(DamageBoostElement())
             add(FullBrightElement())
             add(OpFightBotElement())

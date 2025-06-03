@@ -12,8 +12,15 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -30,6 +37,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -49,6 +57,7 @@ class CrashHandlerActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
+
         val amplitude = Amplitude(
             Configuration(
                 apiKey = TrackUtil.TrackApi,
@@ -62,13 +71,13 @@ class CrashHandlerActivity : ComponentActivity() {
         updateCheck.initiateHandshake(this)
         val crashMessage = intent?.getStringExtra("message") ?: return finish()
 
-        
+
         val parts = parseCrashMessage(crashMessage)
 
         setContent {
             LuminaClientTheme {
                 val context = LocalContext.current
-                
+
                 Scaffold(
                     topBar = {
                         TopAppBar(
@@ -96,36 +105,46 @@ class CrashHandlerActivity : ComponentActivity() {
                             }
                         )
                     },
-                    bottomBar = {
-                        BottomAppBar(
-                            containerColor = MaterialTheme.colorScheme.surface,
-                            contentColor = MaterialTheme.colorScheme.onSurface
+                    floatingActionButton = {
+                        var fabVisible by remember { mutableStateOf(false) }
+
+                        LaunchedEffect(Unit) {
+                            fabVisible = true
+                        }
+
+                        val scale by animateFloatAsState(
+                            targetValue = if (fabVisible) 1f else 0f,
+                            animationSpec = spring(
+                                dampingRatio = Spring.DampingRatioMediumBouncy,
+                                stiffness = Spring.StiffnessLow
+                            ),
+                            label = "fabScale"
+                        )
+
+                        Box(
+                            modifier = Modifier
+                                .padding(16.dp)
+                                .scale(scale)
                         ) {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(16.dp),
-                                horizontalArrangement = Arrangement.Center
+                            FloatingActionButton(
+                                onClick = { restartApp(context) },
+                                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                shape = RoundedCornerShape(16.dp),
+                                elevation = FloatingActionButtonDefaults.elevation(
+                                    defaultElevation = 4.dp,
+                                    pressedElevation = 8.dp
+                                )
                             ) {
-                                Button(
-                                    onClick = {
-                                        restartApp(context)
-                                    },
-                                    colors = ButtonDefaults.buttonColors(
-                                        containerColor = MaterialTheme.colorScheme.primary
-                                    )
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Default.Refresh,
-                                        contentDescription = null,
-                                        modifier = Modifier.size(18.dp)
-                                    )
-                                    Spacer(modifier = Modifier.width(8.dp))
-                                    Text(stringResource(R.string.restart_app))
-                                }
+                                Icon(
+                                    imageVector = Icons.Default.Refresh,
+                                    contentDescription = stringResource(R.string.restart_app),
+                                    modifier = Modifier.size(24.dp)
+                                )
                             }
                         }
-                    }
+                    },
+                    floatingActionButtonPosition = FabPosition.End
                 ) { paddingValues ->
                     Column(
                         modifier = Modifier
@@ -139,8 +158,8 @@ class CrashHandlerActivity : ComponentActivity() {
                             style = MaterialTheme.typography.bodyLarge,
                             modifier = Modifier.padding(bottom = 16.dp)
                         )
-                        
-                        
+
+
                         parts.errorMessage?.let { errorMsg ->
                             Surface(
                                 shape = RoundedCornerShape(8.dp),
@@ -161,19 +180,19 @@ class CrashHandlerActivity : ComponentActivity() {
                             }
                         }
 
-                        
+
                         ExpandableSection(
                             title = stringResource(R.string.device_info),
                             content = parts.deviceInfo
                         )
-                        
-                        
+
+
                         ExpandableSection(
                             title = stringResource(R.string.thread_info),
                             content = parts.threadInfo
                         )
-                        
-                        
+
+
                         ExpandableSection(
                             title = stringResource(R.string.stack_trace),
                             content = parts.stackTrace,
@@ -181,7 +200,7 @@ class CrashHandlerActivity : ComponentActivity() {
                         )
                     }
                 }
-                
+
                 BackHandler {
                     Toast.makeText(this, getString(R.string.cannot_back), Toast.LENGTH_SHORT)
                         .show()
@@ -189,13 +208,13 @@ class CrashHandlerActivity : ComponentActivity() {
             }
         }
     }
-    
+
     private fun copyToClipboard(context: Context, text: String) {
         val clipboardManager = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val clipData = ClipData.newPlainText("Crash Log", text)
         clipboardManager.setPrimaryClip(clipData)
     }
-    
+
     private fun restartApp(context: Context) {
         val packageManager = context.packageManager
         val intent = packageManager.getLaunchIntentForPackage(context.packageName)
@@ -204,15 +223,15 @@ class CrashHandlerActivity : ComponentActivity() {
         context.startActivity(mainIntent)
         Runtime.getRuntime().exit(0)
     }
-    
+
     private fun parseCrashMessage(message: String): CrashParts {
         val lines = message.lines()
-        
+
         var errorMessage: String? = null
         var deviceInfoStart = -1
         var threadInfoStart = -1
         var stackTraceStart = -1
-        
+
         for (i in lines.indices) {
             when {
                 i == 0 -> errorMessage = lines[0]
@@ -222,7 +241,7 @@ class CrashHandlerActivity : ComponentActivity() {
                 lines[i].startsWith("Thread:") -> {
                     if (threadInfoStart == -1) {
                         threadInfoStart = i
-                        if (deviceInfoStart == -1) deviceInfoStart = i 
+                        if (deviceInfoStart == -1) deviceInfoStart = i
                     }
                 }
                 lines[i].startsWith("Stack Trace:") -> {
@@ -230,28 +249,28 @@ class CrashHandlerActivity : ComponentActivity() {
                 }
             }
         }
-        
+
         val deviceInfo = if (deviceInfoStart != -1 && threadInfoStart != -1) {
             lines.subList(deviceInfoStart, threadInfoStart).joinToString("\n")
         } else {
             ""
         }
-        
+
         val threadInfo = if (threadInfoStart != -1 && stackTraceStart != -1) {
             lines.subList(threadInfoStart, stackTraceStart).joinToString("\n")
         } else {
             ""
         }
-        
+
         val stackTrace = if (stackTraceStart != -1) {
             lines.subList(stackTraceStart, lines.size).joinToString("\n")
         } else {
-            message 
+            message
         }
-        
+
         return CrashParts(errorMessage, deviceInfo, threadInfo, stackTrace)
     }
-    
+
     data class CrashParts(
         val errorMessage: String?,
         val deviceInfo: String,
@@ -271,7 +290,7 @@ fun ExpandableSection(
         targetValue = if (expanded) 180f else 0f,
         label = "rotation"
     )
-    
+
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -294,7 +313,7 @@ fun ExpandableSection(
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.weight(1f)
                 )
-                
+
                 IconButton(onClick = { expanded = !expanded }) {
                     Icon(
                         imageVector = Icons.Default.KeyboardArrowDown,
@@ -304,7 +323,7 @@ fun ExpandableSection(
                     )
                 }
             }
-            
+
             AnimatedVisibility(
                 visible = expanded,
                 enter = expandVertically(),

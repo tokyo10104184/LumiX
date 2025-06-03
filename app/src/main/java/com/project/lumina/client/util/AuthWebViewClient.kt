@@ -72,14 +72,17 @@ class AuthWebView @JvmOverloads constructor(
                             ).readText()
                         )
 
-                        AccountManager.accounts.add(
-                            Account(
-                                username,
-                                deviceInfo!!,
-                                account!!.second
-                            )
+                        
+                        val newAccount = Account(
+                            username,
+                            deviceInfo!!,
+                            account!!.second
                         )
+                        AccountManager.accounts.add(newAccount)
                         AccountManager.save()
+                        
+                        
+                        AccountManager.selectAccount(newAccount)
 
                         callback?.invoke(true)
                     } catch (t: Throwable) {
@@ -126,15 +129,21 @@ class AuthWebView @JvmOverloads constructor(
                         return@thread
                     }
 
+                    
                     val account = Account(username, deviceInfo!!, refreshToken)
                     while (AccountManager.accounts.map { it.remark }.contains(account.remark)) {
                         account.remark += Random.nextInt(0..9)
                     }
                     AccountManager.accounts.add(account)
                     AccountManager.save()
+                    
+                    
+                    
+                    AccountManager.selectAccount(account)
 
                     callback?.invoke(true)
                 } catch (t: Throwable) {
+                    
                     Log.e("AuthWebView", "Obtain access token: ${t.stackTraceToString()}")
                     handler.post { loadData(t.stackTraceToString()) }
                 }

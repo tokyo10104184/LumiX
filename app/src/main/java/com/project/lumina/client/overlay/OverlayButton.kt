@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import com.project.lumina.client.R
 import com.project.lumina.client.overlay.grace.GraceMenuUi
 import com.project.lumina.client.overlay.protohax.ProtohaxUi
+import com.project.lumina.client.overlay.clickgui.ClickGUI
 import kotlin.math.*
 import kotlin.random.Random
 
@@ -55,9 +56,10 @@ class OverlayButton : OverlayWindow() {
     override val layoutParams: WindowManager.LayoutParams
         get() = _layoutParams
 
-    private val overlayClickGUI by lazy { OverlayClickGUI() }
+    private val kitsuGUI by lazy { KitsuGUI() }
     private val graceGUI by lazy { GraceMenuUi() }
     private val protohaxUi by lazy { ProtohaxUi() }
+    private val clickGUI by lazy { ClickGUI() }
 
     @Composable
     override fun Content() {
@@ -77,13 +79,13 @@ class OverlayButton : OverlayWindow() {
 
         
         val prefs = context.getSharedPreferences("SettingsPrefs", Context.MODE_PRIVATE)
-        var selectedGUIName by remember { mutableStateOf(prefs.getString("selectedGUI", "OverlayClickGUI") ?: "OverlayClickGUI") }
+        var selectedGUIName by remember { mutableStateOf(prefs.getString("selectedGUI", "KitsuGUI") ?: "KitsuGUI") }
 
         
         DisposableEffect(Unit) {
             val listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
                 if (key == "selectedGUI") {
-                    selectedGUIName = prefs.getString("selectedGUI", "OverlayClickGUI") ?: "OverlayClickGUI"
+                    selectedGUIName = prefs.getString("selectedGUI", "KitsuGUI") ?: "KitsuGUI"
                 }
             }
             prefs.registerOnSharedPreferenceChangeListener(listener)
@@ -93,9 +95,10 @@ class OverlayButton : OverlayWindow() {
         }
 
         val selectedGUI = when (selectedGUIName) {
-            "OverlayClickGUI" -> overlayClickGUI
+            "KitsuGUI" -> kitsuGUI
             "ProtohaxUi" -> protohaxUi
-            else -> graceGUI
+            "ClickGUI" -> clickGUI
+             else -> graceGUI
         }
 
         Box(

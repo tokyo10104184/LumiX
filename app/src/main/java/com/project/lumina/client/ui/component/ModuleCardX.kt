@@ -78,18 +78,21 @@ fun ModuleCardX(
                     }
                 )
         ) {
-            IconButton(
-                onClick = onOpenSettings,
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .padding(3.dp)
-                    .size(20.dp)
-            ) {
-                Icon(
-                    Icons.Default.Settings,
-                    contentDescription = "Settings",
-                    tint = Color.White
-                )
+            
+            if (element.values.isNotEmpty()) {
+                IconButton(
+                    onClick = onOpenSettings,
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(3.dp)
+                        .size(20.dp)
+                ) {
+                    Icon(
+                        Icons.Default.Settings,
+                        contentDescription = "Settings",
+                        tint = Color.White
+                    )
+                }
             }
             Text(
                 text = if (element.displayNameResId != null) stringResource(id = element.displayNameResId!!) else element.name,

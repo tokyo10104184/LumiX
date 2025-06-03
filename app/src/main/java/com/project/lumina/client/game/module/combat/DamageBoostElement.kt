@@ -11,7 +11,7 @@ import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.sqrt
 
-class DamageBoostElement(iconResId: Int = R.drawable.ic_alert_rhombus_black_24dp) : Element(
+class DamageBoostElement(iconResId: Int = ir.alirezaivaz.tablericons.R.drawable.ic_border_outer) : Element(
     name = "DamageBoost",
     category = CheatCategory.Combat,
     iconResId,

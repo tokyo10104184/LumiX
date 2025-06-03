@@ -16,11 +16,14 @@ import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
@@ -52,6 +55,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material.icons.rounded.Pause
 import androidx.compose.material.icons.rounded.PlayArrow
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Public
+import androidx.compose.material.icons.filled.Numbers
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -64,12 +70,14 @@ import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -81,6 +89,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.foundation.background
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalConfiguration
@@ -105,6 +114,8 @@ import com.project.lumina.client.ui.component.ServerSelector
 import com.project.lumina.client.viewmodel.MainScreenViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import androidx.compose.material3.rememberModalBottomSheetState
+import com.project.lumina.client.overlay.ConnectionInfoOverlay
 
 @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -121,14 +132,28 @@ fun HomeScreen(
     var customNotificationType by remember { mutableStateOf<NotificationType>(NotificationType.INFO) }
     var lastCustomNotificationTime by remember { mutableLongStateOf(0L) }
     val context = LocalContext.current
-    val coroutineScope = rememberCoroutineScope()
+    val scope = rememberCoroutineScope()
     var progress by remember { mutableFloatStateOf(0f) }
+
+    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    var showBottomSheet by remember { mutableStateOf(false) }
+    var showConnectionDialog by remember { mutableStateOf(false) }
+
+    var isLaunchingMinecraft by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Services.isActive) {
+        if (Services.isActive) {
+            delay(600)
+            showBottomSheet = false
+        } else {
+            showBottomSheet = false
+        }
+    }
 
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
     val screenHeight = configuration.screenHeightDp.dp
     val density = LocalDensity.current
-
 
     var showProgressDialog by remember { mutableStateOf(false) }
     var downloadProgress by remember { mutableStateOf(0f) }
@@ -141,9 +166,8 @@ fun HomeScreen(
 
     val isCompactScreen = screenWidth < 600.dp
 
-
     val leftColumnWidth = if (isCompactScreen) 0.4f else 0.5f
-    val localIp = remember { getLocalIp(context) ?: "0.0.0.0" }
+    val localIp = remember { ConnectionInfoOverlay.getLocalIpAddress(context) }
     val showNotification: (String, NotificationType) -> Unit = { message, type ->
         SimpleOverlayNotification.show(
             message = message,
@@ -543,7 +567,11 @@ fun HomeScreen(
                                                     .fillMaxWidth()
                                                     .clip(RoundedCornerShape(12.dp))
                                                     .clickable {
-                                                        AccountManager.selectAccount(account)
+                                                        if (account == AccountManager.currentAccount) {
+                                                            AccountManager.selectAccount(null)
+                                                        } else {
+                                                            AccountManager.selectAccount(account)
+                                                        }
                                                     },
                                                 color = MaterialTheme.colorScheme.surface,
                                                 tonalElevation = 2.dp
@@ -728,185 +756,41 @@ fun HomeScreen(
                             label = "buttonScaleAnimation"
                         )
 
-                        val buttonAlpha by animateFloatAsState(
-                            targetValue = if (isActive) 1f else 0f,
-                            animationSpec = tween(300),
-                            label = "buttonAlphaAnimation"
-                        )
-
                         if (isActive) {
-
-                            Row(
+                            Button(
+                                onClick = {
+                                    isLaunchingMinecraft = false
+                                    onStartToggle()
+                                },
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = MaterialTheme.colorScheme.error,
+                                    contentColor = MaterialTheme.colorScheme.onError
+                                ),
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(bottom = if (isCompactScreen) 8.dp else 12.dp),
-                                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                                verticalAlignment = Alignment.CenterVertically
+                                    .height(if (isCompactScreen) 48.dp else 56.dp),
+                                shape = RoundedCornerShape(if (isCompactScreen) 12.dp else 16.dp)
                             ) {
-
-                                ExtendedFloatingActionButton(
-                                    modifier = Modifier
-                                        .weight(0.55f)
-                                        .height(if (isCompactScreen) 48.dp else 56.dp)
-                                        .scale(scaleAnimation)
-                                        .animateContentSize(),
-                                    onClick = {
-
-                                        coroutineScope.launch {
-
-                                            delay(100)
-                                            onStartToggle()
-                                        }
-                                    },
-                                    containerColor = MaterialTheme.colorScheme.error,
-                                    contentColor = MaterialTheme.colorScheme.onError,
-                                    shape = RoundedCornerShape(if (isCompactScreen) 12.dp else 16.dp),
-                                    elevation = FloatingActionButtonDefaults.elevation(
-                                        defaultElevation = 4.dp,
-                                        pressedElevation = 8.dp
-                                    ),
-                                    icon = {
-                                        Icon(
-                                            imageVector = Icons.Rounded.Pause,
-                                            contentDescription = null,
-                                            modifier = Modifier.size(if (isCompactScreen) 20.dp else 24.dp)
-                                        )
-                                    },
-                                    text = {
-                                        Text(
-                                            text = stringResource(R.string.stop),
-                                            style = if (isCompactScreen)
-                                                MaterialTheme.typography.bodyLarge else
-                                                MaterialTheme.typography.titleMedium,
-                                            fontWeight = FontWeight.SemiBold
-                                        )
-                                    }
-                                )
-
-
-                                Button(
-                                    onClick = {
-
-                                        coroutineScope.launch {
-
-                                            delay(100)
-                                            val selectedGame = mainScreenViewModel.selectedGame.value
-                                            if (selectedGame != null) {
-                                                val intent =
-                                                    context.packageManager.getLaunchIntentForPackage(
-                                                        selectedGame
-                                                    )
-                                                if (intent != null) {
-                                                    coroutineScope.launch {
-                                                        try {
-                                                            when {
-                                                                InjectNekoPack == true && PackSelectionManager.selectedPack != null -> {
-                                                                    PackSelectionManager.selectedPack?.let { selectedPack ->
-                                                                        currentPackName = selectedPack.name
-                                                                        showProgressDialog = true
-                                                                        downloadProgress = 0f
-
-                                                                        try {
-                                                                            MCPackUtils.downloadAndOpenPack(
-                                                                                context,
-                                                                                selectedPack
-                                                                            ) { progress ->
-                                                                                downloadProgress = progress
-                                                                            }
-                                                                            showProgressDialog = false
-                                                                        } catch (e: Exception) {
-                                                                            showProgressDialog = false
-                                                                            showNotification(
-                                                                                "Failed to download pack: ${e.message}",
-                                                                                NotificationType.ERROR
-                                                                            )
-                                                                        }
-                                                                    }
-                                                                }
-
-                                                                InjectNekoPack == true -> {
-                                                                    try {
-                                                                        InjectNeko.typeshit(
-                                                                            context = context,
-                                                                            onProgress = {
-                                                                                progress = it
-                                                                            }
-                                                                        )
-                                                                    } catch (e: Exception) {
-                                                                        showNotification(
-                                                                            "Failed to inject Neko: ${e.message}",
-                                                                            NotificationType.ERROR
-                                                                        )
-                                                                    }
-                                                                }
-
-                                                                else -> {
-                                                                    try {
-                                                                        ServerInit.addMinecraftServer(
-                                                                            context,
-                                                                            localIp
-                                                                        )
-                                                                    } catch (e: Exception) {
-                                                                        showNotification(
-                                                                            "Failed to initialize server: ${e.message}",
-                                                                            NotificationType.ERROR
-                                                                        )
-                                                                    }
-                                                                }
-                                                            }
-                                                        } catch (e: Exception) {
-                                                            showNotification(
-                                                                "An unexpected error occurred: ${e.message}",
-                                                                NotificationType.ERROR
-                                                            )
-                                                        }
-                                                    }
-                                                } else {
-                                                    showNotification(
-                                                        "Failed to launch game",
-                                                        NotificationType.ERROR
-                                                    )
-                                                }
-                                            }
-                                        }
-                                    },
-                                    modifier = Modifier
-                                        .weight(0.45f)
-                                        .height(if (isCompactScreen) 48.dp else 56.dp)
-                                        .scale(scaleAnimation)
-                                        .alpha(buttonAlpha),
-                                    colors = ButtonDefaults.buttonColors(
-                                        containerColor = MaterialTheme.colorScheme.secondary
-                                    ),
-                                    shape = RoundedCornerShape(if (isCompactScreen) 12.dp else 16.dp),
-                                    elevation = ButtonDefaults.buttonElevation(
-                                        defaultElevation = 2.dp,
-                                        pressedElevation = 4.dp
-                                    )
+                                Row(
+                                    horizontalArrangement = Arrangement.Center,
+                                    verticalAlignment = Alignment.CenterVertically
                                 ) {
-                                    Row(
-                                        verticalAlignment = Alignment.CenterVertically,
-                                        horizontalArrangement = Arrangement.Center,
-                                        modifier = Modifier.fillMaxWidth()
-                                    ) {
-                                        Icon(
-                                            imageVector = Icons.Rounded.PlayArrow,
-                                            contentDescription = null,
-                                            modifier = Modifier.size(if (isCompactScreen) 18.dp else 22.dp)
-                                        )
-                                        Spacer(modifier = Modifier.width(4.dp))
-                                        Text(
-                                            text = stringResource(R.string.game),
-                                            style = if (isCompactScreen)
-                                                MaterialTheme.typography.bodyLarge else
-                                                MaterialTheme.typography.titleMedium,
-                                            fontWeight = FontWeight.Medium
-                                        )
-                                    }
+                                    Icon(
+                                        imageVector = Icons.Rounded.Pause,
+                                        contentDescription = "Stop",
+                                        modifier = Modifier.size(if (isCompactScreen) 20.dp else 24.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Text(
+                                        text = stringResource(R.string.stop),
+                                        style = if (isCompactScreen)
+                                            MaterialTheme.typography.bodyLarge else
+                                            MaterialTheme.typography.titleMedium,
+                                        fontWeight = FontWeight.SemiBold
+                                    )
                                 }
                             }
                         } else {
-
                             Column(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -920,11 +804,104 @@ fun HomeScreen(
                                         .scale(scaleAnimation)
                                         .animateContentSize(),
                                     onClick = {
-
-                                        coroutineScope.launch {
-
+                                        scope.launch {
                                             delay(100)
+                                            isLaunchingMinecraft = true
+                                            Services.isLaunchingMinecraft = true
                                             onStartToggle()
+                                            
+                                            delay(2500)
+                                            if (!Services.isActive) {
+                                                isLaunchingMinecraft = false
+                                                Services.isLaunchingMinecraft = false
+                                                return@launch
+                                            }
+                                            
+                                            val selectedGame = mainScreenViewModel.selectedGame.value
+                                            if (selectedGame != null) {
+                                                val intent = context.packageManager.getLaunchIntentForPackage(selectedGame)
+                                                if (intent != null && Services.isActive) {
+                                                    context.startActivity(intent)
+                                                    
+                                                    delay(3000)
+                                                    if (Services.isActive) {
+                                                        val disableConnectionInfoOverlay = sharedPreferences.getBoolean("disableConnectionInfoOverlay", false)
+                                                        if (!disableConnectionInfoOverlay) {
+                                                            ConnectionInfoOverlay.show(localIp)
+                                                        }
+                                                    }
+                                                    isLaunchingMinecraft = false
+                                                    Services.isLaunchingMinecraft = false
+                                                    
+                                                    try {
+                                                        when {
+                                                            InjectNekoPack == true && PackSelectionManager.selectedPack != null -> {
+                                                                PackSelectionManager.selectedPack?.let { selectedPack ->
+                                                                    currentPackName = selectedPack.name
+                                                                    showProgressDialog = true
+                                                                    downloadProgress = 0f
+
+                                                                    try {
+                                                                        MCPackUtils.downloadAndOpenPack(
+                                                                            context,
+                                                                            selectedPack
+                                                                        ) { progress ->
+                                                                            downloadProgress = progress
+                                                                        }
+                                                                        showProgressDialog = false
+                                                                    } catch (e: Exception) {
+                                                                        showProgressDialog = false
+                                                                        showNotification(
+                                                                            "Failed to download pack: ${e.message}",
+                                                                            NotificationType.ERROR
+                                                                        )
+                                                                    }
+                                                                }
+                                                            }
+
+                                                            InjectNekoPack == true -> {
+                                                                try {
+                                                                    InjectNeko.typeshit(
+                                                                        context = context,
+                                                                        onProgress = {
+                                                                            progress = it
+                                                                        }
+                                                                    )
+                                                                } catch (e: Exception) {
+                                                                    showNotification(
+                                                                        "Failed to inject Neko: ${e.message}",
+                                                                        NotificationType.ERROR
+                                                                    )
+                                                                }
+                                                            }
+
+                                                            else -> {
+                                                                try {
+                                                                    ServerInit.addMinecraftServer(
+                                                                        context,
+                                                                        localIp
+                                                                    )
+                                                                } catch (e: Exception) {
+                                                                    showNotification(
+                                                                        "Failed to initialize server: ${e.message}",
+                                                                        NotificationType.ERROR
+                                                                    )
+                                                                }
+                                                            }
+                                                        }
+                                                    } catch (e: Exception) {
+                                                        showNotification(
+                                                            "An unexpected error occurred: ${e.message}",
+                                                            NotificationType.ERROR
+                                                        )
+                                                    }
+                                                } else {
+                                                    showNotification(
+                                                        "Failed to launch game",
+                                                        NotificationType.ERROR
+                                                    )
+                                                }
+                                            }
                                         }
                                     },
                                     containerColor = MaterialTheme.colorScheme.primary,
@@ -994,22 +971,6 @@ fun HomeScreen(
                 }
             }
         }
-    }
-}
-
-fun getLocalIp(context: Context): String? {
-    return try {
-        val wm = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
-        val ip = wm.connectionInfo.ipAddress
-        String.format(
-            "%d.%d.%d.%d",
-            ip and 0xff,
-            ip shr 8 and 0xff,
-            ip shr 16 and 0xff,
-            ip shr 24 and 0xff
-        )
-    } catch (e: Exception) {
-        null
     }
 }
 
