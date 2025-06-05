@@ -1,8 +1,7 @@
-package com.project.lumina.client.essentials
+package com.project.lumina.client.utils
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import androidx.core.net.toUri
 
 class ServerInit {

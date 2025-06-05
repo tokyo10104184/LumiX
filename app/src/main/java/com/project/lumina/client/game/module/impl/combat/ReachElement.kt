@@ -54,20 +54,12 @@ class ReachElement(iconResId: Int = R.drawable.ic_ghost_black_24dp) : Element(
     
     private var combatReachEnabled by boolValue("Combat", true)
     private var combatReach by floatValue("PvP Reach", 3f, 3f..6f) 
-    private var blockReachEnabled by boolValue("Blocks", true)
-    private var blockReach by floatValue("Block Reach", 6f, 5f..10f) 
+//    private var blockReachEnabled by boolValue("Blocks", true)
+//    private var blockReach by floatValue("Block Reach", 6f, 5f..10f)
 
     
     private var lastAttackTime = 0L
-    private val attackDelayMs: Long = 100 
-
-    fun onEnable() {
-        
-    }
-
-    fun onDisable() {
-        
-    }
+    private val attackDelayMs: Long = 100
 
     override fun beforePacketBound(interceptablePacket: InterceptablePacket) {
         if (!isEnabled) return
@@ -87,17 +79,7 @@ class ReachElement(iconResId: Int = R.drawable.ic_ghost_black_24dp) : Element(
                 lastAttackTime = currentTime
             }
         }
-
-        
-        
-        
-        /*
-        if (blockReachEnabled) {
-            
-            
-        }
-        */
-    }
+   }
 
     private fun findTargets(): List<Entity> {
         return session.level.entityMap.values

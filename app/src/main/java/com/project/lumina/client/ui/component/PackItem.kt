@@ -53,7 +53,7 @@ import com.project.lumina.client.ui.theme.*
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.project.lumina.client.essentials.MCPack
+import com.project.lumina.client.utils.MCPack
 import io.lumina.luminaux.components.GlassmorphicListItem
 
 @Composable

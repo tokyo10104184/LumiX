@@ -1,4 +1,4 @@
-package com.project.lumina.client.essentials
+package com.project.lumina.client.utils
 
 object TrackUtil {
     val TRACK_API = ""

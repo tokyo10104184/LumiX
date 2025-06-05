@@ -38,7 +38,6 @@ package com.project.lumina.client.activity
 
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -58,14 +57,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.amplitude.android.Amplitude
-import com.amplitude.android.Configuration
-import com.amplitude.android.DefaultTrackingOptions
 
 import com.project.lumina.client.ui.theme.LuminaClientTheme
-import com.project.lumina.client.essentials.TrackUtil
-import com.project.lumina.client.util.HashCat
-import com.project.lumina.client.util.UpdateCheck
 import androidx.core.net.toUri
 
 class MinecraftCheckActivity : ComponentActivity() {

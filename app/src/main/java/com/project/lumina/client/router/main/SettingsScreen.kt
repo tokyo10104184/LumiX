@@ -44,13 +44,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.project.lumina.client.essentials.NetworkOptimizer
+import com.project.lumina.client.utils.NetworkOptimizer
 import com.project.lumina.client.viewmodel.MainScreenViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.net.Socket
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun SettingsScreen() {

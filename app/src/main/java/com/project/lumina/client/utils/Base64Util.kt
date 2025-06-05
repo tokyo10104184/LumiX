@@ -1,4 +1,4 @@
-package com.project.lumina.client.essentials
+package com.project.lumina.client.utils
 
 object Base64Util {
     fun decode(encoded: String): String {
