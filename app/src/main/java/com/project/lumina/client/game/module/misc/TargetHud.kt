@@ -20,53 +20,33 @@ class TargetHud(iconResId: Int = ir.alirezaivaz.tablericons.R.drawable.ic_target
     displayNameResId = R.string.module_targethud,
     iconResId = iconResId
 ) {
-    private val TAG = "TargetHud" 
-
     private val playerOnly = true
     private val mobsOnly = false
     private val rangeValue = 7f
     private val maxDistance by floatValue("MaxDistance", 7f, 1f..10f )
 
     override fun beforePacketBound(interceptablePacket: InterceptablePacket) {
-
         if (!isEnabled) {
             try {
                 TargetHudOverlay.dismissTargetHud()
-
-            } catch (e: Exception) {
-
-            }
+            } catch (_: Exception) { }
             return
         }
 
-        
         val closestEntities = searchForClosestEntities()
-
-
         val closestEntity = closestEntities.firstOrNull()
+
         if (closestEntity != null) {
-            
             val username = getEntityName(closestEntity)
             val distance = closestEntity.distance(session.localPlayer)
-            val image: Bitmap? = null 
 
-
-
-            
             try {
                session.targetHud(username, distance, maxDistance, 0f)
-
-            } catch (e: Exception) {
-
-            }
+            } catch (_: Exception) { }
         } else {
-
             try {
                 TargetHudOverlay.dismissTargetHud()
-
-            } catch (e: Exception) {
-
-            }
+            } catch (_: Exception) { }
         }
     }
 

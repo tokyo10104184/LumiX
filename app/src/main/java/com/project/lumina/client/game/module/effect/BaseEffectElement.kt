@@ -41,7 +41,7 @@ abstract class BaseEffectElement(
         session.clientBound(MobEffectPacket().apply {
             runtimeEntityId = session.localPlayer.runtimeEntityId
             event = MobEffectPacket.Event.ADD
-            this.effectId = customEffectId ?: effectId ?: return@apply
+            this.effectId = customEffectId ?: effectId
             amplifier = amplifierValue.toInt() - 1
             isParticles = false
             duration = 360000
@@ -52,7 +52,7 @@ abstract class BaseEffectElement(
         session.clientBound(MobEffectPacket().apply {
             runtimeEntityId = session.localPlayer.runtimeEntityId
             event = MobEffectPacket.Event.REMOVE
-            this.effectId = customEffectId ?: effectId ?: return@apply
+            this.effectId = customEffectId ?: effectId
         })
     }
 } 

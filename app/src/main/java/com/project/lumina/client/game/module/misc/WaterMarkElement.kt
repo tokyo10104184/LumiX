@@ -57,20 +57,20 @@ class WaterMarkElement(iconResId: Int = ir.alirezaivaz.tablericons.R.drawable.ic
                 ClientOverlay.setOverlayEnabled(enabled = true)
                 ClientOverlay.showOverlay()
             } else {
-                
+
                 println("Session not created, cannot enable WaterMark overlay.")
             }
         } catch (e: Exception) {
-            
+
             println("Error enabling WaterMark overlay: ${e.message}")
         }
 
-        
+
     }
 
     override fun onDisabled() {
         super.onDisabled()
-       ClientOverlay.setOverlayEnabled(enabled = false)
+        ClientOverlay.setOverlayEnabled(enabled = false)
         ClientOverlay.dismissOverlay()
     }
 

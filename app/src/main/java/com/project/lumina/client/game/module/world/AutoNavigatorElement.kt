@@ -42,10 +42,10 @@ class AutoNavigatorElement : Element(
         if (isSessionCreated) {
             session.displayClientMessage(
                 """
-            §l§b[AutoNavigator] §r§7Commands:
-            §f.goto <x> <y> <z> §7to go to your coordinates
-            §f.stop §7to stop it
-        """.trimIndent()
+                    §l§b[AutoNavigator] §r§7Commands:
+                    §f.goto <x> <y> <z> §7to go to your coordinates
+                    §f.stop §7to stop it
+               """.trimIndent()
             )
         }
     }
@@ -56,6 +56,7 @@ class AutoNavigatorElement : Element(
 
         if (packet is TextPacket && packet.type == TextPacket.Type.CHAT) {
             val message = packet.message
+
             when {
                 message.startsWith(".goto") -> {
                     interceptablePacket.intercept() 
@@ -66,9 +67,6 @@ class AutoNavigatorElement : Element(
                     isPathing = false
                     session.displayClientMessage("§l§b[AutoNavigator] §r§aPathing stopped!")
                 }
-                else -> {
-                    
-                }
             }
         }
 
@@ -78,7 +76,6 @@ class AutoNavigatorElement : Element(
             val player = session.localPlayer
             val currentPos = player.vec3Position
             val currentTime = System.currentTimeMillis()
-
             
             val horizontalDistance = sqrt((currentPos.x - targetX) * (currentPos.x - targetX) + (currentPos.z - targetZ) * (currentPos.z - targetZ))
             val verticalDistance = kotlin.math.abs(currentPos.y - targetY)
@@ -87,7 +84,6 @@ class AutoNavigatorElement : Element(
                 session.displayClientMessage("§l§b[AutoNavigator] §r§aDestination reached at ${targetX.toInt()}, ${targetY.toInt()}, ${targetZ.toInt()}!")
                 return
             }
-
             
             if (currentTime - lastUpdateTime >= updateInterval) {
                 val remainingDistance = sqrt(
@@ -99,7 +95,6 @@ class AutoNavigatorElement : Element(
                 lastUpdateTime = currentTime
             }
 
-            
             if (currentTime - lastMotionTime >= motionInterval) {
                 
                 val dx = targetX - currentPos.x
@@ -112,12 +107,10 @@ class AutoNavigatorElement : Element(
                     0f 
                 )
 
-                
                 val adjustedSpeed = walkSpeed.toDouble() * (1.0 + (horizontalDistance / 10.0).coerceAtMost(1.0))
                 val motionX = -sin(Math.toRadians(angle.toDouble())) * adjustedSpeed
                 val motionZ = cos(Math.toRadians(angle.toDouble())) * adjustedSpeed
 
-                
                 val shouldJump = packet.inputData.contains(PlayerAuthInputData.VERTICAL_COLLISION) &&
                         verticalDistance > 0.5 &&
                         currentPos.y < targetY + verticalTolerance &&

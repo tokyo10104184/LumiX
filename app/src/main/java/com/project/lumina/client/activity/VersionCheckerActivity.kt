@@ -151,8 +151,6 @@ class VersionCheckerActivity : ComponentActivity() {
     private val minecraftPackage = "com.mojang.minecraftpe"
     private val configUrl = API.FILES_VERSION_CONFIG_JSON
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
