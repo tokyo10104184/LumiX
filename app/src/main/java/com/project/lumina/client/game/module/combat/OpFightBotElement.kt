@@ -13,7 +13,6 @@ import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
-import kotlin.math.sqrt
 import kotlin.random.Random
 
 class OpFightBotElement(iconResId: Int = R.drawable.ic_eye) : Element(
@@ -88,7 +87,7 @@ class OpFightBotElement(iconResId: Int = R.drawable.ic_eye) : Element(
             val pitch = -atan2(
                 targetPos.y - playerPos.y,
                 Vector3f.from(targetPos.x, playerPos.y, targetPos.z).distance(playerPos)
-            ).toFloat()
+            )
 
             session.clientBound(MovePlayerPacket().apply {
                 runtimeEntityId = session.localPlayer.runtimeEntityId
@@ -145,10 +144,4 @@ class OpFightBotElement(iconResId: Int = R.drawable.ic_eye) : Element(
         return false
     }
 
-    private fun Vector3f.distance(other: Vector3f): Float {
-        val dx = x - other.x
-        val dy = y - other.y
-        val dz = z - other.z
-        return sqrt(dx * dx + dy * dy + dz * dz)
-    }
 }

@@ -30,3 +30,8 @@ app/google-services.json
 .kotlin/
 
 .git/
+
+# google
+*google_services*
+/app/src/google-services.json
+/google-services.json
