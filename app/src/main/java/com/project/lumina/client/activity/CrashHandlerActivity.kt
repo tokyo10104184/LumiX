@@ -52,25 +52,14 @@ import com.project.lumina.client.util.UpdateCheck
 
 class CrashHandlerActivity : ComponentActivity() {
 
-    @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-
-        val amplitude = Amplitude(
-            Configuration(
-                apiKey = TrackUtil.TrackApi,
-                context = applicationContext,
-                defaultTracking = DefaultTrackingOptions.ALL,
-            )
-        )
-
-        amplitude.track("Lumina Crashed")
         val updateCheck = UpdateCheck()
         updateCheck.initiateHandshake(this)
         val crashMessage = intent?.getStringExtra("message") ?: return finish()
-
 
         val parts = parseCrashMessage(crashMessage)
 

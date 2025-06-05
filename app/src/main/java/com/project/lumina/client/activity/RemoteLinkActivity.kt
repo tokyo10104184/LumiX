@@ -45,7 +45,6 @@ class RemoteLinkActivity : ComponentActivity() {
         }
     }
     
-    
     val importConfigLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -70,7 +69,7 @@ class RemoteLinkActivity : ComponentActivity() {
 
         val amplitude = Amplitude(
             Configuration(
-                apiKey = TrackUtil.TrackApi,
+                apiKey = TrackUtil.TRACK_API,
                 context = applicationContext,
                 defaultTracking = DefaultTrackingOptions.ALL,
             )
@@ -83,7 +82,7 @@ class RemoteLinkActivity : ComponentActivity() {
         setContent {
             LuminaClientTheme {
                 CompositionLocalProvider(LocalOverscrollConfiguration provides null) {
-           RemoteLink()
+                    RemoteLink()
                 }
             }
         }

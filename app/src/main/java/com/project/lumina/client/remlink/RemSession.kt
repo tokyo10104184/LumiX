@@ -15,31 +15,27 @@ import org.cloudburstmc.protocol.bedrock.packet.BedrockPacket
 import org.cloudburstmc.protocol.bedrock.packet.TextPacket
 import com.project.lumina.client.game.InterceptablePacket
 
-class RemSession(val moduleManager: GameManager) : ComposedPacketHandler {
+open class RemSession(val moduleManager: GameManager) : ComposedPacketHandler {
 
-    private val prefix = "!" 
-    private val feedback = true 
+    private val prefix = "!"
+    private val feedback = true
 
-    
-    private val headerColor = "§6" 
-    private val accentColor = "§e" 
-    private val successColor = "§a" 
-    private val errorColor = "§c" 
-    private val infoColor = "§7" 
+
+    private val headerColor = "§6"
+    private val accentColor = "§e"
+    private val successColor = "§a"
+    private val errorColor = "§c"
+    private val infoColor = "§7"
     private var isIntercepted = false
 
     open lateinit var session: NetBound
-   private val isSessionCreated: Boolean
+    private val isSessionCreated: Boolean
         get() = ::session.isInitialized
 
     override fun beforePacketBound(packet: BedrockPacket): Boolean {
-
-        
         if (packet !is TextPacket) {
             return false
         }
-
-        val packets = packet as TextPacket
 
         if (!isSessionCreated || !session.isProxyPlayer(packet.sourceName)) {
             return false
@@ -69,12 +65,15 @@ class RemSession(val moduleManager: GameManager) : ComposedPacketHandler {
                             sendClientMessage("${errorColor}⚠ Usage: ${accentColor}!toggle <module>")
                         }
                     }
+
                     "ping" -> {
                         sendClientMessage("${successColor}✦ Pong! ${infoColor}Response from CmdListener")
                     }
+
                     "help" -> {
                         handleHelpCommand()
                     }
+
                     "set" -> {
                         if (args.size >= 4) {
                             handleSetCommand(args[1], args[2], args[3])
@@ -82,6 +81,7 @@ class RemSession(val moduleManager: GameManager) : ComposedPacketHandler {
                             sendClientMessage("${errorColor}⚠ Usage: ${accentColor}!set <module> <setting> <value>")
                         }
                     }
+
                     else -> {
                         sendClientMessage("${errorColor}✗ Unknown command: ${accentColor}$command${infoColor} - Try ${accentColor}!help")
                     }
@@ -90,7 +90,7 @@ class RemSession(val moduleManager: GameManager) : ComposedPacketHandler {
                 Log.e("RemSession", "Error processing command: ${e.message}")
             }
         }
-return false
+        return false
     }
 
     private fun sendClientMessage(message: String) {
@@ -127,15 +127,16 @@ return false
         modules.forEach { module ->
             val status = if (module.isEnabled) "${successColor}ON" else "${errorColor}OFF"
             sendClientMessage("${infoColor}├─ ${accentColor}${module.name} ${infoColor}[$status]")
-            module.values.filter { it is BoolValue || it is FloatValue || it is IntValue }.forEach { value ->
-                val currentValue = when (value) {
-                    is BoolValue -> if (value.value) "${successColor}true" else "${errorColor}false"
-                    is FloatValue -> "${value.value}"
-                    is IntValue -> "${value.value}"
-                    else -> "N/A"
+            module.values.filter { it is BoolValue || it is FloatValue || it is IntValue }
+                .forEach { value ->
+                    val currentValue = when (value) {
+                        is BoolValue -> if (value.value) "${successColor}true" else "${errorColor}false"
+                        is FloatValue -> "${value.value}"
+                        is IntValue -> "${value.value}"
+                        else -> "N/A"
+                    }
+                    sendClientMessage("${infoColor}│  ${value.name}: $currentValue")
                 }
-                sendClientMessage("${infoColor}│  ${value.name}: $currentValue")
-            }
         }
         sendClientMessage("${accentColor}Commands:")
         sendClientMessage("${infoColor}├─ ${accentColor}!toggle <module> ${infoColor}- Toggle a module")
@@ -162,14 +163,19 @@ return false
                 is BoolValue -> {
                     value.value = valueString.toBooleanStrict()
                 }
+
                 is FloatValue -> {
                     val newValue = valueString.toFloat()
-                    if (newValue in value.range) value.value = newValue else throw IllegalArgumentException("Value out of range ${value.range}")
+                    if (newValue in value.range) value.value =
+                        newValue else throw IllegalArgumentException("Value out of range ${value.range}")
                 }
+
                 is IntValue -> {
                     val newValue = valueString.toInt()
-                    if (newValue in value.range) value.value = newValue else throw IllegalArgumentException("Value out of range ${value.range}")
+                    if (newValue in value.range) value.value =
+                        newValue else throw IllegalArgumentException("Value out of range ${value.range}")
                 }
+
                 else -> {
                     sendClientMessage("${errorColor}✗ Setting '${accentColor}$settingName${errorColor}' is not a basic type (bool, float, int).")
                     return

@@ -51,7 +51,6 @@ class SpiderElement(iconResId: Int = R.drawable.ic_spider_black_24dp) : Element(
     iconResId,
     displayNameResId = R.string.module_spider_display_name
 ) {
-
     private var climbSpeed by floatValue("Climb Speed", 0.5f, 0.1f..2.0f)
 
     override fun beforePacketBound(interceptablePacket: InterceptablePacket) {

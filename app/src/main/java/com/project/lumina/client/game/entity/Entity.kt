@@ -243,9 +243,4 @@ open class Entity(open val runtimeEntityId: Long, open val uniqueEntityId: Long)
         attributes.clear()
         metadata.clear()
     }
-
-    override fun toString(): String {
-        return "Entity(entityId=$runtimeEntityId, uniqueId=$uniqueEntityId, posX=$posX, posY=$posY, posZ=$posZ)"
-    }
-
 }

@@ -42,7 +42,6 @@ def log_output(message):
     output_text.see(tk.END)
     output_text.config(state=tk.DISABLED)
 
-# GUI setup
 root = tk.Tk()
 root.title("Android Font Renamer")
 

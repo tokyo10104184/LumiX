@@ -9,7 +9,6 @@ import org.cloudburstmc.protocol.bedrock.data.PlayerAuthInputData
 import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket
 import org.cloudburstmc.protocol.bedrock.packet.SetEntityMotionPacket
 
-
 class AirJumpElement(iconResId: Int = R.drawable.ic_cloud_upload_black_24dp) : Element(
     name = "AirJump",
     category = CheatCategory.Motion,
@@ -23,6 +22,7 @@ class AirJumpElement(iconResId: Int = R.drawable.ic_cloud_upload_black_24dp) : E
         }
 
         val packet = interceptablePacket.packet
+
         if (packet is PlayerAuthInputPacket) {
             if (packet.inputData.contains(PlayerAuthInputData.JUMP_DOWN)) {
                 val motionPacket = SetEntityMotionPacket().apply {

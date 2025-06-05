@@ -3,7 +3,6 @@ package com.project.lumina.client.game.module.motion
 import com.project.lumina.client.R
 import com.project.lumina.client.constructors.CheatCategory
 import com.project.lumina.client.constructors.Element
-import com.project.lumina.client.essentials.stringify
 import com.project.lumina.client.game.InterceptablePacket
 import org.cloudburstmc.math.vector.Vector3f
 import org.cloudburstmc.protocol.bedrock.data.PlayerAuthInputData
@@ -38,34 +37,33 @@ class AntiACFly(iconResId: Int = R.drawable.ic_menu_arrow_up_black_24dp) : Eleme
     private var lastMotionTime = 0L
     private var jitterState = false
     private var effectiveGlideSpeed: Float = 0.0f
+
     override fun beforePacketBound(interceptablePacket: InterceptablePacket) {
-
-
         if (!isEnabled) return
 
         val packet = interceptablePacket.packet
 
         if (packet is PlayerAuthInputPacket && System.currentTimeMillis() - lastMotionTime >= motionInterval) {
-            
+
             effectiveGlideSpeed = glideSpeed
 
-            
+
             if (packet.inputData.contains(PlayerAuthInputData.WANT_UP)) {
-                effectiveGlideSpeed += verticalSpeedUp 
+                effectiveGlideSpeed += verticalSpeedUp
             }
             if (packet.inputData.contains(PlayerAuthInputData.WANT_DOWN)) {
-                effectiveGlideSpeed -= verticalSpeedDown 
+                effectiveGlideSpeed -= verticalSpeedDown
             }
 
-            
+
             effectiveGlideSpeed += if (jitterState) 0.1f else -0.1f
 
-            
+
             val yawRadians = Math.toRadians(packet.rotation.y.toDouble())
 
-            
-            val inputX = packet.motion.x 
-            val inputZ = packet.motion.y 
+
+            val inputX = packet.motion.x
+            val inputZ = packet.motion.y
             val motionX =
                 ((-sin(yawRadians) * inputZ + cos(yawRadians) * inputX) * horizontalSpeed).toFloat()
             val motionZ =
@@ -78,8 +76,6 @@ class AntiACFly(iconResId: Int = R.drawable.ic_menu_arrow_up_black_24dp) : Eleme
             jitterState = !jitterState
             lastMotionTime = System.currentTimeMillis()
         }
-
-
     }
 }
 

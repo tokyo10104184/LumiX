@@ -104,7 +104,6 @@ import com.project.lumina.client.game.module.config.ConfigManagerElement
 import com.project.lumina.client.navigation.Navigation
 import com.project.lumina.client.ui.theme.LuminaClientTheme
 import com.project.lumina.client.essentials.TrackUtil
-import com.project.lumina.client.overlay.KeystrokesOverlay
 import com.project.lumina.client.util.HashCat
 import com.project.lumina.client.util.UpdateCheck
 import io.netty.util.internal.logging.InternalLoggerFactory
@@ -113,9 +112,6 @@ import io.netty.util.internal.logging.JdkLoggerFactory
 
 class MainActivity : ComponentActivity() {
     companion object {
-        private const val STORAGE_PERMISSION_REQUEST_CODE = 1002
-        
-        
         private var currentInstance: MainActivity? = null
         
         fun launchConfigImport() {
@@ -201,20 +197,22 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         ArrayListManager.initializeSounds(this)
 
+        println("TEST")
+
         currentInstance = this
         //Muffin.Start(this)
-
-        val amplitude = Amplitude(
-            Configuration(
-                apiKey = TrackUtil.TrackApi,
-                context = applicationContext,
-                defaultTracking = DefaultTrackingOptions.ALL,
-            )
-        )
-        amplitude.track("Lumina Mobile")
-
-        val updateCheck = UpdateCheck()
-        updateCheck.initiateHandshake(this)
+//
+//        val amplitude = Amplitude(
+//            Configuration(
+//                apiKey = TrackUtil.TrackApi,
+//                context = applicationContext,
+//                defaultTracking = DefaultTrackingOptions.ALL,
+//            )
+//        )
+//        amplitude.track("Lumina Mobile")
+//
+//        val updateCheck = UpdateCheck()
+//        updateCheck.initiateHandshake(this)
 
 
 

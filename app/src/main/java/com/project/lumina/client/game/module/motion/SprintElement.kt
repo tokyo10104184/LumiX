@@ -14,11 +14,9 @@ class SprintElement(iconResId: Int = R.drawable.ic_run_fast_black_24dp) : Elemen
     iconResId,
     displayNameResId = R.string.module_sprint_display_name
 ) {
-
-    private var alwaysSprint by boolValue("Always Sprint", true)
-
     override fun beforePacketBound(interceptablePacket: InterceptablePacket) {
         val packet = interceptablePacket.packet
+
         if (packet is PlayerAuthInputPacket && isEnabled) {
             packet.inputData.add(PlayerAuthInputData.SPRINTING)
             packet.inputData.add(PlayerAuthInputData.START_SPRINTING)

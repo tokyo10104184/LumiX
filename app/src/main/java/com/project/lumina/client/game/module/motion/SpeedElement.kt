@@ -23,15 +23,10 @@ class SpeedElement(iconResId: Int = R.drawable.ic_run_black_24dp) : Element(
 
 
     override fun beforePacketBound(interceptablePacket: InterceptablePacket) {
-        if (!isEnabled) return
-
         val packet = interceptablePacket.packet
 
         if (packet is PlayerAuthInputPacket) {
-
             if (packet.motion.length() > 0.0 && packet.inputData.contains(PlayerAuthInputData.VERTICAL_COLLISION)) {
-
-
                 val motionPacket = SetEntityMotionPacket().apply {
                     runtimeEntityId = session.localPlayer.runtimeEntityId
                     motion = Vector3f.from(
@@ -40,7 +35,6 @@ class SpeedElement(iconResId: Int = R.drawable.ic_run_black_24dp) : Element(
                         session.localPlayer.motionZ.toDouble() * speedMultiplier
                     )
                 }
-
 
                 session.clientBound(motionPacket)
             }

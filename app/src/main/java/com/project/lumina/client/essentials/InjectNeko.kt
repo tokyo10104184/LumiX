@@ -11,25 +11,18 @@ import java.net.URL
 object InjectNeko{
     private const val PACK_URL = API.FILES_PACKS_LUMINA_PACK_MCPACK
 
-    suspend fun typeshit(
+    suspend fun injectNeko (
         context: Context,
         onProgress: (Float) -> Unit
     ) = withContext(Dispatchers.IO) {
         try {
-            
             val url = URL(PACK_URL)
             val fileName = url.path.substringAfterLast("/")
                 .takeIf { it.isNotEmpty() } ?: "lumina_pack.mcpack"
 
-
             val file = File(context.getExternalFilesDir(null), fileName)
 
-            
-            if (file.exists()) {
-
-            } else {
-
-                
+            if (!file.exists()) {
                 val connection = url.openConnection()
                 val totalSize = connection.contentLengthLong
                 var downloadedSize = 0L
@@ -54,14 +47,11 @@ object InjectNeko{
                 }
             }
 
-
             val contentUri = FileProvider.getUriForFile(
                 context,
                 "com.project.lumina.client.fileprovider",
                 file
             )
-
-
 
             val intent = Intent(Intent.ACTION_VIEW).apply {
                 setDataAndType(contentUri, "application/x-mcpack")
@@ -74,7 +64,6 @@ object InjectNeko{
                 context.startActivity(intent)
             }
         } catch (e: Exception) {
-
             throw e
         }
     }

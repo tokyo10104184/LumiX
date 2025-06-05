@@ -1,5 +1,6 @@
 package com.project.lumina.client.activity
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -31,28 +32,11 @@ class LaunchActivity : ComponentActivity() {
         enableEdgeToEdge()
 
 
-      val amplitude = Amplitude(
-            Configuration(
-                apiKey = TrackUtil.TrackApi,
-                context = applicationContext,
-                defaultTracking = DefaultTrackingOptions.ALL,
-            )
-        )
-         amplitude.track("Launch Activity Init")
-
-        val updateCheck = UpdateCheck()
-        updateCheck.initiateHandshake(this)
-
-        val verifier = HashCat.getInstance()
-        val isValid = verifier.LintHashInit(this)
-        if (isValid) {
-           
-        }
-
         WindowCompat.setDecorFitsSystemWindows(window, false)
         WindowInsetsControllerCompat(window, window.decorView).let { controller ->
             controller.hide(WindowInsetsCompat.Type.systemBars())
-            controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            controller.systemBarsBehavior =
+                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         }
 
         setContent {
@@ -62,7 +46,6 @@ class LaunchActivity : ComponentActivity() {
                 }
             }
         }
-
 
 
     }
