@@ -157,15 +157,6 @@ class VersionCheckerActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-      val amplitude = Amplitude(
-            Configuration(
-                apiKey = TrackUtil.TrackApi,
-                context = applicationContext,
-                defaultTracking = DefaultTrackingOptions.ALL,
-            )
-        )
-
-        amplitude.track("Version Checker Initialized")
         val viewModel: VersionCheckerViewModel by viewModels()
         viewModel.loadVersionConfig(this, configUrl)
         val updateCheck = UpdateCheck()
@@ -181,13 +172,15 @@ class VersionCheckerActivity : ComponentActivity() {
                         versionConfig == null -> {
                             val kson = HashCat.getInstance()
                             val matchJson = kson.LintHashInit(this)
-                            if (matchJson) { }
+
                             LoadingConfigurationScreen()
                         }
+
                         else -> {
                             val kson = HashCat.getInstance()
                             val matchJson = kson.LintHashInit(this)
-                            if (matchJson) { }
+                            if (matchJson) {
+                            }
                             val installedVersion = getInstalledMinecraftVersion()
                             if (isCompatibleVersion(installedVersion, versionConfig!!)) {
                                 startMainActivity()
