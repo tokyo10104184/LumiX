@@ -19,7 +19,7 @@ abstract class BaseEffectElement(
     displayNameResId = displayNameResId
 ) {
     protected val amplifierValue by floatValue("amplifier", 1f, 1f..5f)
-    protected val effect by EffectSetting(this, EntityDataTypes.VISIBLE_MOB_EFFECTS, effectSetting!!)
+    protected val effect by EffectSetting(this, EntityDataTypes.VISIBLE_MOB_EFFECTS, effectSetting!!.toInt())
 
     override fun onDisabled() {
         super.onDisabled()

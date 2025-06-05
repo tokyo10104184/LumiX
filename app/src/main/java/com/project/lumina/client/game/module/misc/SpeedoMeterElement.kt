@@ -57,7 +57,7 @@ class SpeedoMeterElement(iconResId: Int = R.drawable.ic_speedometer_black_24dp) 
                 SpeedometerOverlay.setOverlayEnabled(true)
             }
         } catch (e: Exception) {
-            eprintln(e)
+            println(e)
         }
     }
 
