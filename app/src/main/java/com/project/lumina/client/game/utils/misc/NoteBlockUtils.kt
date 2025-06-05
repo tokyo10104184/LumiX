@@ -1,4 +1,4 @@
-package com.project.lumina.client.game.utils
+package com.project.lumina.client.game.utils.misc
 
 import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled

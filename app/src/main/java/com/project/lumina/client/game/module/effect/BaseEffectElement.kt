@@ -12,14 +12,14 @@ abstract class BaseEffectElement(
     name: String,
     displayNameResId: Int,
     private val effectId: Int? = null,
-    private val effectSetting: Int = null
+    private val effectSetting: Number? = null
 ) : Element(
     name = name,
     category = CheatCategory.World,
     displayNameResId = displayNameResId
 ) {
     protected val amplifierValue by floatValue("amplifier", 1f, 1f..5f)
-    protected val effect by EffectSetting(this, EntityDataTypes.VISIBLE_MOB_EFFECTS, effectSetting)
+    protected val effect by EffectSetting(this, EntityDataTypes.VISIBLE_MOB_EFFECTS, effectSetting!!)
 
     override fun onDisabled() {
         super.onDisabled()

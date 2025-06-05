@@ -32,7 +32,7 @@ class BlockMapping(
     }
 
     fun getRuntimeByDefinition(definition: BlockDefinition): Int {
-        return gameToRuntimeMap[definition] ?: 0.also { println("❌ No block found for $definition") }
+        return gameToRuntimeMap[definition] ?: 0.also { println("No block found for $definition") }
     }
 
     companion object {
@@ -68,7 +68,7 @@ class BlockMapping(
 
         override fun readMapping(version: Short): BlockMapping {
             if (!availableVersions.contains(version)) {
-                error("❌ BlockMapping: Version $version not available!")
+                error("BlockMapping: Version $version not available!")
             }
             return read(context, version)
         }

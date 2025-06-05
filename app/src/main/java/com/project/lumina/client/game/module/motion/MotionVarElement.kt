@@ -8,11 +8,7 @@ import com.project.lumina.client.constructors.Element
 import com.project.lumina.client.constructors.CheatCategory
 import org.cloudburstmc.protocol.bedrock.packet.UpdateAbilitiesPacket
 
-
-
-
-class MotionVarElement :
-    Element("_var_", CheatCategory.Motion) {
+class MotionVarElement : Element("_var_", CheatCategory.Motion) {
 
     init {
         isEnabled = true

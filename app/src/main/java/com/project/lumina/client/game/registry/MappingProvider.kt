@@ -14,10 +14,10 @@ abstract class MappingProvider<T>(val context: Context) {
             val stream = context.assets.open(indexPath)
             val json = JsonParser.parseReader(stream.reader(Charsets.UTF_8)).asJsonArray
             val versions = json.map { it.asShort }.sortedBy { it }.toTypedArray()
-            Log.i("MappingProvider", "✅ Loaded available versions from $indexPath: ${versions.joinToString()}")
+            Log.i("MappingProvider", "Loaded available versions from $indexPath: ${versions.joinToString()}")
             versions
         } catch (e: Exception) {
-            Log.e("MappingProvider", "❌ Failed to load available versions from $indexPath", e)
+            Log.e("MappingProvider", "Failed to load available versions from $indexPath", e)
             throw e
         }
     }
@@ -25,12 +25,12 @@ abstract class MappingProvider<T>(val context: Context) {
     open fun craftMapping(protocolVersion: Int): T {
         val available = availableVersions.filter { it <= protocolVersion }
         if (available.isEmpty()) {
-            Log.w("MappingProvider", "⚠️ No available mapping version <= $protocolVersion in $assetPath")
+            Log.w("MappingProvider", "No available mapping version <= $protocolVersion in $assetPath")
             error("No available mapping version found for protocol $protocolVersion")
         }
 
         val selectedVersion = available.max()
-        Log.i("MappingProvider", "📦 Selected mapping version $selectedVersion for protocol $protocolVersion")
+        Log.i("MappingProvider", "Selected mapping version $selectedVersion for protocol $protocolVersion")
         return readMapping(selectedVersion)
     }
 

@@ -1,4 +1,4 @@
-package com.project.lumina.client.game.utils
+package com.project.lumina.client.game.utils.misc
 
 import org.cloudburstmc.nbt.NbtType
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData

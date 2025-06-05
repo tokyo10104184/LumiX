@@ -1,69 +1,64 @@
-package com.project.lumina.client.game.utils;
+package com.project.lumina.client.game.utils.misc
 
-public class TimerUtil {
+class TimerUtil {
+    private var lastMS: Long = 0
 
-    private long lastMS;
-    private long time;
-    private long ms = this.getCurrentMS();
+    var time: Long = 0
+        get() = System.nanoTime() / 1000000L
 
-    public TimerUtil() {
-        super();
-        this.setTime(-1L);
-    }
-    //StopWatch
-    public final long getElapsedTime() {
-        return this.getCurrentMS() - this.ms;
+    private var ms = this.currentMS
+
+    init {
+        this.time = -1L
     }
 
-    public final boolean elapsed(long milliseconds) {
-        return this.getCurrentMS() - this.ms > milliseconds;
+    val elapsedTime: Long
+        get() = this.currentMS - this.ms
+
+    fun elapsed(milliseconds: Long): Boolean {
+        return this.currentMS - this.ms > milliseconds
     }
 
-    public final void resetStopWatch() {
-        this.ms = this.getCurrentMS();
+    fun resetStopWatch() {
+        this.ms = this.currentMS
     }
 
-    private long getCurrentMS() {
-        return System.nanoTime() / 1000000L;
+    private val currentMS: Long
+        get() = System.nanoTime() / 1000000L
+
+    fun hit(milliseconds: Long): Boolean {
+        return (currentMS - lastMS) >= milliseconds
     }
-    public  boolean hit(long milliseconds) {
-        return (getCurrentMS() - lastMS) >= milliseconds;
-    }
-    public boolean hasReached(double milliseconds) {
-        if ((double)(this.getCurrentMS() - this.lastMS) >= milliseconds) {
-            return true;
+
+    fun hasReached(milliseconds: Double): Boolean {
+        if ((this.currentMS - this.lastMS).toDouble() >= milliseconds) {
+            return true
         }
-        return false;
+        return false
     }
 
-    public void reset() {
-        this.lastMS = this.getCurrentMS();
-        this.setTime(System.currentTimeMillis());
+    fun reset() {
+        this.lastMS = this.currentMS
+        this.time = System.currentTimeMillis()
     }
 
-    public boolean delay(float delay) {
-        return (float) (getTime() - this.lastMS) >= delay;
+    fun delay(delay: Float): Boolean {
+        return (time - this.lastMS).toFloat() >= delay
     }
-    public boolean isDelayComplete(long delay) {
+
+    fun isDelayComplete(delay: Long): Boolean {
         if (System.currentTimeMillis() - this.lastMS > delay) {
-            return true;
+            return true
         }
-        return false;
-    }
-    public long getTime() {
-        return System.nanoTime() / 1000000L;
+        return false
     }
 
-    public boolean hasTimePassed(final long MS) {
-        return System.currentTimeMillis() >= this.getTime() + MS;
+    fun hasTimePassed(MS: Long): Boolean {
+        return System.currentTimeMillis() >= this.time + MS
     }
 
-    public long hasTimeLeft(final long MS) {
-        return MS + this.getTime() - System.currentTimeMillis();
-    }
-
-    public void setTime(long time) {
-        this.time = time;
+    fun hasTimeLeft(MS: Long): Long {
+        return MS + this.time - System.currentTimeMillis()
     }
 }
 

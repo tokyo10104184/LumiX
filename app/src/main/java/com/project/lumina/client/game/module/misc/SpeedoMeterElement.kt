@@ -51,14 +51,13 @@ class SpeedoMeterElement(iconResId: Int = R.drawable.ic_speedometer_black_24dp) 
 ) {
     override fun onEnabled() {
         super.onEnabled()
+
         try {
             if (isSessionCreated) {
                 SpeedometerOverlay.setOverlayEnabled(true)
-            } else {
-                println("Session not created, cannot enable SpeedoMeter overlay.")
             }
         } catch (e: Exception) {
-            println("Error enabling SpeedoMeter overlay: ${e.message}")
+            eprintln(e)
         }
     }
 
@@ -70,9 +69,10 @@ class SpeedoMeterElement(iconResId: Int = R.drawable.ic_speedometer_black_24dp) 
     }
 
     override fun beforePacketBound(interceptablePacket: InterceptablePacket) {
+        if (!isEnabled) return
+
         val packet = interceptablePacket.packet
 
-        if (!isEnabled) return
         if (packet is PlayerAuthInputPacket) {
             session.showSpeedometer(packet.position)
         }

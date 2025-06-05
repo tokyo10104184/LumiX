@@ -1,4 +1,4 @@
-package com.project.lumina.client.game.utils
+package com.project.lumina.client.game.utils.math
 
 import org.cloudburstmc.math.vector.Vector3f
 import org.cloudburstmc.math.vector.Vector3i
