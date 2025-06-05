@@ -68,7 +68,7 @@ import android.widget.Toast
 import com.project.lumina.client.R
 import com.project.lumina.client.activity.MainActivity
 import com.project.lumina.client.constructors.GameManager
-import com.project.lumina.client.game.module.config.ConfigManagerElement
+import com.project.lumina.client.game.module.api.config.ConfigManagerElement
 import kotlinx.coroutines.delay
 
 @Composable

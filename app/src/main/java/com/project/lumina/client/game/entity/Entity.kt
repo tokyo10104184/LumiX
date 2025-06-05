@@ -1,7 +1,7 @@
 package com.project.lumina.client.game.entity
 
-import com.project.lumina.client.game.data.Effect
 import com.project.lumina.client.game.inventory.EntityInventory
+import com.project.lumina.client.game.utils.constants.Effect
 import org.cloudburstmc.math.vector.Vector2f
 import org.cloudburstmc.math.vector.Vector3f
 import org.cloudburstmc.protocol.bedrock.data.AttributeData

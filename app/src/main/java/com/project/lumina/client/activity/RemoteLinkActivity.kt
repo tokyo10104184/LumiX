@@ -17,7 +17,7 @@ import com.amplitude.android.Amplitude
 import com.amplitude.android.Configuration
 import com.amplitude.android.DefaultTrackingOptions
 import com.project.lumina.client.constructors.GameManager
-import com.project.lumina.client.game.module.config.ConfigManagerElement
+import com.project.lumina.client.game.module.api.config.ConfigManagerElement
 import com.project.lumina.client.essentials.TrackUtil
 import com.project.lumina.client.util.HashCat
 import com.project.lumina.client.util.UpdateCheck

@@ -2,7 +2,7 @@ package com.project.lumina.client.game.utils.misc
 
 import com.google.gson.JsonParser
 import com.project.lumina.client.constructors.NetBound
-import com.project.lumina.client.game.data.Effect
+import com.project.lumina.client.game.utils.constants.Effect
 import com.project.lumina.client.game.registry.BlockDefinition
 import com.project.lumina.client.game.registry.MappingProvider
 import com.project.lumina.client.game.utils.constants.Enchantment
