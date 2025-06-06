@@ -1,17 +1,13 @@
 package com.project.lumina.client.game.module.impl.motion
 
-
-import com.project.lumina.client.R
-import com.project.lumina.client.game.InterceptablePacket
-import com.project.lumina.client.constructors.Element
 import com.project.lumina.client.constructors.CheatCategory
+import com.project.lumina.client.constructors.Element
+import com.project.lumina.client.game.InterceptablePacket
 import com.project.lumina.client.util.AssetManager
 import org.cloudburstmc.math.vector.Vector3f
 import org.cloudburstmc.protocol.bedrock.data.PlayerAuthInputData
 import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket
 import org.cloudburstmc.protocol.bedrock.packet.SetEntityMotionPacket
-
-
 
 class SpeedElement(iconResId: Int = AssetManager.getAsset("ic_run_black_24dp")) : Element(
     name = "Speed",
@@ -22,8 +18,9 @@ class SpeedElement(iconResId: Int = AssetManager.getAsset("ic_run_black_24dp")) 
 
     private var speedMultiplier by floatValue("Speed", 1.5f, 1.1f..3.0f)
 
-
     override fun beforePacketBound(interceptablePacket: InterceptablePacket) {
+        if (!isEnabled) return
+
         val packet = interceptablePacket.packet
 
         if (packet is PlayerAuthInputPacket) {
