@@ -74,7 +74,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.project.lumina.client.R
 import com.project.lumina.client.constructors.GameManager
-import com.project.lumina.client.game.module.config.ConfigManagerElement
+import com.project.lumina.client.game.module.api.config.ConfigManagerElement
 import android.app.Activity
 import android.content.Intent
 import com.project.lumina.client.activity.MainActivity

@@ -52,7 +52,7 @@ import com.project.lumina.client.R
 import com.project.lumina.client.constructors.CheatCategory
 import com.project.lumina.client.constructors.GameManager
 import com.project.lumina.client.constructors.ModuleContent
-import com.project.lumina.client.game.module.config.ConfigManagerElement
+import com.project.lumina.client.game.module.api.config.ConfigManagerElement
 import com.project.lumina.client.overlay.OverlayManager
 import com.project.lumina.client.overlay.OverlayWindow
 import com.project.lumina.client.ui.component.NavigationRailX

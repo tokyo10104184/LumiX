@@ -10,7 +10,6 @@ import com.project.lumina.client.overlay.OverlayManager
 import com.project.lumina.client.overlay.OverlayModuleList
 import com.project.lumina.client.overlay.OverlayNotification
 import com.project.lumina.client.overlay.OverlayShortcutButton
-import com.project.lumina.client.util.translatedSelf
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -18,6 +17,7 @@ import kotlinx.serialization.json.boolean
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.int
 import kotlinx.serialization.json.put
+
 abstract class Element(
     val name: String,
     val category: CheatCategory,

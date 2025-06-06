@@ -38,7 +38,6 @@ package com.project.lumina.client.activity
 
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -58,14 +57,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.amplitude.android.Amplitude
-import com.amplitude.android.Configuration
-import com.amplitude.android.DefaultTrackingOptions
 
 import com.project.lumina.client.ui.theme.LuminaClientTheme
-import com.project.lumina.client.essentials.TrackUtil
-import com.project.lumina.client.util.HashCat
-import com.project.lumina.client.util.UpdateCheck
+import androidx.core.net.toUri
 
 class MinecraftCheckActivity : ComponentActivity() {
     private val minecraftPackage = "com.mojang.minecraftpe"
@@ -74,23 +68,8 @@ class MinecraftCheckActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        val amplitude = Amplitude(
-            Configuration(
-                apiKey = TrackUtil.TrackApi,
-                context = applicationContext,
-                defaultTracking = DefaultTrackingOptions.ALL,
-            )
-        )
-        amplitude.track("Initialized Lumina")
-        val updateCheck = UpdateCheck()
-        updateCheck.initiateHandshake(this)
-
         if (isMinecraftInstalled()) {
-            val verifier = HashCat.getInstance()
-            val isValid = verifier.LintHashInit(this)
-            if (isValid) {}
             startVersionCheckerActivity()
-
         } else {
             
             setContent {
@@ -125,7 +104,7 @@ class MinecraftCheckActivity : ComponentActivity() {
 
     private fun openPlayStore() {
         val intent = Intent(Intent.ACTION_VIEW).apply {
-            data = Uri.parse("https://play.google.com/store/apps/details?id=$minecraftPackage&hl=en&pli=1")
+            data = "https://play.google.com/store/apps/details?id=$minecraftPackage&hl=en&pli=1".toUri()
             setPackage("com.android.vending")
         }
         
@@ -134,7 +113,7 @@ class MinecraftCheckActivity : ComponentActivity() {
         } else {
             
             val webIntent = Intent(Intent.ACTION_VIEW).apply {
-                data = Uri.parse("https://play.google.com/store/apps/details?id=$minecraftPackage&hl=en&pli=1")
+                data = "https://play.google.com/store/apps/details?id=$minecraftPackage&hl=en&pli=1".toUri()
             }
             startActivity(webIntent)
         }

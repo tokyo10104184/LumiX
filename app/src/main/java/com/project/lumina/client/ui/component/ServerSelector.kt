@@ -92,7 +92,7 @@ fun ServerSelector() {
         Triple("Cube Craft", "play.cubecraft.net", 19132),
         Triple("Galaxite", "play.galaxite.net", 19132),
         Triple("Zeqa MC", "zeqa.net", 19132),
-        Triple("Vanity", "play.venitymc.com", 19132),
+        Triple("Venity", "play.venitymc.com", 19132),
         Triple("PixelBlock", "buzz.pixelblockmc.com", 19132)
     )
 

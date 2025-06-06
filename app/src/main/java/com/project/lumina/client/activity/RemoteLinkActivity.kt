@@ -17,8 +17,8 @@ import com.amplitude.android.Amplitude
 import com.amplitude.android.Configuration
 import com.amplitude.android.DefaultTrackingOptions
 import com.project.lumina.client.constructors.GameManager
-import com.project.lumina.client.game.module.config.ConfigManagerElement
-import com.project.lumina.client.essentials.TrackUtil
+import com.project.lumina.client.game.module.api.config.ConfigManagerElement
+import com.project.lumina.client.util.TrackUtil
 import com.project.lumina.client.util.HashCat
 import com.project.lumina.client.util.UpdateCheck
 
@@ -45,7 +45,6 @@ class RemoteLinkActivity : ComponentActivity() {
         }
     }
     
-    
     val importConfigLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -70,7 +69,7 @@ class RemoteLinkActivity : ComponentActivity() {
 
         val amplitude = Amplitude(
             Configuration(
-                apiKey = TrackUtil.TrackApi,
+                apiKey = TrackUtil.TRACK_API,
                 context = applicationContext,
                 defaultTracking = DefaultTrackingOptions.ALL,
             )
@@ -83,7 +82,7 @@ class RemoteLinkActivity : ComponentActivity() {
         setContent {
             LuminaClientTheme {
                 CompositionLocalProvider(LocalOverscrollConfiguration provides null) {
-           RemoteLink()
+                    RemoteLink()
                 }
             }
         }

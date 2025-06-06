@@ -7,55 +7,14 @@ import android.os.Process
 import com.project.lumina.client.activity.CrashHandlerActivity
 
 class AppContext : Application(), Thread.UncaughtExceptionHandler {
-
     companion object {
-
         lateinit var instance: AppContext
             private set
-
     }
 
     override fun onCreate() {
         super.onCreate()
         instance = this
-
-
-
-
-
-
-
-
-
-
-
-
-
-//
-
-
-
-
-
-
-//
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         Thread.setDefaultUncaughtExceptionHandler(this)
     }
@@ -64,8 +23,10 @@ class AppContext : Application(), Thread.UncaughtExceptionHandler {
         val stackTrace = e.stackTraceToString()
         val deviceInfo = buildString {
             val declaredFields = Build::class.java.declaredFields
+
             for (field in declaredFields) {
                 field.isAccessible = true
+
                 try {
                     val name = field.name
                     var value = field.get(null)
@@ -79,11 +40,9 @@ class AppContext : Application(), Thread.UncaughtExceptionHandler {
                     append(name)
                     append(": ")
                     appendLine(value)
-                } catch (_: Throwable) {
-                }
+                } catch (_: Throwable) { }
             }
         }
-
 
         startActivity(Intent(this, CrashHandlerActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
@@ -98,6 +57,7 @@ class AppContext : Application(), Thread.UncaughtExceptionHandler {
                 appendLine("Stack Trace: $stackTrace")
             })
         })
+
         Process.killProcess(Process.myPid())
     }
 

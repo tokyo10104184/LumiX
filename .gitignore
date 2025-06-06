@@ -28,3 +28,10 @@ app/google-services.json
 # Android Profiling
 *.hprof
 .kotlin/
+
+.git/
+
+# google
+*google_services*
+/app/src/google-services.json
+/google-services.json

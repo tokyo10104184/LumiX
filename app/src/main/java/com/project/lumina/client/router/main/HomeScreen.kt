@@ -8,7 +8,6 @@ package com.project.lumina.client.router.main
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.net.wifi.WifiManager
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -16,14 +15,11 @@ import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
@@ -55,9 +51,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material.icons.rounded.Pause
 import androidx.compose.material.icons.rounded.PlayArrow
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Public
-import androidx.compose.material.icons.filled.Numbers
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -70,7 +63,6 @@ import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -88,8 +80,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.foundation.background
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalConfiguration
@@ -104,9 +94,9 @@ import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.project.lumina.client.R
 import com.project.lumina.client.constructors.AccountManager
-import com.project.lumina.client.essentials.InjectNeko
-import com.project.lumina.client.essentials.MCPackUtils
-import com.project.lumina.client.essentials.ServerInit
+import com.project.lumina.client.util.InjectNeko
+import com.project.lumina.client.util.MCPackUtils
+import com.project.lumina.client.util.ServerInit
 import com.project.lumina.client.overlay.NotificationType
 import com.project.lumina.client.overlay.SimpleOverlayNotification
 import com.project.lumina.client.service.Services
@@ -861,7 +851,7 @@ fun HomeScreen(
 
                                                             InjectNekoPack == true -> {
                                                                 try {
-                                                                    InjectNeko.typeshit(
+                                                                    InjectNeko.injectNeko(
                                                                         context = context,
                                                                         onProgress = {
                                                                             progress = it

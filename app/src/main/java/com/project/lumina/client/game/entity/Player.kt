@@ -29,8 +29,4 @@ open class Player(
         }
     }
 
-    override fun toString(): String {
-        return "EntityPlayer(entityId=$runtimeEntityId, uniqueId=$uniqueEntityId, username=$username, uuid=$uuid, posX=$posX, posY=$posY, posZ=$posZ)"
-    }
-
 }

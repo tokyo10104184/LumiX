@@ -57,8 +57,4 @@ open class EntityInventory(val entity: Entity) : AbstractInventory(0) {
             boots = packet.boots
         }
     }
-
-    override fun getNetworkSlotInfo(slot: Int): Pair<Int, Int> {
-        error("not supported")
-    }
 }
