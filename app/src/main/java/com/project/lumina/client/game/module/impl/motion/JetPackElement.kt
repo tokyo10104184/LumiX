@@ -12,11 +12,11 @@ import org.cloudburstmc.protocol.bedrock.packet.SetEntityMotionPacket
 import kotlin.math.cos
 import kotlin.math.sin
 
-class JetPackElement(iconResId: Int = R.drawable.ic_ethereum_black_24dp) : Element(
+class JetPackElement(iconResId: Int = AssetManager.getAsset("ic_ethereum_black_24dp")) : Element(
     name = "Jetpack",
     category = CheatCategory.Motion,
     iconResId,
-    displayNameResId = AssetManager.getAsset("module_jet_pack_display_name")
+    displayNameResId = AssetManager.getString("module_jet_pack_display_name")
 ) {
     private var speed by floatValue("Speed", 0.5f, 0.1f..1.5f)
 

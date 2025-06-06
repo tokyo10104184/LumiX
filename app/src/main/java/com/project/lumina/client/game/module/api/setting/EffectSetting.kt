@@ -28,7 +28,7 @@ class EffectSetting(
 }
 
 
-object EFFECTS {
+object Effects {
     const val ABSORPTION = 22
     const val BAD_OMEN = 28
     const val BLINDNESS = 15

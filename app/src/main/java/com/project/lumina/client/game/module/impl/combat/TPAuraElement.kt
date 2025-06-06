@@ -15,12 +15,13 @@ import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.sqrt
 import kotlin.math.atan2
+import com.project.lumina.client.util.AssetManager
 
-class TPAuraElement(iconResId: Int = R.drawable.ic_dice_3_outline_black_24dp) : Element(
+class TPAuraElement(iconResId: Int = AssetManager.getAsset("ic_dice_3_outline_black_24dp")) : Element(
     name = "TpAura",
     category = CheatCategory.Combat,
     iconResId,
-    displayNameResId = R.string.module_tpaura_display_name
+    displayNameResId = AssetManager.getString("module_tpaura_display_name")
 ) {
     
     private var teleportBehind by boolValue("Teleport Behind", false)

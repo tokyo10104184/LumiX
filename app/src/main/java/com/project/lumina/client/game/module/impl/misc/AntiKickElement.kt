@@ -37,30 +37,24 @@
 package com.project.lumina.client.game.module.impl.misc
 
 import android.util.Log
-import com.project.lumina.client.R
 import com.project.lumina.client.game.InterceptablePacket
 import com.project.lumina.client.constructors.Element
 import com.project.lumina.client.constructors.CheatCategory
+import com.project.lumina.client.util.AssetManager
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.cloudburstmc.math.vector.Vector3f
 import org.cloudburstmc.protocol.bedrock.data.DisconnectFailReason
-import org.cloudburstmc.protocol.bedrock.packet.DisconnectPacket
-import org.cloudburstmc.protocol.bedrock.packet.NetworkSettingsPacket
-import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket
-import org.cloudburstmc.protocol.bedrock.packet.PlayStatusPacket
-import org.cloudburstmc.protocol.bedrock.packet.SetEntityMotionPacket
-import org.cloudburstmc.protocol.bedrock.packet.TextPacket
-import org.cloudburstmc.protocol.bedrock.packet.TransferPacket
+import org.cloudburstmc.protocol.bedrock.packet.*
 import kotlin.random.Random
 
-class AntiKickElement(iconResId: Int = ir.alirezaivaz.tablericons.R.drawable.ic_alien) : Element(
+class AntiKickElement : Element(
     name = "AntiKick",
     category = CheatCategory.Misc,
-    displayNameResId = R.string.module_antikick_display_name,
-    iconResId = iconResId
+    displayNameResId = AssetManager.getString("module_antikick_display_name"),
+    iconResId = AssetManager.getAsset("ic_alien")
 ) {
     
     private var disconnectPacketValue by boolValue("Disconnect Packet", true)

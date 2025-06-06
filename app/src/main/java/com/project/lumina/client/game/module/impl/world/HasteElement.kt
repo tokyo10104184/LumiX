@@ -5,7 +5,7 @@ import com.project.lumina.client.game.InterceptablePacket
 import com.project.lumina.client.constructors.Element
 import com.project.lumina.client.constructors.CheatCategory
 import com.project.lumina.client.game.utils.constants.Effect
-import com.project.lumina.client.game.module.api.setting.EFFECTS
+import com.project.lumina.client.game.module.api.setting.Effects
 import com.project.lumina.client.game.module.api.setting.EffectSetting
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes
 import org.cloudburstmc.protocol.bedrock.packet.MobEffectPacket
@@ -18,7 +18,7 @@ class HasteElement : Element(
 ) {
 
     private val amplifierValue by floatValue("Amplifier", 1f, 1f..5f)
-    private val effect by EffectSetting(this, EntityDataTypes.VISIBLE_MOB_EFFECTS, EFFECTS.HASTE)
+    private val effect by EffectSetting(this, EntityDataTypes.VISIBLE_MOB_EFFECTS, Effects.HASTE)
 
     override fun onDisabled() {
         super.onDisabled()

@@ -41,13 +41,14 @@ import com.project.lumina.client.game.InterceptablePacket
 import com.project.lumina.client.constructors.Element
 import com.project.lumina.client.constructors.CheatCategory
 import com.project.lumina.client.overlay.SpeedometerOverlay
+import com.project.lumina.client.util.AssetManager
 import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket
 
-class SpeedoMeterElement(iconResId: Int = R.drawable.ic_speedometer_black_24dp) : Element(
+class SpeedoMeterElement(iconResId: Int = AssetManager.getAsset("ic_speedometer_black_24dp")) : Element(
     name = "SpeedoMeter",
     category = CheatCategory.Misc,
     iconResId,
-    displayNameResId = R.string.module_speedm_display_name
+    displayNameResId = AssetManager.getString("module_speedm_display_name")
 ) {
     override fun onEnabled() {
         super.onEnabled()

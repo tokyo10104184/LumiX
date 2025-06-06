@@ -19,7 +19,7 @@
  * It's about making things better. Sharper. Cleaner. Smarter.
  *
  * So go ahead, fork it — but bring something new to the table,
- * or don’t bother pretending.
+ * or don't bother pretending.
  *
  * This message is philosophical. It does not override your legal rights under GPLv3.
  * ─────────────────────────────────────────────────────────────────────────────
@@ -40,16 +40,17 @@ import com.project.lumina.client.R
 import com.project.lumina.client.game.InterceptablePacket
 import com.project.lumina.client.constructors.Element
 import com.project.lumina.client.constructors.CheatCategory
+import com.project.lumina.client.util.AssetManager
 import org.cloudburstmc.math.vector.Vector3i
 import org.cloudburstmc.protocol.bedrock.packet.SubChunkRequestPacket
 
 
 
 
-class CrasherElement(iconResId: Int = ir.alirezaivaz.tablericons.R.drawable.ic_at_off) : Element(
+class CrasherElement(iconResId: Int = AssetManager.getAsset("ic_at_off")) : Element(
     name = "Crash",
     category = CheatCategory.Misc,
-    displayNameResId = R.string.module_crasher_display_name,
+    displayNameResId = AssetManager.getString("module_crasher_display_name"),
     iconResId = iconResId
 ) {
     override fun beforePacketBound(interceptablePacket: InterceptablePacket) {

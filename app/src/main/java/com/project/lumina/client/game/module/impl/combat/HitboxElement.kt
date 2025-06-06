@@ -11,12 +11,13 @@ import org.cloudburstmc.protocol.bedrock.data.entity.EntityEventType
 import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket
 import org.cloudburstmc.protocol.bedrock.packet.SetEntityDataPacket
 import org.cloudburstmc.protocol.bedrock.packet.EntityEventPacket
+import com.project.lumina.client.util.AssetManager
 
-class HitboxElement(iconResId: Int = ir.alirezaivaz.tablericons.R.drawable.ic_box) : Element(
+class HitboxElement(iconResId: Int = AssetManager.getAsset("ic_box")) : Element(
     name = "Hitbox",
     category = CheatCategory.Combat,
     iconResId,
-    displayNameResId = R.string.module_hitbox_display_name
+    displayNameResId = AssetManager.getString("module_hitbox_display_name")
 ) {
 
     private val hitboxWidth by floatValue("Width", 1.5f, 0.5f..8f)

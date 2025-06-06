@@ -1,9 +1,9 @@
 package com.project.lumina.client.game.module.impl.misc
 
-import com.project.lumina.client.R
 import com.project.lumina.client.game.InterceptablePacket
 import com.project.lumina.client.constructors.Element
 import com.project.lumina.client.constructors.CheatCategory
+import com.project.lumina.client.util.AssetManager
 import org.cloudburstmc.math.vector.Vector3f
 import org.cloudburstmc.protocol.bedrock.packet.MoveEntityAbsolutePacket
 import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket
@@ -15,7 +15,7 @@ import kotlin.math.sqrt
 class PositionLoggerElement : Element(
     name = "PosLogger",
     category = CheatCategory.Misc,
-    displayNameResId = R.string.module_position_logger_display_name
+    displayNameResId = AssetManager.getString("module_position_logger_display_name")
 ) {
 
     private var playerPosition = Vector3f.from(0f, 0f, 0f)

@@ -13,11 +13,12 @@ import com.project.lumina.client.game.entity.MobList
 import com.project.lumina.client.game.entity.Player
 import com.project.lumina.client.overlay.TargetHudOverlay
 import java.util.Locale
+import com.project.lumina.client.util.AssetManager
 
-class TargetHud(iconResId: Int = ir.alirezaivaz.tablericons.R.drawable.ic_target) : Element(
+class TargetHud(iconResId: Int = AssetManager.getAsset("ic_target")) : Element(
     name = "TargetHud",
     category = CheatCategory.Visual,
-    displayNameResId = R.string.module_targethud,
+    displayNameResId = AssetManager.getString("module_targethud"),
     iconResId = iconResId
 ) {
     private val playerOnly = true

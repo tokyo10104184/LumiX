@@ -4,6 +4,7 @@ import com.project.lumina.client.R
 import com.project.lumina.client.game.InterceptablePacket
 import com.project.lumina.client.constructors.Element
 import com.project.lumina.client.constructors.CheatCategory
+import com.project.lumina.client.util.AssetManager
 import org.cloudburstmc.math.vector.Vector3f
 import org.cloudburstmc.protocol.bedrock.data.PlayerAuthInputData
 import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket
@@ -33,7 +34,7 @@ import kotlin.math.sin
  * It's about making things better. Sharper. Cleaner. Smarter.
  *
  * So go ahead, fork it — but bring something new to the table,
- * or don’t bother pretending.
+ * or don't bother pretending.
  *
  * This message is philosophical. It does not override your legal rights under GPLv3.
  * ─────────────────────────────────────────────────────────────────────────────
@@ -47,11 +48,11 @@ import kotlin.math.sin
  *
  * Full text: https://www.gnu.org/licenses/gpl-3.0.html
  */
-class LongJumpElement(iconResId: Int = R.drawable.ic_waves_black_24dp) : Element(
+class LongJumpElement(iconResId: Int = AssetManager.getAsset("ic_waves_black_24dp")) : Element(
     name = "LongJump",
     category = CheatCategory.Motion,
     iconResId,
-    displayNameResId = R.string.module_long_jump_display_name
+    displayNameResId = AssetManager.getString("module_long_jump_display_name")
 ) {
 
     private var jumpHeight by floatValue("Jump Height", 1f, 0.5f..5f)

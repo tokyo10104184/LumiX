@@ -4,17 +4,18 @@ import com.project.lumina.client.R
 import com.project.lumina.client.game.InterceptablePacket
 import com.project.lumina.client.constructors.Element
 import com.project.lumina.client.constructors.CheatCategory
+import com.project.lumina.client.util.AssetManager
 import org.cloudburstmc.math.vector.Vector3f
 import org.cloudburstmc.protocol.bedrock.data.PlayerAuthInputData
 import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket
 import org.cloudburstmc.protocol.bedrock.packet.SetEntityMotionPacket
 
 
-class BhopElement(iconResId: Int = R.drawable.ic_chevron_double_up_black_24dp) : Element(
+class BhopElement(iconResId: Int = AssetManager.getAsset("ic_chevron_double_up_black_24dp")) : Element(
     name = "Bhop",
     category = CheatCategory.Motion,
     iconResId,
-    displayNameResId = R.string.module_bhop_display_name
+    displayNameResId = AssetManager.getString("module_bhop_display_name")
 ) {
 
     private val jumpHeight by floatValue("Jump Height", 0.42f, 0.4f..3.0f)

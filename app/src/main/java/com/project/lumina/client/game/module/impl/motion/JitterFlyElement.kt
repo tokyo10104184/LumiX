@@ -11,12 +11,13 @@ import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket
 import org.cloudburstmc.protocol.bedrock.packet.SetEntityMotionPacket
 import kotlin.math.cos
 import kotlin.math.sin
+import com.project.lumina.client.util.AssetManager
 
-class JitterFlyElement(iconResId: Int = R.drawable.ic_menu_arrow_up_black_24dp) : Element(
+class JitterFlyElement(iconResId: Int = AssetManager.getAsset("ic_menu_arrow_up_black_24dp")) : Element(
     name = "Jitterfly",
     category = CheatCategory.Motion,
     iconResId,
-    displayNameResId = R.string.module_jitterfly_display_name
+    displayNameResId = AssetManager.getString("module_jitterfly_display_name")
 ) {
     private val glideSpeed by floatValue("Motion", 0.0f, -2.0f..1.0f)
     private val verticalSpeedUp by floatValue("Up Speed", 0.2f, 0.1f..1.0f)

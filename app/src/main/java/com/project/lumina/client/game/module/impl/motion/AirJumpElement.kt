@@ -4,16 +4,17 @@ import com.project.lumina.client.R
 import com.project.lumina.client.game.InterceptablePacket
 import com.project.lumina.client.constructors.Element
 import com.project.lumina.client.constructors.CheatCategory
+import com.project.lumina.client.util.AssetManager
 import org.cloudburstmc.math.vector.Vector3f
 import org.cloudburstmc.protocol.bedrock.data.PlayerAuthInputData
 import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket
 import org.cloudburstmc.protocol.bedrock.packet.SetEntityMotionPacket
 
-class AirJumpElement(iconResId: Int = R.drawable.ic_cloud_upload_black_24dp) : Element(
+class AirJumpElement(iconResId: Int = AssetManager.getAsset("ic_cloud_upload_black_24dp")) : Element(
     name = "AirJump",
     category = CheatCategory.Motion,
     iconResId,
-    displayNameResId = R.string.module_air_jump_display_name
+    displayNameResId = AssetManager.getString("module_air_jump_display_name")
 ) {
 
     override fun beforePacketBound(interceptablePacket: InterceptablePacket) {

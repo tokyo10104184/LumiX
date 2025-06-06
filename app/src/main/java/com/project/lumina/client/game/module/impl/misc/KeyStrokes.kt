@@ -1,16 +1,16 @@
 package com.project.lumina.client.game.module.impl.misc
 
-import com.project.lumina.client.R
 import com.project.lumina.client.constructors.CheatCategory
 import com.project.lumina.client.constructors.Element
 import com.project.lumina.client.game.InterceptablePacket
 import com.project.lumina.client.overlay.KeystrokesOverlay
+import com.project.lumina.client.util.AssetManager
 import org.cloudburstmc.protocol.bedrock.data.PlayerAuthInputData.*
 import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket
 import kotlinx.coroutines.*
 import kotlin.math.*
 
-class KeyStrokes : Element("KeyStrokes", CheatCategory.Misc, R.string.module_keystrokes) {
+class KeyStrokes : Element("KeyStrokes", CheatCategory.Misc, AssetManager.getString("module_keystrokes")) {
     private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
     private var isJumping = false
     private var lastJump = 0L

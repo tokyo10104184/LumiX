@@ -23,12 +23,13 @@ import org.cloudburstmc.protocol.bedrock.packet.SetEntityMotionPacket
 import org.cloudburstmc.protocol.bedrock.packet.SetPlayerGameTypePacket
 import org.cloudburstmc.protocol.bedrock.packet.TextPacket
 import org.cloudburstmc.protocol.bedrock.packet.UpdateAbilitiesPacket
+import com.project.lumina.client.util.AssetManager
 
-class FreeCameraElement(iconResId: Int = R.drawable.ic_movie_open_black_24dp) : Element(
+class FreeCameraElement(iconResId: Int = AssetManager.getAsset("ic_movie_open_black_24dp")) : Element(
     name = "FreeCam",
     category = CheatCategory.Visual,
     iconResId,
-    displayNameResId = R.string.module_free_camera_display_name
+    displayNameResId = AssetManager.getString("module_free_camera_display_name")
 ) {
 
     private var originalPosition: Vector3f? = null

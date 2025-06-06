@@ -4,6 +4,7 @@ import com.project.lumina.client.R
 import com.project.lumina.client.game.InterceptablePacket
 import com.project.lumina.client.constructors.Element
 import com.project.lumina.client.constructors.CheatCategory
+import com.project.lumina.client.util.AssetManager
 import org.cloudburstmc.math.vector.Vector3f
 import org.cloudburstmc.protocol.bedrock.data.Ability
 import org.cloudburstmc.protocol.bedrock.data.AbilityLayer
@@ -15,11 +16,11 @@ import org.cloudburstmc.protocol.bedrock.packet.SetEntityMotionPacket
 import org.cloudburstmc.protocol.bedrock.packet.UpdateAbilitiesPacket
 
 
-class MotionFlyElement(iconResId: Int = R.drawable.ic_flash_black_24dp) : Element(
+class MotionFlyElement(iconResId: Int = AssetManager.getAsset("ic_flash_black_24dp")) : Element(
     name = "MotionFly",
     category = CheatCategory.Motion,
     iconResId,
-    displayNameResId = R.string.module_motion_fly_display_name
+    displayNameResId = AssetManager.getString("module_motion_fly_display_name")
 ) {
 
     private val verticalSpeedUp by floatValue("Up Speed", 7.0f, 1.0f..20.0f)

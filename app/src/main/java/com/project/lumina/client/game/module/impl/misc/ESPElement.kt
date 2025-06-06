@@ -37,11 +37,11 @@
 package com.project.lumina.client.game.module.impl.misc
 
 import android.util.Log
-import com.project.lumina.client.R
 import com.project.lumina.client.application.AppContext
 import com.project.lumina.client.game.InterceptablePacket
 import com.project.lumina.client.constructors.Element
 import com.project.lumina.client.constructors.CheatCategory
+import com.project.lumina.client.util.AssetManager
 import com.project.lumina.client.game.entity.*
 import com.project.lumina.client.overlay.OverlayManager
 import com.project.lumina.client.ui.opengl.ESPOverlayGLSurface
@@ -51,7 +51,7 @@ import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket
 class ESPElement : Element(
     name = "esp_module",
     category = CheatCategory.Misc,
-    displayNameResId = R.string.module_esp_display_name
+    displayNameResId = AssetManager.getString("module_esp_display_name")
 ) {
     private var playersOnly by boolValue("Players", true)
     private var rangeValue by floatValue("Range", 10f, 2f..100f)

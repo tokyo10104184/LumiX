@@ -12,13 +12,14 @@ import kotlinx.coroutines.launch
 import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket
 import java.util.concurrent.ConcurrentLinkedQueue
 import kotlin.random.Random
+import com.project.lumina.client.util.AssetManager
 
 
-class DesyncElement(iconResId: Int = R.drawable.ic_timer_sand_black_24dp) : Element(
+class DesyncElement(iconResId: Int = AssetManager.getAsset("ic_timer_sand_black_24dp")) : Element(
     name = "Desync",
     category = CheatCategory.Misc,
     iconResId,
-    displayNameResId = R.string.module_desync_display_name
+    displayNameResId = AssetManager.getString("module_desync_display_name")
 ) {
 
     private var isDesynced = false

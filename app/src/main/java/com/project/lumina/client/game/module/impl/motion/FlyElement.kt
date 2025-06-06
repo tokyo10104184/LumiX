@@ -4,6 +4,7 @@ import com.project.lumina.client.R
 import com.project.lumina.client.game.InterceptablePacket
 import com.project.lumina.client.constructors.Element
 import com.project.lumina.client.constructors.CheatCategory
+import com.project.lumina.client.util.AssetManager
 import org.cloudburstmc.math.vector.Vector3f
 import org.cloudburstmc.protocol.bedrock.data.Ability
 import org.cloudburstmc.protocol.bedrock.data.AbilityLayer
@@ -16,11 +17,11 @@ import org.cloudburstmc.protocol.bedrock.packet.SetEntityMotionPacket
 import org.cloudburstmc.protocol.bedrock.packet.UpdateAbilitiesPacket
 
 
-class FlyElement(iconResId: Int = R.drawable.ic_feather_black_24dp) : Element(
+class FlyElement(iconResId: Int = AssetManager.getAsset("ic_feather_black_24dp")) : Element(
     name = "Fly",
     category = CheatCategory.Motion,
     iconResId,
-    displayNameResId = R.string.module_fly_display_name
+    displayNameResId = AssetManager.getString("module_fly_display_name")
 ) {
 
     private var flySpeed by floatValue("Speed", 0.15f, 0.1f..1.5f)

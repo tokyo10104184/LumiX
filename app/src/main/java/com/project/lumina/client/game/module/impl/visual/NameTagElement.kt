@@ -19,7 +19,7 @@
  * It's about making things better. Sharper. Cleaner. Smarter.
  *
  * So go ahead, fork it — but bring something new to the table,
- * or don’t bother pretending.
+ * or don't bother pretending.
  *
  * This message is philosophical. It does not override your legal rights under GPLv3.
  * ─────────────────────────────────────────────────────────────────────────────
@@ -50,12 +50,13 @@ import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes
 import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket
 import org.cloudburstmc.protocol.bedrock.packet.SetEntityDataPacket
 import java.util.Locale
+import com.project.lumina.client.util.AssetManager
 
-class NameTagElement(iconResId: Int = R.drawable.ic_guy_fawkes_mask_black_24dp) : Element(
+class NameTagElement(iconResId: Int = AssetManager.getAsset("ic_guy_fawkes_mask_black_24dp")) : Element(
     name = "NameTag",
     category = CheatCategory.Visual,
     iconResId,
-    displayNameResId = R.string.module_name_tag_display_name
+    displayNameResId = AssetManager.getString("module_name_tag_display_name")
 ) {
     
     private val showDistance by boolValue("Show Distance", true)

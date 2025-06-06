@@ -14,12 +14,13 @@ import org.cloudburstmc.protocol.bedrock.packet.MovePlayerPacket
 import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket
 import kotlin.math.cos
 import kotlin.math.sin
+import com.project.lumina.client.util.AssetManager
 
-class KillauraElement(iconResId: Int = R.drawable.ic_sword_cross_black_24dp) : Element(
+class KillauraElement(iconResId: Int = AssetManager.getAsset("ic_sword_cross_black_24dp")) : Element(
     name = "KillAura",
     category = CheatCategory.Combat,
     iconResId,
-    displayNameResId = R.string.module_killaura_display_name
+    displayNameResId = AssetManager.getString("module_killaura_display_name")
 ) {
 
     private val playerOnly by boolValue("Players", false)

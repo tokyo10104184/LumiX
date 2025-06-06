@@ -1,17 +1,16 @@
 package com.project.lumina.client.game.module.impl.misc
 
-import com.project.lumina.client.R
 import com.project.lumina.client.game.InterceptablePacket
 import com.project.lumina.client.constructors.Element
 import com.project.lumina.client.constructors.CheatCategory
+import com.project.lumina.client.util.AssetManager
 import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket
 import org.cloudburstmc.protocol.bedrock.packet.SetTimePacket
-
 
 class TimeShiftElement : Element(
     name = "time_shift",
     category = CheatCategory.Misc,
-    displayNameResId = R.string.module_time_shift_display_name
+    displayNameResId = AssetManager.getString("module_time_shift_display_name")
 ) {
 
     private val time by intValue("Time", 6000, 0..24000)

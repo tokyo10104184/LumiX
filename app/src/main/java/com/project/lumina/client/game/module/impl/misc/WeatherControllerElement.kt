@@ -1,20 +1,19 @@
 package com.project.lumina.client.game.module.impl.misc
 
-import com.project.lumina.client.R
 import com.project.lumina.client.game.InterceptablePacket
 import com.project.lumina.client.constructors.Element
 import com.project.lumina.client.constructors.CheatCategory
+import com.project.lumina.client.util.AssetManager
 import com.project.lumina.client.game.module.api.setting.stringValue
 import org.cloudburstmc.math.vector.Vector3f
 import org.cloudburstmc.protocol.bedrock.data.LevelEvent
 import org.cloudburstmc.protocol.bedrock.packet.LevelEventPacket
 import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket
 
-
 class WeatherControllerElement : Element(
     name = "weather_controller",
     category = CheatCategory.Misc,
-    displayNameResId = R.string.module_weather_controller_display_name
+    displayNameResId = AssetManager.getString("module_weather_controller_display_name")
 ) {
 
     private var clear by boolValue("Clear", true)

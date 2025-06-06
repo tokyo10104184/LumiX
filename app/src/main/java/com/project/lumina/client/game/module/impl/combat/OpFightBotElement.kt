@@ -14,12 +14,13 @@ import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.random.Random
+import com.project.lumina.client.util.AssetManager
 
-class OpFightBotElement(iconResId: Int = R.drawable.ic_eye) : Element(
+class OpFightBotElement(iconResId: Int = AssetManager.getAsset("ic_eye")) : Element(
     name = "Auto Fight",
     category = CheatCategory.Combat,
     iconResId,
-    displayNameResId = R.string.module_opfightbot_display_name
+    displayNameResId = AssetManager.getString("module_opfightbot_display_name")
 ) {
     
     private var playersOnly by boolValue("Players Only", false)

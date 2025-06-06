@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import com.project.lumina.client.game.InterceptablePacket
 import com.project.lumina.client.constructors.Element
 import com.project.lumina.client.constructors.CheatCategory
+import com.project.lumina.client.util.AssetManager
 import org.cloudburstmc.protocol.bedrock.packet.UpdateAbilitiesPacket
 
 class MotionVarElement : Element("_var_", CheatCategory.Motion) {

@@ -19,7 +19,7 @@
  * It's about making things better. Sharper. Cleaner. Smarter.
  *
  * So go ahead, fork it — but bring something new to the table,
- * or don’t bother pretending.
+ * or don't bother pretending.
  *
  * This message is philosophical. It does not override your legal rights under GPLv3.
  * ─────────────────────────────────────────────────────────────────────────────
@@ -49,12 +49,13 @@ import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket
 import org.cloudburstmc.protocol.bedrock.packet.SetEntityMotionPacket
 import kotlin.math.atan2
 import kotlin.random.Random
+import com.project.lumina.client.util.AssetManager
 
-class CritBotElement(iconResId: Int = ir.alirezaivaz.tablericons.R.drawable.ic_angle) : Element(
+class CritBotElement(iconResId: Int = AssetManager.getAsset("ic_angle")) : Element(
     name = "Criticals",
     category = CheatCategory.Combat,
     iconResId,
-    displayNameResId = R.string.module_critbot_display_name
+    displayNameResId = AssetManager.getString("module_critbot_display_name")
 ) {
     
     private var maxRange by floatValue("Range", 4.0f, 2.0f..6.0f)

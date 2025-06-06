@@ -19,7 +19,7 @@
  * It's about making things better. Sharper. Cleaner. Smarter.
  *
  * So go ahead, fork it — but bring something new to the table,
- * or don’t bother pretending.
+ * or don't bother pretending.
  *
  * This message is philosophical. It does not override your legal rights under GPLv3.
  * ─────────────────────────────────────────────────────────────────────────────
@@ -42,13 +42,14 @@ import com.project.lumina.client.game.InterceptablePacket
 import com.project.lumina.client.constructors.Element
 import com.project.lumina.client.constructors.CheatCategory
 import com.project.lumina.client.overlay.SessionStatsOverlay
+import com.project.lumina.client.util.AssetManager
 import org.cloudburstmc.protocol.bedrock.packet.AnimatePacket
 import kotlin.math.floor
 
-class SessionInfoElement(iconResId: Int = ir.alirezaivaz.tablericons.R.drawable.ic_info_hexagon)  : Element(
+class SessionInfoElement(iconResId: Int = AssetManager.getAsset("ic_info_hexagon"))  : Element(
     name = "SessionInfo",
     category = CheatCategory.Misc,
-    displayNameResId = R.string.module_sessioni_display_name,
+    displayNameResId = AssetManager.getString("module_sessioni_display_name"),
     iconResId = iconResId
 ) {
 

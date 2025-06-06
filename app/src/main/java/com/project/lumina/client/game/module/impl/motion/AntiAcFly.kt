@@ -4,6 +4,7 @@ import com.project.lumina.client.R
 import com.project.lumina.client.constructors.CheatCategory
 import com.project.lumina.client.constructors.Element
 import com.project.lumina.client.game.InterceptablePacket
+import com.project.lumina.client.util.AssetManager
 import org.cloudburstmc.math.vector.Vector3f
 import org.cloudburstmc.protocol.bedrock.data.PlayerAuthInputData
 import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket
@@ -11,11 +12,11 @@ import org.cloudburstmc.protocol.bedrock.packet.SetEntityMotionPacket
 import kotlin.math.cos
 import kotlin.math.sin
 
-class AntiACFly(iconResId: Int = R.drawable.ic_menu_arrow_up_black_24dp) : Element(
+class AntiACFly(iconResId: Int = AssetManager.getAsset("ic_menu_arrow_up_black_24dp")) : Element(
     name = "AntiACFly",
     category = CheatCategory.Motion,
     iconResId,
-    displayNameResId = R.string.module_Anti_Ac_fly_display_name
+    displayNameResId = AssetManager.getString("module_Anti_Ac_fly_display_name")
 ) {
     private val glideSpeed by floatValue("Glide Speed", 0.0f, -2.0f..1.0f)
     private val verticalSpeedUp by floatValue("Speed Up", 0.2f, 0.1f..1.0f)

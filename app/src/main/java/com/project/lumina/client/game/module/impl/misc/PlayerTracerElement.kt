@@ -1,9 +1,9 @@
 package com.project.lumina.client.game.module.impl.misc
 
-import com.project.lumina.client.R
 import com.project.lumina.client.game.InterceptablePacket
 import com.project.lumina.client.constructors.Element
 import com.project.lumina.client.constructors.CheatCategory
+import com.project.lumina.client.util.AssetManager
 import org.cloudburstmc.math.vector.Vector3f
 import org.cloudburstmc.protocol.bedrock.data.skin.SerializedSkin
 import org.cloudburstmc.protocol.bedrock.packet.MoveEntityAbsolutePacket
@@ -19,7 +19,7 @@ import kotlin.math.sqrt
 class PlayerTracerElement : Element(
     name = "PlayerTracer",
     category = CheatCategory.Misc,
-    displayNameResId = R.string.module_player_tracer_display_name
+    displayNameResId = AssetManager.getString("module_player_tracer_display_name")
 ) {
     
     private val playersInfo = mutableMapOf<Long, PlayerInfo>()

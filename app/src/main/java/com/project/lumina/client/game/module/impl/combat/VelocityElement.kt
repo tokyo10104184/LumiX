@@ -19,7 +19,7 @@
  * It's about making things better. Sharper. Cleaner. Smarter.
  *
  * So go ahead, fork it — but bring something new to the table,
- * or don’t bother pretending.
+ * or don't bother pretending.
  *
  * This message is philosophical. It does not override your legal rights under GPLv3.
  * ─────────────────────────────────────────────────────────────────────────────
@@ -42,12 +42,13 @@ import com.project.lumina.client.game.InterceptablePacket
 import com.project.lumina.client.constructors.Element
 import com.project.lumina.client.constructors.CheatCategory
 import org.cloudburstmc.protocol.bedrock.packet.SetEntityMotionPacket
+import com.project.lumina.client.util.AssetManager
 
-class VelocityElement(iconResId: Int = R.drawable.ic_file_download_black_24dp) : Element(
+class VelocityElement(iconResId: Int = AssetManager.getAsset("ic_file_download_black_24dp")) : Element(
     name = "Velocity",
     category = CheatCategory.Combat,
     iconResId,
-    displayNameResId = R.string.module_velocity_display_name
+    displayNameResId = AssetManager.getString("module_velocity_display_name")
 ) {
     private var mode: String = "Vanilla"
         set(value) {

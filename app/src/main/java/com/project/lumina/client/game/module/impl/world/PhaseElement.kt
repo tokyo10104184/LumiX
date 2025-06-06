@@ -4,6 +4,7 @@ import com.project.lumina.client.R
 import com.project.lumina.client.game.InterceptablePacket
 import com.project.lumina.client.constructors.Element
 import com.project.lumina.client.constructors.CheatCategory
+import com.project.lumina.client.util.AssetManager
 import org.cloudburstmc.protocol.bedrock.data.Ability
 import org.cloudburstmc.protocol.bedrock.data.AbilityLayer
 import org.cloudburstmc.protocol.bedrock.data.PlayerPermission
@@ -13,11 +14,11 @@ import org.cloudburstmc.protocol.bedrock.packet.RequestAbilityPacket
 import org.cloudburstmc.protocol.bedrock.packet.UpdateAbilitiesPacket
 import kotlin.collections.addAll
 
-class PhaseElement(iconResId: Int = R.drawable.ic_ghost_black_24dp) : Element(
+class PhaseElement(iconResId: Int = AssetManager.getAsset("ic_ghost_black_24dp")) : Element(
     name = "Phase",
     category = CheatCategory.World,
     iconResId,
-    displayNameResId = R.string.module_phase_display_name
+    displayNameResId = AssetManager.getString("module_phase_display_name")
 ) {
 
     private val enableNoClipAbilitiesPacket = UpdateAbilitiesPacket().apply {

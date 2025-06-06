@@ -4,15 +4,16 @@ import com.project.lumina.client.R
 import com.project.lumina.client.game.InterceptablePacket
 import com.project.lumina.client.constructors.Element
 import com.project.lumina.client.constructors.CheatCategory
+import com.project.lumina.client.util.AssetManager
 import org.cloudburstmc.protocol.bedrock.data.PlayerAuthInputData
 import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket
 
 
-class SprintElement(iconResId: Int = R.drawable.ic_run_fast_black_24dp) : Element(
+class SprintElement(iconResId: Int = AssetManager.getAsset("ic_run_fast_black_24dp")) : Element(
     name = "Sprint",
     category = CheatCategory.Motion,
     iconResId,
-    displayNameResId = R.string.module_sprint_display_name
+    displayNameResId = AssetManager.getString("module_sprint_display_name")
 ) {
     override fun beforePacketBound(interceptablePacket: InterceptablePacket) {
         val packet = interceptablePacket.packet

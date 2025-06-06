@@ -19,7 +19,7 @@
  * It's about making things better. Sharper. Cleaner. Smarter.
  *
  * So go ahead, fork it — but bring something new to the table,
- * or don’t bother pretending.
+ * or don't bother pretending.
  *
  * This message is philosophical. It does not override your legal rights under GPLv3.
  * ─────────────────────────────────────────────────────────────────────────────
@@ -51,12 +51,13 @@ import org.cloudburstmc.protocol.bedrock.packet.MovePlayerPacket
 import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket
 import android.util.Log
 import kotlin.math.ceil
+import com.project.lumina.client.util.AssetManager
 
-class MaceAuraElement(iconResId: Int = R.drawable.ic_cube_scan_black_24dp) : Element(
+class MaceAuraElement(iconResId: Int = AssetManager.getAsset("ic_cube_scan_black_24dp")) : Element(
     name = "MaceAura",
     category = CheatCategory.Combat,
     iconResId,
-    displayNameResId = R.string.module_maceaura_display_name
+    displayNameResId = AssetManager.getString("module_maceaura_display_name")
 ) {
     
     private var radius by floatValue("Radius", 5.0f, 0.1f..10.0f)

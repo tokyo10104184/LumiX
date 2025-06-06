@@ -5,12 +5,13 @@ import com.project.lumina.client.game.InterceptablePacket
 import com.project.lumina.client.constructors.Element
 import com.project.lumina.client.constructors.CheatCategory
 import org.cloudburstmc.protocol.bedrock.packet.MobEffectPacket
+import com.project.lumina.client.util.AssetManager
 
-class FullBrightElement(iconResId: Int = R.drawable.video_camera_alt_18) : Element(
+class FullBrightElement(iconResId: Int = AssetManager.getAsset("video_camera_alt_18")) : Element(
     name = "FullBright",
     category = CheatCategory.Visual,
     iconResId,
-    displayNameResId = R.string.module_fullbright_display_name
+    displayNameResId = AssetManager.getString("module_fullbright_display_name")
 ) {
 
     private fun sendApplyPacket() {

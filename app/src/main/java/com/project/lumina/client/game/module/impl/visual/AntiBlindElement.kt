@@ -19,7 +19,7 @@
  * It's about making things better. Sharper. Cleaner. Smarter.
  *
  * So go ahead, fork it — but bring something new to the table,
- * or don’t bother pretending.
+ * or don't bother pretending.
  *
  * This message is philosophical. It does not override your legal rights under GPLv3.
  * ─────────────────────────────────────────────────────────────────────────────
@@ -43,12 +43,13 @@ import com.project.lumina.client.constructors.CheatCategory
 import com.project.lumina.client.game.utils.constants.Effect
 import org.cloudburstmc.protocol.bedrock.packet.MobEffectPacket
 import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket
+import com.project.lumina.client.util.AssetManager
 
-class AntiBlindElement(iconResId: Int = R.drawable.ic_eye_off) : Element(
+class AntiBlindElement(iconResId: Int = AssetManager.getAsset("ic_eye_off")) : Element(
     name = "AntiBlind",
     category = CheatCategory.Visual,
     iconResId,
-    displayNameResId = R.string.module_anti_blind_display_name
+    displayNameResId = AssetManager.getString("module_anti_blind_display_name")
 ) {
     
     private val removeBlindness by boolValue("Remove Blindness", true)

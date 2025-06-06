@@ -1,28 +1,28 @@
 package com.project.lumina.client.game.module.impl.visual
 
-import com.project.lumina.client.R
 import com.project.lumina.client.game.InterceptablePacket
 import com.project.lumina.client.constructors.Element
 import com.project.lumina.client.constructors.CheatCategory
 import com.project.lumina.client.game.utils.constants.Effect
-import com.project.lumina.client.game.module.api.setting.EFFECTS
+import com.project.lumina.client.game.module.api.setting.Effects
 import com.project.lumina.client.game.module.api.setting.EffectSetting
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityDataTypes
 import org.cloudburstmc.protocol.bedrock.packet.MobEffectPacket
 import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket
+import com.project.lumina.client.util.AssetManager
 
-class NightVisionElement(iconResId: Int = R.drawable.ic_camera_outline_black_24dp) : Element(
+class NightVisionElement(iconResId: Int = AssetManager.getAsset("ic_camera_outline_black_24dp")) : Element(
     name = "NightVision",
     category = CheatCategory.Visual,
     iconResId,
-    displayNameResId = R.string.module_night_vision_display_name
+    displayNameResId = AssetManager.getString("module_night_vision_display_name")
 ) {
 
     private val amplifierValue by intValue("Amplifier", 1, 1..5)
     private val effect by EffectSetting(
         this,
         EntityDataTypes.VISIBLE_MOB_EFFECTS,
-        EFFECTS.NIGHT_VISION
+        Effects.NIGHT_VISION
     )
 
     override fun onDisabled() {

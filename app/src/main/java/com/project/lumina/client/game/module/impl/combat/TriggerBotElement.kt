@@ -54,12 +54,13 @@ import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.sqrt
 import kotlin.random.Random
+import com.project.lumina.client.util.AssetManager
 
-class TriggerBotElement(iconResId: Int = R.drawable.ic_bullseye_arrow_black_24dp) : Element(
+class TriggerBotElement(iconResId: Int = AssetManager.getAsset("ic_bullseye_arrow_black_24dp")) : Element(
     name = "TriggerBot",
     category = CheatCategory.Combat,
     iconResId,
-    displayNameResId = R.string.module_triggerbot_display_name
+    displayNameResId = AssetManager.getString("module_triggerbot_display_name")
 ) {
     
     private var maxRange by floatValue("Range", 15.0f, 2.0f..30.0f)

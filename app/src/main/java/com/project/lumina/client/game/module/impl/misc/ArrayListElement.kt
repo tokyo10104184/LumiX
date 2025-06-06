@@ -19,7 +19,7 @@
  * It's about making things better. Sharper. Cleaner. Smarter.
  *
  * So go ahead, fork it — but bring something new to the table,
- * or don’t bother pretending.
+ * or don't bother pretending.
  *
  * This message is philosophical. It does not override your legal rights under GPLv3.
  * ─────────────────────────────────────────────────────────────────────────────
@@ -40,11 +40,12 @@ import com.project.lumina.client.R
 import com.project.lumina.client.game.InterceptablePacket
 import com.project.lumina.client.constructors.Element
 import com.project.lumina.client.constructors.CheatCategory
+import com.project.lumina.client.util.AssetManager
 
-class ArrayListElement(iconResId: Int = ir.alirezaivaz.tablericons.R.drawable.ic_alien) : Element(
+class ArrayListElement(iconResId: Int = AssetManager.getAsset("ic_alien")) : Element(
     name = "ArrayList",
     category = CheatCategory.Misc,
-    displayNameResId = R.string.arraylist,
+    displayNameResId = AssetManager.getString("arraylist"),
     iconResId = iconResId
 ) {
 

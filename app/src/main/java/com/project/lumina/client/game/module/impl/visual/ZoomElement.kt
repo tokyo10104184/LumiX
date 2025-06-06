@@ -1,4 +1,3 @@
-
 package com.project.lumina.client.game.module.impl.visual
 
 import com.project.lumina.client.R
@@ -11,12 +10,13 @@ import org.cloudburstmc.protocol.bedrock.data.PlayerPermission
 import org.cloudburstmc.protocol.bedrock.data.command.CommandPermission
 import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket
 import org.cloudburstmc.protocol.bedrock.packet.UpdateAbilitiesPacket
+import com.project.lumina.client.util.AssetManager
 
-class ZoomElement(iconResId: Int = R.drawable.ic_zoom_in_black_24dp) : Element(
+class ZoomElement(iconResId: Int = AssetManager.getAsset("ic_zoom_in_black_24dp")) : Element(
     name = "Zoom",
     category = CheatCategory.Visual,
     iconResId,
-    displayNameResId = R.string.module_zoom_display_name
+    displayNameResId = AssetManager.getString("module_zoom_display_name")
 ) {
 
 

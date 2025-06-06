@@ -19,7 +19,7 @@
  * It's about making things better. Sharper. Cleaner. Smarter.
  *
  * So go ahead, fork it — but bring something new to the table,
- * or don’t bother pretending.
+ * or don't bother pretending.
  *
  * This message is philosophical. It does not override your legal rights under GPLv3.
  * ─────────────────────────────────────────────────────────────────────────────
@@ -49,12 +49,13 @@ import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
+import com.project.lumina.client.util.AssetManager
 
-class InfiniteAuraElement(iconResId: Int = ir.alirezaivaz.tablericons.R.drawable.ic_analyze) : Element(
+class InfiniteAuraElement(iconResId: Int = AssetManager.getAsset("ic_analyze")) : Element(
     name = "Infiniteaura",
     category = CheatCategory.Combat,
     iconResId,
-    displayNameResId = R.string.module_infiniteaura_display_name
+    displayNameResId = AssetManager.getString("module_infiniteaura_display_name")
 ) {
     private var cps by intValue("CPS", 10, 1..20)
     private var behindOffset by floatValue("Behind Offset", 2f, 0.5f..10f)

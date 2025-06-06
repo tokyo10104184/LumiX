@@ -6,11 +6,12 @@ import com.project.lumina.client.constructors.Element
 import com.project.lumina.client.game.InterceptablePacket
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag
 import org.cloudburstmc.protocol.bedrock.packet.SetEntityDataPacket
+import com.project.lumina.client.util.AssetManager
 
 class NoFireElement : Element(
     name = "NoFire",
     category = CheatCategory.Visual,
-    displayNameResId = R.string.module_nofire
+    displayNameResId = AssetManager.getString("module_nofire")
 ) {
 
     override fun beforePacketBound(interceptablePacket: InterceptablePacket) {

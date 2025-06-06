@@ -40,6 +40,7 @@ import com.project.lumina.client.R
 import com.project.lumina.client.game.InterceptablePacket
 import com.project.lumina.client.constructors.Element
 import com.project.lumina.client.constructors.CheatCategory
+import com.project.lumina.client.util.AssetManager
 import org.cloudburstmc.protocol.bedrock.data.PlayerAuthInputData
 import org.cloudburstmc.protocol.bedrock.packet.* 
 import org.cloudburstmc.math.vector.Vector3f 
@@ -52,7 +53,7 @@ import kotlin.concurrent.thread
 class ReplayElement : Element(
     name = "Replay",
     category = CheatCategory.Misc,
-    displayNameResId = R.string.module_replay_display_name
+    displayNameResId = AssetManager.getString("module_replay_display_name")
 ) {
 
     private val recordingInterval by intValue("Interval", 50, 20..200)

@@ -5,12 +5,13 @@ import com.project.lumina.client.constructors.Element
 import com.project.lumina.client.constructors.CheatCategory
 import com.project.lumina.client.game.InterceptablePacket
 import org.cloudburstmc.protocol.bedrock.packet.TextPacket
+import com.project.lumina.client.util.AssetManager
 
-class TextSpoofElement(iconResId: Int = R.drawable.ic_script) : Element(
+class TextSpoofElement(iconResId: Int = AssetManager.getAsset("ic_script")) : Element(
     name = "TextSpoof",
     category = CheatCategory.Visual,
     iconResId,
-    displayNameResId = R.string.module_text_spoof_display_name
+    displayNameResId = AssetManager.getString("module_text_spoof_display_name")
 ) {
 
     private var oldTextValue: String = "steve"

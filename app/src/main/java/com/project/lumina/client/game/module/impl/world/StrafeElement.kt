@@ -14,12 +14,13 @@ import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
+import com.project.lumina.client.util.AssetManager
 
-class StrafeElement(iconResId: Int = R.drawable.ic_run_fast_black_24dp) : Element(
+class StrafeElement(iconResId: Int = AssetManager.getAsset("ic_run_fast_black_24dp")) : Element(
     name = "Strafe",
     category = CheatCategory.World,
     iconResId,
-    displayNameResId = R.string.module_strafe_display_name
+    displayNameResId = AssetManager.getString("module_strafe_display_name")
 ) {
     private var targetRange by intValue("Range", 3, 2..20)
     private val movementSpeed by intValue("Speed", 1, 1..20)

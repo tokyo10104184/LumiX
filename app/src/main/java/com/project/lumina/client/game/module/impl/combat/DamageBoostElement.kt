@@ -10,12 +10,13 @@ import org.cloudburstmc.protocol.bedrock.packet.SetEntityMotionPacket
 import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.sqrt
+import com.project.lumina.client.util.AssetManager
 
-class DamageBoostElement(iconResId: Int = ir.alirezaivaz.tablericons.R.drawable.ic_border_outer) : Element(
+class DamageBoostElement(iconResId: Int = AssetManager.getAsset("ic_border_outer")) : Element(
     name = "DamageBoost",
     category = CheatCategory.Combat,
     iconResId,
-    displayNameResId = R.string.module_damageboost_display_name
+    displayNameResId = AssetManager.getString("module_damageboost_display_name")
 ) {
     private val speedSetting = 1.0f
     private val upwardsMultiplier = 1.0f

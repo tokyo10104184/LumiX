@@ -4,6 +4,7 @@ import com.project.lumina.client.R
 import com.project.lumina.client.game.InterceptablePacket
 import com.project.lumina.client.constructors.Element
 import com.project.lumina.client.constructors.CheatCategory
+import com.project.lumina.client.util.AssetManager
 import org.cloudburstmc.math.vector.Vector3f
 import org.cloudburstmc.protocol.bedrock.data.PlayerAuthInputData
 import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket
@@ -31,7 +32,7 @@ import org.cloudburstmc.protocol.bedrock.packet.SetEntityMotionPacket
  * It's about making things better. Sharper. Cleaner. Smarter.
  *
  * So go ahead, fork it — but bring something new to the table,
- * or don’t bother pretending.
+ * or don't bother pretending.
  *
  * This message is philosophical. It does not override your legal rights under GPLv3.
  * ─────────────────────────────────────────────────────────────────────────────
@@ -45,11 +46,11 @@ import org.cloudburstmc.protocol.bedrock.packet.SetEntityMotionPacket
  *
  * Full text: https://www.gnu.org/licenses/gpl-3.0.html
  */
-class StepElement(iconResId: Int = R.drawable.ic_welcome) : Element(
+class StepElement(iconResId: Int = AssetManager.getAsset("ic_welcome")) : Element(
     name = "Step",
     category = CheatCategory.Motion,
     iconResId,
-    displayNameResId = R.string.module_step_display_name
+    displayNameResId = AssetManager.getString("module_step_display_name")
 ) {
     private var stepHeight by floatValue("Height", 1.0f, 0.5f..2.5f)
 

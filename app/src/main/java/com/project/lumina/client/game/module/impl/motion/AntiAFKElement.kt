@@ -4,17 +4,18 @@ import com.project.lumina.client.R
 import com.project.lumina.client.game.InterceptablePacket
 import com.project.lumina.client.constructors.Element
 import com.project.lumina.client.constructors.CheatCategory
+import com.project.lumina.client.util.AssetManager
 import org.cloudburstmc.math.vector.Vector3f
 import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket
 import org.cloudburstmc.protocol.bedrock.packet.SetEntityMotionPacket
 import kotlin.random.Random
 
 
-class AntiAFKElement(iconResId: Int = R.drawable.ic_app_update) : Element(
+class AntiAFKElement(iconResId: Int = AssetManager.getAsset("ic_app_update")) : Element(
     name = "AntiAfk",
     category = CheatCategory.Motion,
     iconResId,
-    displayNameResId = R.string.module_anti_afk_display_name
+    displayNameResId = AssetManager.getString("module_anti_afk_display_name")
 ) {
 
     private val glitchInterval by intValue("Interval", 200, 50..1000)

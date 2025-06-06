@@ -49,12 +49,13 @@ import org.cloudburstmc.protocol.bedrock.packet.MovePlayerPacket
 import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket
 import org.cloudburstmc.protocol.bedrock.packet.SetEntityMotionPacket
 import kotlin.random.Random
+import com.project.lumina.client.util.AssetManager
 
-class QuickAttackElement(iconResId: Int = R.drawable.ic_flash_black_24dp) : Element(
+class QuickAttackElement(iconResId: Int = AssetManager.getAsset("ic_flash_black_24dp")) : Element(
     name = "QuickAttack",
     category = CheatCategory.Combat,
     iconResId,
-    displayNameResId = R.string.module_quickattack_display_name
+    displayNameResId = AssetManager.getString("module_quickattack_display_name")
 ) {
     private var maxRange by floatValue("Max Range", 5f, 2f..30f)
     private var attackCps by intValue("CPS", 15, 1..20)

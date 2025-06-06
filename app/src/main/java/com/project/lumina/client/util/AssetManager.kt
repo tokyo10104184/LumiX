@@ -1,39 +1,15 @@
 package com.project.lumina.client.util
 
+import com.project.lumina.client.application.AppContext
+
 object AssetManager {
-    private val drawableCache: Map<String, Int> by lazy {
-        val result = mutableMapOf<String, Int>()
-        val drawableClass = Class.forName("com.project.lumina.client.R\$drawable")
-        val fields = drawableClass.declaredFields
-
-        for (field in fields) {
-            field.isAccessible = true
-            val name = field.name
-            val value = field.getInt(null)
-            result[name] = value
-        }
-
-        result
+    fun getAsset(name: String): Int {
+        return AppContext.instance.resources.getIdentifier(name, "drawable", AppContext.instance.packageName)
+            .takeIf { it != 0 } ?: error("Drawable resource $name not found")
     }
 
-    private val stringCache: Map<String, Int> by lazy {
-        val result = mutableMapOf<String, Int>()
-        val stringClass = Class.forName("com.project.lumina.client.R\$string")
-        val fields = stringClass.declaredFields
-
-        for (field in fields) {
-            field.isAccessible = true
-            val name = field.name
-            val value = field.getInt(null)
-            result[name] = value
-        }
-
-        result
+    fun getString(name: String): Int {
+        return AppContext.instance.resources.getIdentifier(name, "string", AppContext.instance.packageName)
+            .takeIf { it != 0 } ?: error("String resource $name not found")
     }
-
-    fun getString(str: String): Int =
-        stringCache[str] ?: error("String resource $str not found")
-
-    fun getAsset(str: String): Int =
-        drawableCache[str] ?: error("Drawable resource $str not found")
 }

@@ -41,11 +41,12 @@ import com.project.lumina.client.game.InterceptablePacket
 import com.project.lumina.client.constructors.Element
 import com.project.lumina.client.constructors.CheatCategory
 import com.project.lumina.client.overlay.ClientOverlay
+import com.project.lumina.client.util.AssetManager
 
-class WaterMarkElement(iconResId: Int = ir.alirezaivaz.tablericons.R.drawable.ic_waterpolo) : Element(
+class WaterMarkElement(iconResId: Int = AssetManager.getAsset("ic_waterpolo")) : Element(
     name = "WaterMark",
     category = CheatCategory.Misc,
-    displayNameResId = R.string.module_watermark_display_name,
+    displayNameResId = AssetManager.getString("module_watermark_display_name"),
     iconResId = iconResId
 ) {
 

@@ -1,4 +1,3 @@
-
 package com.project.lumina.client.game.module.impl.combat
 
 import com.project.lumina.client.R
@@ -6,13 +5,13 @@ import com.project.lumina.client.game.InterceptablePacket
 import com.project.lumina.client.constructors.Element
 import com.project.lumina.client.constructors.CheatCategory
 import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket
+import com.project.lumina.client.util.AssetManager
 
-class AntiCrystalElement(iconResId: Int = R.drawable.dice_d20_36) : Element(
+class AntiCrystalElement(iconResId: Int = AssetManager.getAsset("dice_d20_36")) : Element(
     name = "AntiCrystal",
     category = CheatCategory.Combat,
     iconResId,
-    displayNameResId = R.string.module_anti_crystal_display_name
-
+    displayNameResId = AssetManager.getString("module_anti_crystal_display_name")
 ) {
     private var ylevel by floatValue("Y Level", 0.4f, 0.1f..1.61f)
 
