@@ -4,6 +4,7 @@ import com.project.lumina.client.R
 import com.project.lumina.client.game.InterceptablePacket
 import com.project.lumina.client.constructors.Element
 import com.project.lumina.client.constructors.CheatCategory
+import com.project.lumina.client.game.utils.math.MathUtil.JITTER_VAL
 import org.cloudburstmc.math.vector.Vector3f
 import org.cloudburstmc.protocol.bedrock.data.PlayerAuthInputData
 import org.cloudburstmc.protocol.bedrock.packet.PlayerAuthInputPacket
@@ -62,20 +63,20 @@ class JitterFlyElement(iconResId: Int = R.drawable.ic_menu_arrow_up_black_24dp) 
 
             
             if (packet.inputData.contains(PlayerAuthInputData.UP_LEFT)) {
-                inputZ += 0.7071f 
-                inputX -= 0.7071f 
+                inputZ += JITTER_VAL 
+                inputX -= JITTER_VAL 
             }
             if (packet.inputData.contains(PlayerAuthInputData.UP_RIGHT)) {
-                inputZ += 0.7071f
-                inputX += 0.7071f
+                inputZ += JITTER_VAL
+                inputX += JITTER_VAL
             }
             if (packet.inputData.contains(PlayerAuthInputData.DOWN_LEFT)) {
-                inputZ -= 0.7071f
-                inputX -= 0.7071f
+                inputZ -= JITTER_VAL
+                inputX -= JITTER_VAL
             }
             if (packet.inputData.contains(PlayerAuthInputData.DOWN_RIGHT)) {
-                inputZ -= 0.7071f
-                inputX += 0.7071f
+                inputZ -= JITTER_VAL
+                inputX += JITTER_VAL
             }
 
             
