@@ -1,11 +1,10 @@
 package com.project.lumina.client.game.module.impl.visual
 
-import com.project.lumina.client.R
-import com.project.lumina.client.constructors.Element
 import com.project.lumina.client.constructors.CheatCategory
+import com.project.lumina.client.constructors.Element
 import com.project.lumina.client.game.InterceptablePacket
-import org.cloudburstmc.protocol.bedrock.packet.TextPacket
 import com.project.lumina.client.util.AssetManager
+import org.cloudburstmc.protocol.bedrock.packet.TextPacket
 
 class TextSpoofElement(iconResId: Int = AssetManager.getAsset("ic_script")) : Element(
     name = "TextSpoof",
