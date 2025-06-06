@@ -1,4 +1,4 @@
-package com.project.lumina.client.utils
+package com.project.lumina.client.util
 
 object API {
     const val FILES_VERSION_CONFIG_JSON = "https://nyxelle.netlify.app/Files/version_config.json"

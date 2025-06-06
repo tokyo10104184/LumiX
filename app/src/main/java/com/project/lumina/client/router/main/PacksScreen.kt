@@ -16,9 +16,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.project.lumina.client.ui.component.PackItem
-import com.project.lumina.client.utils.API
-import com.project.lumina.client.utils.MCPack
-import com.project.lumina.client.utils.MCPackUtils
+import com.project.lumina.client.util.API
+import com.project.lumina.client.util.MCPack
+import com.project.lumina.client.util.MCPackUtils
 
 
 object PackSelectionManager {

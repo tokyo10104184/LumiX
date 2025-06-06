@@ -44,7 +44,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.lumina.client.model.VersionConfig
 import com.project.lumina.client.ui.theme.LuminaClientTheme
-import com.project.lumina.client.utils.API
+import com.project.lumina.client.util.API
 import com.project.lumina.client.util.HashCat
 import com.project.lumina.client.util.UpdateCheck
 import kotlinx.coroutines.Dispatchers
@@ -167,9 +167,8 @@ class VersionCheckerActivity : ComponentActivity() {
 
                         else -> {
                             val kson = HashCat.getInstance()
-                            val matchJson = kson.LintHashInit(this)
-                            if (matchJson) {
-                            }
+                            kson.LintHashInit(this)
+
                             val installedVersion = getInstalledMinecraftVersion()
                             if (isCompatibleVersion(installedVersion, versionConfig!!)) {
                                 startMainActivity()

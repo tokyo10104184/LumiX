@@ -94,9 +94,9 @@ import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.project.lumina.client.R
 import com.project.lumina.client.constructors.AccountManager
-import com.project.lumina.client.utils.InjectNeko
-import com.project.lumina.client.utils.MCPackUtils
-import com.project.lumina.client.utils.ServerInit
+import com.project.lumina.client.util.InjectNeko
+import com.project.lumina.client.util.MCPackUtils
+import com.project.lumina.client.util.ServerInit
 import com.project.lumina.client.overlay.NotificationType
 import com.project.lumina.client.overlay.SimpleOverlayNotification
 import com.project.lumina.client.service.Services

@@ -1,4 +1,4 @@
-package com.project.lumina.client.utils
+package com.project.lumina.client.util
 
 import android.content.Context
 import android.content.Intent
