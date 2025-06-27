@@ -4,6 +4,8 @@ import com.project.lumina.client.constructors.Element
 import com.project.lumina.client.constructors.CheatCategory
 import com.project.lumina.client.game.InterceptablePacket
 import com.project.lumina.client.game.entity.*
+import com.project.lumina.client.game.registry.itemDefinition // Added for KillAura Eat
+import com.project.lumina.client.game.utils.constants.ItemTags // Added for KillAura Eat
 import com.project.lumina.client.util.AssetManager
 import org.cloudburstmc.math.vector.Vector3f
 import org.cloudburstmc.protocol.bedrock.packet.MovePlayerPacket
@@ -30,6 +32,7 @@ class KillauraElement(iconResId: Int = AssetManager.getAsset("ic_sword_cross_bla
     private val strafeSpeed by floatValue("Strafe Speed", 1.0f, 0.1f..2.0f)
     private val strafeRadius by floatValue("Strafe Radius", 1.0f, 0.1f..5.0f)
 
+    private val killAuraEat by boolValue("KillAura Eat", true) // Added for KillAura Eat functionality
     private val notification by boolValue("Notification", true)
     private val multiTarget by boolValue("Multi Target", false)
     private val notificationInterval = 1000L
@@ -47,6 +50,14 @@ class KillauraElement(iconResId: Int = AssetManager.getAsset("ic_sword_cross_bla
         val minDelay = 1000L / cps
 
         if (packet.tick % delay != 0L || (now - lastAttack) < minDelay) return
+
+        // KillAura Eat: Check if player is holding food
+        if (killAuraEat) {
+            val heldItem = session.localPlayer.inventory.hand
+            if (heldItem.itemDefinition.tags.contains(com.project.lumina.client.game.utils.constants.ItemTags.TAG_IS_FOOD)) {
+                return // Skip attacking if holding food
+            }
+        }
 
         val targets = getTargets()
         if (targets.isEmpty()) return
