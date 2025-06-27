@@ -32,7 +32,7 @@ class KillauraElement(iconResId: Int = AssetManager.getAsset("ic_sword_cross_bla
     private val strafeSpeed by floatValue("Strafe Speed", 1.0f, 0.1f..2.0f)
     private val strafeRadius by floatValue("Strafe Radius", 1.0f, 0.1f..5.0f)
 
-    private val killAuraEat by boolValue("KillAura Eat", true) // Added for KillAura Eat functionality
+    private val killAuraEat by boolValue("KillAura Eat", false) // Added for KillAura Eat functionality, default off
     private val notification by boolValue("Notification", true)
     private val multiTarget by boolValue("Multi Target", false)
     private val notificationInterval = 1000L
