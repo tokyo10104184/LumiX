@@ -7,6 +7,7 @@ import com.project.lumina.client.game.module.impl.combat.CritBotElement
 import com.project.lumina.client.game.module.impl.combat.InfiniteAuraElement
 import com.project.lumina.client.game.module.impl.combat.KillauraElement
 import com.project.lumina.client.game.module.impl.combat.QuickAttackElement
+import com.project.lumina.client.game.module.impl.combat.AutoTotemElement // AutoTotemElementをインポート
 import com.project.lumina.client.game.module.impl.world.StrafeElement
 import com.project.lumina.client.game.module.impl.combat.TPAuraElement
 import com.project.lumina.client.game.module.impl.combat.TriggerBotElement
@@ -98,6 +99,7 @@ object GameManager {
             add(LongJumpElement())
             add(SpiderElement())
             add(TPAuraElement())
+            add(AutoTotemElement()) // AutoTotemElementをここに追加
             add(StrafeElement())
             add(FullStopElement())
             add(JitterFlyElement())
