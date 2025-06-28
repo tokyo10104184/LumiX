@@ -1,0 +1,45 @@
+name: Android CI Build
+
+on:
+  push:
+    branches: [ main ] # TODO: あなたの主要ブランチ名に合わせてください (例: master)
+  pull_request:
+    branches: [ main ] # TODO: あなたの主要ブランチ名に合わせてください
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4 # 最新のv4を使用
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4 # 最新のv4を使用
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: gradle
+
+    - name: Gradle Cache
+      uses: actions/cache@v4 # 最新のv4を使用
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x ./gradlew
+
+    - name: Build Debug APK
+      run: ./gradlew :app:assembleDebug # ルートプロジェクトからappモジュールを指定してビルド
+
+    - name: Upload Debug APK
+      uses: actions/upload-artifact@v4 # 最新のv4を使用
+      with:
+        name: app-debug-apk
+        path: app/build/outputs/apk/debug/app-debug.apk # 標準的なDebug APKのパス
+        if-no-files-found: error # ファイルが見つからない場合にエラーにする

@@ -2,40 +2,65 @@ package com.project.lumina.client.game.module.impl.combat
 
 import com.project.lumina.client.constructors.CheatCategory
 import com.project.lumina.client.constructors.Element
-import com.project.lumina.client.constructors.NetBound // NetBoundのimportを追加
-import com.project.lumina.client.game.event.EventHook // EventHookのimportを追加
-import com.project.lumina.client.game.event.EventTick // EventTickのimportを追加
-import com.project.lumina.client.game.inventory.PlayerInventory // PlayerInventoryのimportを追加
-import com.project.lumina.client.game.registry.itemDefinition // ItemData.itemDefinition拡張プロパティのimport
+import com.project.lumina.client.constructors.NetBound
+import com.project.lumina.client.game.event.EventHook
+import com.project.lumina.client.game.event.EventTick
+import com.project.lumina.client.game.inventory.PlayerInventory
+import com.project.lumina.client.game.registry.itemDefinition
 import com.project.lumina.client.util.AssetManager
-import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData // ItemData の import を追加
+import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData
 
-class AutoTotemElement(iconResId: Int = AssetManager.getAsset("ic_placeholder_black_24dp")) : Element( // TODO: 適切なアイコンを探すか作成する
+/**
+ * AutoTotemElement is a module that automatically moves a Totem of Undying
+ * from the player's main inventory to their offhand if the offhand slot is empty
+ * or does not already contain a totem.
+ *
+ * Feature behavior is controlled by the `autoTotemEnabled` setting.
+ * The module itself must also be enabled for the feature to work.
+ */
+class AutoTotemElement(iconResId: Int = AssetManager.getAsset("ic_placeholder_black_24dp")) : Element( // TODO: Replace placeholder icon with a proper totem icon asset
     name = "AutoTotem",
     category = CheatCategory.Combat,
     iconResId = iconResId,
-    displayNameResId = AssetManager.getString("module_autototem_display_name") // TODO: strings.xmlに表示名を追加する
+    displayNameResId = AssetManager.getString("module_autototem_display_name") // TODO: Add "module_autototem_display_name" to strings.xml
 ) {
+    /**
+     * Boolean setting to enable or disable the AutoTotem functionality.
+     * Defaults to true (enabled). This setting is exposed in the ClickGUI.
+     */
     val autoTotemEnabled by boolValue("AutoTotem", true)
 
     private var tickListener: EventHook<EventTick>? = null
 
+    /**
+     * Called when the module is enabled.
+     * Registers the tick listener if AutoTotem functionality is also enabled.
+     */
     override fun onEnabled() {
         super.onEnabled()
-        if (autoTotemEnabled && isEnabled) {
+        if (autoTotemEnabled && isEnabled) { // Ensure both module and specific setting are active
             registerTickListener()
         }
     }
 
+    /**
+     * Called when the module is disabled.
+     * Unregisters the tick listener.
+     */
     override fun onDisabled() {
         super.onDisabled()
         unregisterTickListener()
     }
 
+    /**
+     * Called when a setting value for this module changes in the GUI.
+     * If the 'AutoTotem' setting is changed, it registers or unregisters the
+     * tick listener accordingly, provided the module itself is enabled.
+     */
     override fun onValueChanged(value: com.project.lumina.client.constructors.Value<*>) {
         super.onValueChanged(value)
         if (value.name == "AutoTotem") {
-            if (isEnabled) {
+            if (isEnabled) { // Only act if the module itself is enabled
                 if (autoTotemEnabled) {
                     registerTickListener()
                 } else {
@@ -45,8 +70,12 @@ class AutoTotemElement(iconResId: Int = AssetManager.getAsset("ic_placeholder_bl
         }
     }
 
+    /**
+     * Registers the tick listener if not already registered and a session exists.
+     * The listener calls `onTick()` every game tick.
+     */
     private fun registerTickListener() {
-        if (tickListener == null && isSessionCreated) { // isSessionCreated を確認
+        if (tickListener == null && isSessionCreated) {
             tickListener = EventHook(EventTick::class.java) { event ->
                 onTick(event)
             }
@@ -54,44 +83,47 @@ class AutoTotemElement(iconResId: Int = AssetManager.getAsset("ic_placeholder_bl
         }
     }
 
+    /**
+     * Unregisters the tick listener if it is currently registered and a session exists.
+     */
     private fun unregisterTickListener() {
         tickListener?.let {
-            if (isSessionCreated) { // isSessionCreated を確認
+            if (isSessionCreated) {
                 session.eventManager.removeHandler(it)
             }
             tickListener = null
         }
     }
 
+    /**
+     * Called on every game tick when the listener is active.
+     * Checks if a totem needs to be moved to the offhand and performs the action.
+     */
     private fun onTick(event: EventTick) {
-        if (!isEnabled || !autoTotemEnabled || !isSessionCreated) return // モジュールと設定が有効でセッションが作成されているか
+        // Ensure module is enabled, AutoTotem setting is on, and session is active
+        if (!isEnabled || !autoTotemEnabled || !isSessionCreated) return
 
         val player = session.localPlayer ?: return
         val inventory = player.inventory ?: return
 
-        // オフハンドにトーテムが既にあるか確認
+        // If offhand already has a totem, no action needed
         if (inventory.offhand.itemDefinition.identifier == "minecraft:totem_of_undying") {
             return
         }
 
-        // メインインベントリ (0-35) からトーテムを探す
-        for (i in 0..35) { // プレイヤーインベントリのメイン部分 (ホットバー + 主なインベントリ)
+        // Search for a totem in the main inventory slots (0-35)
+        for (i in 0..35) { // Main inventory includes hotbar (0-8) and main storage (9-35)
             val itemInSlot = inventory.content[i]
+            // Check if the slot is not empty and contains a totem
             if (itemInSlot != null && itemInSlot != ItemData.AIR && itemInSlot.itemDefinition.identifier == "minecraft:totem_of_undying") {
-                // トーテムを見つけたらオフハンドに移動
-                // PlayerInventory.SLOT_OFFHAND はオフハンドスロットの正しいインデックス (40)
-                // AbstractInventory.moveItem の引数に合わせる
-                // moveItemの第一引数は移動元スロットのインデックス、第二引数は移動先スロットのインデックス
-                // オフハンドは独立したインベントリではなくPlayerInventoryの一部なので、destinationInventoryはinventory自身
-                // SLOT_OFFHAND (40) を AbstractInventory の moveItem に渡す場合、
-                // PlayerInventory 内での slot 40 を指すため、destinationSlot は PlayerInventory.SLOT_OFFHAND で良い
+                // Found a totem, move it to the offhand slot
                 inventory.moveItem(
                     sourceSlot = i,
-                    destinationSlot = PlayerInventory.SLOT_OFFHAND, // PlayerInventoryの定数を使用
-                    destinationInventory = inventory, // 自分自身のインベントリ
+                    destinationSlot = PlayerInventory.SLOT_OFFHAND, // Defined as 40 in PlayerInventory
+                    destinationInventory = inventory, // Moving within the same player inventory
                     session = session
                 )
-                // 1回のtickで1つのトーテムを移動したら処理を終了
+                // Totem moved, no need to continue searching in this tick
                 return
             }
         }
