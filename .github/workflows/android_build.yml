@@ -2,7 +2,9 @@ name: Android CI Build
 
 on:
   push:
-    branches: [ main ] # TODO: あなたの主要ブランチ名に合わせてください (例: master)
+    branches:
+      - main # TODO: あなたの主要ブランチ名に合わせてください (例: master)
+      - feat/autototem # feat/autototem ブランチへのプッシュでも実行
   pull_request:
     branches: [ main ] # TODO: あなたの主要ブランチ名に合わせてください
 
