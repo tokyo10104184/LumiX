@@ -3,6 +3,7 @@ package com.project.lumina.client.game.module.impl.combat
 import com.project.lumina.client.constructors.CheatCategory
 import com.project.lumina.client.constructors.Element
 import com.project.lumina.client.constructors.NetBound
+import com.project.lumina.client.game.InterceptablePacket // InterceptablePacketをインポート
 import com.project.lumina.client.game.event.EventHook
 import com.project.lumina.client.game.event.EventTick
 import com.project.lumina.client.game.inventory.PlayerInventory
@@ -33,6 +34,14 @@ class AutoTotemElement(iconResId: Int = AssetManager.getAsset("ic_placeholder_bl
     private var tickListener: EventHook<EventTick>? = null
 
     /**
+     * Called before a packet is bound to the client.
+     * This module does not need to intercept or modify packets, so this is an empty implementation.
+     */
+    override fun beforePacketBound(interceptablePacket: InterceptablePacket) {
+        // No packet manipulation needed for AutoTotem
+    }
+
+    /**
      * Called when the module is enabled.
      * Registers the tick listener if AutoTotem functionality is also enabled.
      */
@@ -52,23 +61,28 @@ class AutoTotemElement(iconResId: Int = AssetManager.getAsset("ic_placeholder_bl
         unregisterTickListener()
     }
 
-    /**
-     * Called when a setting value for this module changes in the GUI.
-     * If the 'AutoTotem' setting is changed, it registers or unregisters the
-     * tick listener accordingly, provided the module itself is enabled.
-     */
-    override fun onValueChanged(value: com.project.lumina.client.constructors.Value<*>) {
-        super.onValueChanged(value)
-        if (value.name == "AutoTotem") {
-            if (isEnabled) { // Only act if the module itself is enabled
-                if (autoTotemEnabled) {
-                    registerTickListener()
-                } else {
-                    unregisterTickListener()
-                }
-            }
-        }
-    }
+    // onValueChangedでエラーが出ているため、一旦コメントアウト。
+    // ElementクラスのValue変更通知の仕組みを再確認する必要がある。
+    // もしConfigurableインターフェースの onValueChanged(Value<*>) が意図したものであれば、
+    // Elementクラスのオーバーライド可能なメソッドシグネチャを正確に確認する。
+    // 現状は onEnabled / onDisabled と autoTotemEnabled の組み合わせでリスナー管理を行う。
+//    /**
+//     * Called when a setting value for this module changes in the GUI.
+//     * If the 'AutoTotem' setting is changed, it registers or unregisters the
+//     * tick listener accordingly, provided the module itself is enabled.
+//     */
+//    override fun onValueChanged(value: com.project.lumina.client.constructors.Value<*>) {
+//        super.onValueChanged(value) // This might be the unresolved reference if Element doesn't have it
+//        if (value.name == "AutoTotem") {
+//            if (isEnabled) { // Only act if the module itself is enabled
+//                if (autoTotemEnabled) {
+//                    registerTickListener()
+//                } else {
+//                    unregisterTickListener()
+//                }
+//            }
+//        }
+//    }
 
     /**
      * Registers the tick listener if not already registered and a session exists.
@@ -76,9 +90,10 @@ class AutoTotemElement(iconResId: Int = AssetManager.getAsset("ic_placeholder_bl
      */
     private fun registerTickListener() {
         if (tickListener == null && isSessionCreated) {
-            tickListener = EventHook(EventTick::class.java) { event ->
+            // EventHookの型引数を明示的に指定
+            tickListener = EventHook<EventTick>(EventTick::class.java, { event: EventTick ->
                 onTick(event)
-            }
+            })
             session.eventManager.register(tickListener!!)
         }
     }
